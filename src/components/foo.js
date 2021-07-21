@@ -244,7 +244,7 @@ export class HAxis{
       this.tickCount = 20;
       let dx1 = (new_domain[1] - new_domain[0])/this.tickCount;
 
-      let ticks = this.scale.genTicks(this.domain, this.tickCount);
+      let ticks = this.scale.genTicks(new_domain, this.tickCount);
 
       // Draw ticks and labels
       this.ticks = this.__genTickLines(ticks, old_domain);
