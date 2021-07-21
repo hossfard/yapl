@@ -117,7 +117,11 @@ export class HAxis{
       // Draw ticks
       // this.__ticks(this.domain, this.tickCount);
       let ticks = this.scale.genTicks(this.domain, this.tickCount);
-      this.__drawTicks(ticks, this.domain);
+
+      this.ticks = this.__genTickLines(ticks, this.domain);
+      this.tick_vals = this.__genTickLabels(ticks, this.domain);
+      this.__addElemsToGroup(this.ticks, this.tick_group);
+      this.__addElemsToGroup(this.tick_vals, this.tick_group);
 
       // Draw axis line itself
       this.axis_line = new Konva.Line({
@@ -131,42 +135,6 @@ export class HAxis{
          lineJoin: 'round',
       });
    }
-
-   /** Draw input ticks on canvas
-    *
-    * @param {list} ticks tick values in plot coords
-    * @param {list} domain axis domain
-    * @return {undefined} none
-    */
-   __drawTicks(ticks, domain){
-      for (let i=0; i<ticks.length; ++i){
-         let xval = ticks[i];
-         // __toCanvasd(xval, domain);
-         let canv_val = this.scale.toCanvas(xval, domain);
-         let line = new Konva.Line({
-            points: [
-               canv_val, 0,
-               canv_val, 0-this.tickHeight
-            ],
-            stroke: 'black',
-            strokeWidth: 1
-         });
-         this.tick_group.add(line);
-         this.ticks.push(line);
-
-         let text = new Konva.Text({
-            x: canv_val,
-            y: 0,
-            fontFamily: 'Calibri',
-            fontSize: 14,
-            text: Math.floor(xval),
-            fill: 'black',
-         });
-         this.tick_group.add(text);
-         this.tick_vals.push(text);
-      }
-   }
-
 
    // Untested
    fromCanvas(x){
@@ -214,6 +182,49 @@ export class HAxis{
    }
 
 
+   __genTickLines(ticks, domain){
+      let ret = [];
+      for (let i=0; i<ticks.length; ++i){
+         let xval = ticks[i];
+         let canv_val = this.scale.toCanvas(xval, domain);
+         let line = new Konva.Line({
+            points: [
+               canv_val, 0,
+               canv_val, 0-this.tickHeight
+            ],
+            stroke: 'black',
+            strokeWidth: 1
+         });
+         ret.push(line);
+      }
+      return ret;
+   }
+
+
+   __genTickLabels(ticks, domain){
+      let ret = [];
+      for (let i=0; i<ticks.length; ++i){
+         let xval = ticks[i];
+         let canv_val = this.scale.toCanvas(xval, domain);
+         let text = new Konva.Text({
+            x: canv_val,
+            y: 0,
+            fontFamily: 'Calibri',
+            fontSize: 14,
+            text: Math.floor(xval),
+            fill: 'black',
+         });
+         ret.push(text);
+      }
+      return ret;
+   }
+
+   __addElemsToGroup(elems, group){
+      for (let i=0; i<elems.length; ++i){
+         group.add(elems[i]);
+      }
+   }
+
    /** Animate the domain update
     *
     */
@@ -234,8 +245,12 @@ export class HAxis{
       let dx1 = (new_domain[1] - new_domain[0])/this.tickCount;
 
       let ticks = this.scale.genTicks(this.domain, this.tickCount);
-      // let ticks = this.__ticks(new_domain, this.tickCount);
-      this.__drawTicks(ticks, old_domain);
+
+      // Draw ticks and labels
+      this.ticks = this.__genTickLines(ticks, old_domain);
+      this.tick_vals = this.__genTickLabels(ticks, old_domain);
+      this.__addElemsToGroup(this.ticks, this.tick_group);
+      this.__addElemsToGroup(this.tick_vals, this.tick_group);
 
       for (let i=0; i<this.tickCount; ++i){
          let xval1 = new_domain[0] + dx1*i;
