@@ -203,25 +203,24 @@ export class HAxis{
    /** Set the domain of the axis
     */
    setDomain(domain){
+      let old_domain = [domain[0], domain[1]];
+
       if (this.domain){
-         this.old_domain = [this.domain[0], this.domain[1]];
+         old_domain = [this.domain[0], this.domain[1]];
       }
 
       this.domain = domain;
-      this.__updateDomain();
+      this.__updateDomain(old_domain, this.domain);
    }
 
 
    /** Animate the domain update
     *
     */
-   __updateDomain(){
+   __updateDomain(old_domain, new_domain){
       if (!this.layer){
          return;
       }
-
-      let old_domain = this.old_domain;
-      let new_domain = this.domain;
 
       // Remove existing ticks
       for (let i=0; i<this.ticks.length; ++i){
