@@ -86,7 +86,7 @@ class LinearScale{
 }
 
 
-class TickGenerator{
+class VTickGenerator{
    constructor(tickLength){
       this.tickLength = tickLength;
    }
@@ -145,7 +145,7 @@ export class HAxis{
 
       // this.tick_canv_values = [];
       // this.tick_coord_values = [];
-      this.tickGenerator = new TickGenerator(this.tickHeight);
+      this.tickGenerator = new VTickGenerator(this.tickHeight);
 
       this.scale = new LinearScale(this.domain, this.range);
 
