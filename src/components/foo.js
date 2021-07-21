@@ -122,7 +122,7 @@ class VTickGenerator{
 
 export class HAxis{
 
-   constructor(range){
+   constructor(range, domain){
       // vertical position
       let y = 200;
       // tick height
@@ -130,7 +130,7 @@ export class HAxis{
 
       this.range = range;
       // scale domain
-      this.domain = [0, 10];
+      this.domain = domain;
 
       this.tick_labels = [];
       this.ticks = [];
