@@ -248,6 +248,17 @@ export class HAxis{
       }
    }
 
+   __clearTicks(){
+      // Remove existing ticks
+      for (let i=0; i<this.ticks.length; ++i){
+         this.ticks[i].destroy();
+         this.tick_vals[i].destroy();
+      }
+
+      this.ticks = [];
+      this.tick_vals = [];
+   }
+
    /** Animate the domain update
     *
     */
@@ -257,14 +268,7 @@ export class HAxis{
       }
 
       // Remove existing ticks
-      for (let i=0; i<this.ticks.length; ++i){
-         this.ticks[i].destroy();
-         this.tick_vals[i].destroy();
-      }
-
-      this.ticks = [];
-      this.tick_vals = [];
-      this.tickCount = 20;
+      this.__clearTicks();
 
       let ticks = this.scale.genTicks(new_domain, this.tickCount);
 
