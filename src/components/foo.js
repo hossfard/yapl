@@ -242,7 +242,6 @@ export class HAxis{
       this.ticks = [];
       this.tick_vals = [];
       this.tickCount = 20;
-      let dx1 = (new_domain[1] - new_domain[0])/this.tickCount;
 
       let ticks = this.scale.genTicks(new_domain, this.tickCount);
 
@@ -253,7 +252,7 @@ export class HAxis{
       this.__addElemsToGroup(this.tick_vals, this.tick_group);
 
       for (let i=0; i<this.tickCount; ++i){
-         let xval1 = new_domain[0] + dx1*i;
+         let xval1 = ticks[i];
          let canv_val0 = this.scale.toCanvas(xval1, old_domain);
          let canv_val1 = this.scale.toCanvas(xval1, new_domain);
          let delta = canv_val1 - canv_val0;
