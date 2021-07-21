@@ -159,7 +159,7 @@ export class HAxis{
       this.__addElemsToGroup(this.tick_vals, this.tick_group);
 
       // Draw axis line itself
-      this.axis_line = new Konva.Line({
+      this.axisLine = new Konva.Line({
          points: [
             this.range[0], y,
             this.range[1], y
@@ -195,7 +195,7 @@ export class HAxis{
     */
    attach(layer){
       this.layer = layer;
-      layer.add(this.axis_line);
+      layer.add(this.axisLine);
       layer.add(this.tick_group);
       // this.ticks.forEach((e)=>{
       //    layer.add(e);
