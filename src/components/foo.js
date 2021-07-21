@@ -86,6 +86,40 @@ class LinearScale{
 }
 
 
+class TickGenerator{
+   constructor(tickLength){
+      this.tickLength = tickLength;
+   }
+
+   // Vertically up
+   generateTick(canvasValue){
+      return new Konva.Line({
+         points: [
+            canvasValue, 0,
+            canvasValue, 0-this.tickLength
+         ],
+         stroke: 'black',
+         strokeWidth: 1
+      });
+   }
+
+   generateLabel(value, canvasValue){
+      let text = new Konva.Text({
+         x: canvasValue,
+         y: 0,
+         fontFamily: 'Calibri',
+         fontSize: 14,
+         text: value.toLocaleString(
+            undefined, {minimumFractionDigits: 2}
+         ),
+         fill: 'black',
+      });
+      text.x(canvasValue - text.width()/2);
+      return text;
+   }
+}
+
+
 export class HAxis{
 
    constructor(range){
@@ -111,6 +145,7 @@ export class HAxis{
 
       // this.tick_canv_values = [];
       // this.tick_coord_values = [];
+      this.tickGenerator = new TickGenerator(this.tickHeight);
 
       this.scale = new LinearScale(this.domain, this.range);
 
@@ -187,15 +222,9 @@ export class HAxis{
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = this.scale.toCanvas(xval, domain);
-         let line = new Konva.Line({
-            points: [
-               canv_val, 0,
-               canv_val, 0-this.tickHeight
-            ],
-            stroke: 'black',
-            strokeWidth: 1
-         });
-         ret.push(line);
+         ret.push(
+            this.tickGenerator.generateTick(canv_val)
+         );
       }
       return ret;
    }
@@ -206,15 +235,9 @@ export class HAxis{
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = this.scale.toCanvas(xval, domain);
-         let text = new Konva.Text({
-            x: canv_val,
-            y: 0,
-            fontFamily: 'Calibri',
-            fontSize: 14,
-            text: Math.floor(xval),
-            fill: 'black',
-         });
-         ret.push(text);
+         ret.push(
+            this.tickGenerator.generateLabel(xval, canv_val)
+         );
       }
       return ret;
    }
@@ -270,7 +293,7 @@ export class HAxis{
          let tweent = new Konva.Tween({
             node: this.tick_vals[i],
             duration: duration,
-            x: canv_val1,
+            x: canv_val1 - this.tick_vals[i].width()/2,
             easing: Konva.Easings['StrongEaseOut']
          });
          tweent.play();
