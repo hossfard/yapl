@@ -246,6 +246,7 @@ export class HAxis{
       let ticks = this.scale.genTicks(new_domain, this.tickCount);
 
       // Draw ticks and labels
+      // Place the ticks where they'd be in old domain
       this.ticks = this.__genTickLines(ticks, old_domain);
       this.tick_vals = this.__genTickLabels(ticks, old_domain);
       this.__addElemsToGroup(this.ticks, this.tick_group);
