@@ -146,17 +146,10 @@ export class HAxis{
       // this.tick_canv_values = [];
       // this.tick_coord_values = [];
       this.tickGenerator = new VTickGenerator(this.tickHeight);
-
       this.scale = new LinearScale(this.domain, this.range);
 
-      // Draw ticks
-      // this.__ticks(this.domain, this.tickCount);
-      let ticks = this.scale.genTicks(this.domain, this.tickCount);
-
-      this.tickLines = this.__genTickLines(ticks, this.domain);
-      this.tickLabels = this.__genTickLabels(ticks, this.domain);
-      this.__addElemsToGroup(this.tickLines, this.tick_group);
-      this.__addElemsToGroup(this.tickLabels, this.tick_group);
+      this.tickLines = [];
+      this.tickLabels = [];
    }
 
    drawAxis(){
@@ -200,6 +193,12 @@ export class HAxis{
       if (this.axisLine === undefined){
          this.drawAxis();
       }
+
+      let ticks = this.scale.genTicks(this.domain, this.tickCount);
+      this.tickLines = this.__genTickLines(ticks, this.domain);
+      this.tickLabels = this.__genTickLabels(ticks, this.domain);
+      this.__addElemsToGroup(this.tickLines, this.tick_group);
+      this.__addElemsToGroup(this.tickLabels, this.tick_group);
 
       this.layer = layer;
       layer.add(this.axisLine);
