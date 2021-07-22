@@ -155,7 +155,7 @@ export class HAxis{
    drawAxis(){
       // Draw axis line itself
       let y = 200;
-      this.axisLine = new Konva.Line({
+      let line = new Konva.Line({
          points: [
             this.range[0], y,
             this.range[1], y
@@ -191,7 +191,7 @@ export class HAxis{
     */
    attach(layer){
       if (this.axisLine === undefined){
-         this.drawAxis();
+         this.axisLine = this.drawAxis();
       }
 
       let ticks = this.scale.genTicks(this.domain, this.tickCount);
