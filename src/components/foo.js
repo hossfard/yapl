@@ -132,9 +132,6 @@ export class HAxis{
       // scale domain
       this.domain = domain;
 
-      this.tick_labels = [];
-      this.ticks = [];
-      this.tick_vals = [];
       this.tickCount = 20;
 
       this.tick_group = new Konva.Group({
