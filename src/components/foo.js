@@ -131,7 +131,7 @@ export class AxisRenderDelegate{
          tickGenerator || new VTickGenerator(this.tickHeight);
    }
 
-   // Create an axis line object
+   // Return an axis line object
    _createAxisLine(range){
       return new Konva.Line({
          points: [
@@ -145,7 +145,7 @@ export class AxisRenderDelegate{
       });
    }
 
-   // Create tick line objects
+   // Return new tick line objects
    __genTickLines(ticks, scale, domain){
       let ret = [];
       for (let i=0; i<ticks.length; ++i){
