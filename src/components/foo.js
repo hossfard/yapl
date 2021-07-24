@@ -262,8 +262,6 @@ export class HAxis{
 
       this.tickCount = 20;
 
-      // this.tick_canv_values = [];
-      // this.tick_coord_values = [];
       this.tickGenerator = new VTickGenerator(this.tickHeight);
       this.scale = new LinearScale(this.domain, this.range);
 
