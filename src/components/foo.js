@@ -309,17 +309,11 @@ export class HAxis{
       }
 
       this.domain = domain;
-      this.__updateDomain(old_domain, this.domain);
-   }
 
-
-   /** Animate the domain update
-    *
-    */
-   __updateDomain(old_domain, new_domain){
       this.axisDelegate.update(
-         old_domain, new_domain, this.scale);
+         old_domain, domain, this.scale);
    }
+
 }
 
 
