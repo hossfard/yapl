@@ -248,8 +248,8 @@ export class AxisRenderDelegate{
 export class HAxis{
 
    constructor(range, domain){
-      // vertical position
-      let y = 200;
+      this.axisDelegate = new AxisRenderDelegate();
+
       // tick height
       this.tickHeight = 5;
 
@@ -312,22 +312,8 @@ export class HAxis{
     *
     */
    attach(layer){
-      if (this.axisLine === undefined){
-         this.axisLine = this.drawAxis();
-      }
-
-      let ticks = this.scale.genTicks(this.domain, this.tickCount);
-      this.tickLines = this.__genTickLines(ticks, this.domain);
-      this.tickLabels = this.__genTickLabels(ticks, this.domain);
-      this.__addElemsToGroup(this.tickLines, this.tick_group);
-      this.__addElemsToGroup(this.tickLabels, this.tick_group);
-
-      this.layer = layer;
-      layer.add(this.axisLine);
-      layer.add(this.tick_group);
-      // this.ticks.forEach((e)=>{
-      //    layer.add(e);
-      // });
+      layer.y(200);
+      this.axisDelegate.attach(layer, this.scale);
    }
 
 
@@ -391,45 +377,8 @@ export class HAxis{
     *
     */
    __updateDomain(old_domain, new_domain){
-      if (!this.layer){
-         return;
-      }
-
-      // Remove existing ticks
-      this.__clearTicks();
-
-      let ticks = this.scale.genTicks(new_domain, this.tickCount);
-
-      // Draw ticks and labels
-      // Place the ticks where they'd be in old domain
-      this.tickLines = this.__genTickLines(ticks, old_domain);
-      this.tickLabels = this.__genTickLabels(ticks, old_domain);
-      this.__addElemsToGroup(this.tickLines, this.tick_group);
-      this.__addElemsToGroup(this.tickLabels, this.tick_group);
-
-      for (let i=0; i<ticks.length; ++i){
-         let xval1 = ticks[i];
-         let canv_val0 = this.scale.toCanvas(xval1, old_domain);
-         let canv_val1 = this.scale.toCanvas(xval1, new_domain);
-         let delta = canv_val1 - canv_val0;
-
-         let duration = 0.5;
-         let tween = new Konva.Tween({
-            node: this.tickLines[i],
-            duration: duration,
-            x: delta,
-            easing: Konva.Easings['StrongEaseOut']
-         });
-         tween.play();
-
-         let tweent = new Konva.Tween({
-            node: this.tickLabels[i],
-            duration: duration,
-            x: canv_val1 - this.tickLabels[i].width()/2,
-            easing: Konva.Easings['StrongEaseOut']
-         });
-         tweent.play();
-      }
+      this.axisDelegate.update(
+         old_domain, new_domain, this.scale);
    }
 }
 
