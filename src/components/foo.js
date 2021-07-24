@@ -120,6 +120,131 @@ class VTickGenerator{
 }
 
 
+export class AxisRenderDelegate{
+   constructor(tickHeight, tickCount, tickGenerator){
+      this.tickHeight = tickHeight || 5;
+      this.tickCount = tickCount || 10;
+      this.tickGenerator =
+         tickGenerator || new VTickGenerator(this.tickHeight);
+   }
+
+   // Create an axis line object
+   _createAxisLine(range){
+      return new Konva.Line({
+         points: [
+            range[0], 0,
+            range[1], 0
+         ],
+         stroke: 'black',
+         strokeWidth: 2,
+         lineCap: 'round',
+         lineJoin: 'round',
+      });
+   }
+
+   // Create tick line objects
+   __genTickLines(ticks, scale, domain){
+      let ret = [];
+      for (let i=0; i<ticks.length; ++i){
+         let xval = ticks[i];
+         let canv_val = scale.toCanvas(xval, domain);
+         ret.push(
+            this.tickGenerator.generateTick(canv_val)
+         );
+      }
+      return ret;
+   }
+
+   // Create tick label objects
+   __genTickLabels(ticks, scale, domain){
+      let ret = [];
+      for (let i=0; i<ticks.length; ++i){
+         let xval = ticks[i];
+         let canv_val = scale.toCanvas(xval, domain);
+         ret.push(
+            this.tickGenerator.generateLabel(xval, canv_val)
+         );
+      }
+      return ret;
+   }
+
+   // Remove axis elements
+   clear(){
+      for (let i=0; i<this.tickLines.length; ++i){
+         this.tickLines[i].destroy();
+         this.tickLabels[i].destroy();
+      }
+      this.axisLine.destroy();
+
+      this.tickLines = [];
+      this.tickLabels = [];
+   }
+
+   __attach(layer, scale, oldDomain, newDomain){
+      this.layer = layer;
+      this.axisLine = this._createAxisLine(scale.range);
+      layer.add(this.axisLine);
+
+      this.ticks = scale.genTicks(
+         newDomain, this.tickCount);
+      this.tickLines = this.__genTickLines(
+         this.ticks, scale, oldDomain);
+      this.tickLabels = this.__genTickLabels(
+         this.ticks, scale, oldDomain);
+
+      for (let i=0; i<this.tickLines.length; ++i){
+         layer.add(this.tickLines[i]);
+      }
+      for (let i=0; i<this.tickLabels.length; ++i){
+         layer.add(this.tickLabels[i]);
+      }
+   }
+
+   // Draw the axis to given layer
+   attach(layer, scale){
+      this.__attach(layer, scale, scale.domain, scale.domain);
+   }
+
+   update(oldDomain, newDomain, scale){
+      if (!this.layer){
+         return;
+      }
+
+      this.clear();
+
+      // TODO: must eval ticks on NEW domain, then draw using OLD
+      // domain
+      this.__attach(this.layer, scale, oldDomain, newDomain);
+
+      let duration = 0.5;
+      // Then apply tween to new domain
+      for (let i=0; i<this.tickLines.length; ++i){
+         let xval1 = this.ticks[i];
+         let canv_val0 = scale.toCanvas(xval1, oldDomain);
+         let canv_val1 = scale.toCanvas(xval1, newDomain);
+         let delta = canv_val1 - canv_val0;
+
+         let tween = new Konva.Tween({
+            node: this.tickLines[i],
+            duration: duration,
+            x: delta,
+            easing: Konva.Easings['StrongEaseOut']
+         });
+         tween.play();
+
+         let tweent = new Konva.Tween({
+            node: this.tickLabels[i],
+            duration: duration,
+            x: canv_val1 - this.tickLabels[i].width()/2,
+            easing: Konva.Easings['StrongEaseOut']
+         });
+         tweent.play();
+      }
+   }
+
+}
+
+
 export class HAxis{
 
    constructor(range, domain){
