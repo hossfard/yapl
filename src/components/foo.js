@@ -310,48 +310,6 @@ export class HAxis{
    }
 
 
-   __genTickLines(ticks, domain){
-      let ret = [];
-      for (let i=0; i<ticks.length; ++i){
-         let xval = ticks[i];
-         let canv_val = this.scale.toCanvas(xval, domain);
-         ret.push(
-            this.tickGenerator.generateTick(canv_val)
-         );
-      }
-      return ret;
-   }
-
-
-   __genTickLabels(ticks, domain){
-      let ret = [];
-      for (let i=0; i<ticks.length; ++i){
-         let xval = ticks[i];
-         let canv_val = this.scale.toCanvas(xval, domain);
-         ret.push(
-            this.tickGenerator.generateLabel(xval, canv_val)
-         );
-      }
-      return ret;
-   }
-
-   __addElemsToGroup(elems, group){
-      for (let i=0; i<elems.length; ++i){
-         group.add(elems[i]);
-      }
-   }
-
-   __clearTicks(){
-      // Remove existing ticks
-      for (let i=0; i<this.tickLines.length; ++i){
-         this.tickLines[i].destroy();
-         this.tickLabels[i].destroy();
-      }
-
-      this.tickLines = [];
-      this.tickLabels = [];
-   }
-
    /** Animate the domain update
     *
     */
