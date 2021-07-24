@@ -120,6 +120,9 @@ class VTickGenerator{
 }
 
 
+/** Delegate for drawing axis and labels
+ *
+ */
 export class AxisRenderDelegate{
    constructor(tickHeight, tickCount, tickGenerator){
       this.tickHeight = tickHeight || 5;
