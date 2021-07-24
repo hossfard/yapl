@@ -259,12 +259,6 @@ export class HAxis{
 
       this.tickCount = 20;
 
-      this.tick_group = new Konva.Group({
-         x: 0,
-         y: y,
-         rotation: 0,
-      });
-
       // this.tick_canv_values = [];
       // this.tick_coord_values = [];
       this.tickGenerator = new VTickGenerator(this.tickHeight);
@@ -272,21 +266,6 @@ export class HAxis{
 
       this.tickLines = [];
       this.tickLabels = [];
-   }
-
-   drawAxis(){
-      // Draw axis line itself
-      let y = 200;
-      let line = new Konva.Line({
-         points: [
-            this.range[0], y,
-            this.range[1], y
-         ],
-         stroke: 'black',
-         strokeWidth: 2,
-         lineCap: 'round',
-         lineJoin: 'round',
-      });
    }
 
    // Untested
