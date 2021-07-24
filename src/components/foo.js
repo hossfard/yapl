@@ -215,11 +215,11 @@ export class AxisRenderDelegate{
 
       this.clear();
 
-      // TODO: must eval ticks on NEW domain, then draw using OLD
-      // domain
+      // Draw using ticks and labels on OLD domain
       this.__attach(this.layer, scale, oldDomain, newDomain);
 
       let duration = 0.5;
+
       // Then apply tween to new domain
       for (let i=0; i<this.tickLines.length; ++i){
          let xval1 = this.ticks[i];
