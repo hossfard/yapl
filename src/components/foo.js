@@ -251,22 +251,12 @@ export class AxisRenderDelegate{
 export class HAxis{
 
    constructor(range, domain){
-      this.axisDelegate = new AxisRenderDelegate();
-
-      // tick height
       this.tickHeight = 5;
-
       this.range = range;
-      // scale domain
       this.domain = domain;
-
       this.tickCount = 20;
-
-      this.tickGenerator = new VTickGenerator(this.tickHeight);
       this.scale = new LinearScale(this.domain, this.range);
-
-      this.tickLines = [];
-      this.tickLabels = [];
+      this.axisDelegate = new AxisRenderDelegate();
    }
 
    // Untested
