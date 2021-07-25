@@ -304,7 +304,7 @@ export class HAxisRenderDelegate extends AbstractRenderDelegate{
          tweent.play();
       }
    }
-
+}
 
 
 export class VAxisRenderDelegate extends AbstractRenderDelegate{
