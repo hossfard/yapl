@@ -38,7 +38,7 @@ export class AbstractRenderDelegate{
    }
 
    // Create tick label objects
-   __genTickLabels(ticks, scale, domain){
+   genTickLabels(ticks, scale, domain){
       let ret = [];
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
@@ -71,7 +71,7 @@ export class AbstractRenderDelegate{
          newDomain, this.tickCount);
       this.tickLines = this.__genTickLines(
          this.ticks, scale, oldDomain);
-      this.tickLabels = this.__genTickLabels(
+      this.tickLabels = this.genTickLabels(
          this.ticks, scale, oldDomain);
 
       for (let i=0; i<this.tickLines.length; ++i){
