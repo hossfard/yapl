@@ -8,7 +8,7 @@
 <script>
 
 
-import {Example} from './foo.js';
+import {Plot} from './Plot.js';
 
 
 export default {
@@ -17,7 +17,7 @@ export default {
       msg: String
    },
    mounted: function(){
-      this._canvas = new Example();
+      this._canvas = new Plot();
    }
 }
 </script>

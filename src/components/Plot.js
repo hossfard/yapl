@@ -82,7 +82,7 @@ export class Axis{
 }
 
 
-export function Example(){
+export function Plot(){
    var stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
@@ -92,6 +92,9 @@ export function Example(){
 
    var hAxisLayer = new Konva.Layer();
    var vAxisLayer = new Konva.Layer();
+   vAxisLayer.x(100);
+   hAxisLayer.y(500);
+   hAxisLayer.x(100);
 
    var triangle = new Konva.RegularPolygon({
       x: 80,
