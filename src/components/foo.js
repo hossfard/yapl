@@ -372,13 +372,13 @@ export class VAxisRenderDelegate extends AbstractRenderDelegate{
 
 export class HAxis{
 
-   constructor(range, domain){
+   constructor(range, domain, axisDelegate){
       this.tickHeight = 5;
       this.range = range;
       this.domain = domain;
       this.tickCount = 20;
       this.scale = new LinearScale(this.domain, this.range);
-      this.axisDelegate = new AxisRenderDelegate();
+      this.axisDelegate = axisDelegate || new HAxisRenderDelegate();
    }
 
    // Untested
