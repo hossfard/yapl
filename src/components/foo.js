@@ -90,6 +90,9 @@ export function Example(){
    });
    var layer = new Konva.Layer();
 
+   var hAxisLayer = new Konva.Layer();
+   var vAxisLayer = new Konva.Layer();
+
    var triangle = new Konva.RegularPolygon({
       x: 80,
       y: 120,
@@ -107,10 +110,12 @@ export function Example(){
    var vaxis = new Axis([10, 600], [0, 10], vAxisDelegate);
 
    layer.add(triangle);
-   axis.attach(layer);
-   vaxis.attach(layer);
+   axis.attach(hAxisLayer);
+   vaxis.attach(vAxisLayer);
 
    stage.add(layer);
+   stage.add(hAxisLayer);
+   stage.add(vAxisLayer);
 
    window.setTimeout(function(){
       axis.setDomain([-5, 15]);
