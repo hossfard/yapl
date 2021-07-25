@@ -4,6 +4,7 @@
 import Konva from 'konva';
 
 
+
 export class VTickGenerator{
    constructor(tickLength){
       this.tickLength = tickLength;
