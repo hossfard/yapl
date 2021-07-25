@@ -597,8 +597,11 @@ export function Example(){
       strokeWidth: 4,
    });
 
-   var axis = new HAxis([10, 1000], [0, 10]);
-   var vaxis = new VAxis([10, 600]);
+   let hAxisDelegate = new HAxisRenderDelegate();
+   let vAxisDelegate = new VAxisRenderDelegate();
+
+   var axis = new Axis([10, 1000], [0, 10], hAxisDelegate);
+   var vaxis = new Axis([10, 600], [0, 10], vAxisDelegate);
 
    layer.add(triangle);
    axis.attach(layer);
