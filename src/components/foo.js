@@ -4,6 +4,7 @@
 import Konva from 'konva';
 
 
+// eslint-disable-next-line no-unused-vars
 class VTicks{
    constructor(x, y, h, dx, opts){
       this.shape = new Konva.Shape({
