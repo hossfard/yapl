@@ -370,7 +370,7 @@ export class VAxisRenderDelegate extends AbstractRenderDelegate{
 }
 
 
-export class HAxis{
+export class Axis{
 
    constructor(range, domain, axisDelegate){
       this.tickHeight = 5;
