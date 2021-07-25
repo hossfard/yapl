@@ -53,21 +53,18 @@ export class HAxisRenderDelegate extends AbstractRenderDelegate{
          let canv_val1 = scale.toCanvas(xval1, newDomain);
          let delta = canv_val1 - canv_val0;
 
-         let tween = new Konva.Tween({
-            node: this.tickLines[i],
+         this.tickLines[i].to({
             duration: duration,
             x: delta,
             easing: Konva.Easings['StrongEaseOut']
          });
-         tween.play();
 
-         let tweent = new Konva.Tween({
+         this.tickLabels[i].to({
             node: this.tickLabels[i],
             duration: duration,
             x: canv_val1 - this.tickLabels[i].width()/2,
             easing: Konva.Easings['StrongEaseOut']
          });
-         tweent.play();
       }
    }
 }
@@ -116,21 +113,17 @@ export class VAxisRenderDelegate extends AbstractRenderDelegate{
          let canv_val1 = scale.toCanvas(xval1, newDomain);
          let delta = canv_val1 - canv_val0;
 
-         let tween = new Konva.Tween({
-            node: this.tickLines[i],
+         this.tickLines[i].to({
             duration: duration,
             y: delta,
             easing: Konva.Easings['StrongEaseOut']
          });
-         tween.play();
 
-         let tweent = new Konva.Tween({
-            node: this.tickLabels[i],
+         this.tickLabels[i].to({
             duration: duration,
             y: canv_val1 - this.tickLabels[i].height()/2,
             easing: Konva.Easings['StrongEaseOut']
          });
-         tweent.play();
       }
    }
 }
