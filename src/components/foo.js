@@ -106,8 +106,8 @@ export function Example(){
    let hAxisDelegate = new HAxisRenderDelegate();
    let vAxisDelegate = new VAxisRenderDelegate();
 
-   var haxis = new Axis([10, 1000], [0, 10], hAxisDelegate);
-   var vaxis = new Axis([10, 600], [0, 10], vAxisDelegate);
+   var haxis = new Axis([0, 1000], [0, 10], hAxisDelegate);
+   var vaxis = new Axis([0, 600], [0, 10], vAxisDelegate);
 
    layer.add(triangle);
    haxis.attach(hAxisLayer);
