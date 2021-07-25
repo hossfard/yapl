@@ -3,6 +3,7 @@
 
 import Konva from 'konva';
 import {Axis} from './Axis';
+import {LineSeries} from './LineSeries';
 import {
    HAxisRenderDelegate,
    VAxisRenderDelegate} from './AxisRenderDelegate';
@@ -67,9 +68,27 @@ export function Plot(){
    stage.add(hAxisLayer);
    stage.add(vAxisLayer);
 
+   let canvasLayer = new Konva.Layer();
+   canvasLayer.x(100);
+
+   let series1 = [];
+   // let pointCount = 10;
+   // let dx = 0.2;
+   let points = [
+      [1.5, 3],
+      [2.0, 1],
+      [3.0, 0],
+      [4.5, 3.4]
+   ];
+   series1 = new LineSeries(points);
+   series1.attach(canvasLayer, haxis, vaxis);
+
+   stage.add(canvasLayer);
+
    window.setTimeout(function(){
       haxis.setDomain([-5, 15]);
       vaxis.setDomain([-10, 10]);
+      series1.update();
    }, 2000);
 
    // window.setTimeout(function(){
