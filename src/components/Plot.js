@@ -29,74 +29,117 @@ class VTicks{
 }
 
 
-export function Plot(){
-   var stage = new Konva.Stage({
-      container: 'container',
-      width: window.innerWidth,
-      height: window.innerHeight,
-   });
-   var layer = new Konva.Layer();
-
-   var hAxisLayer = new Konva.Layer();
-   var vAxisLayer = new Konva.Layer();
-   vAxisLayer.x(100);
-   hAxisLayer.y(500);
-   hAxisLayer.x(100);
-
-   var triangle = new Konva.RegularPolygon({
-      x: 80,
-      y: 120,
-      sides: 3,
-      radius: 80,
-      fill: '#00D2FF',
-      stroke: 'black',
-      strokeWidth: 4,
-   });
-
-   let hAxisDelegate = new HAxisRenderDelegate();
-   let vAxisDelegate = new VAxisRenderDelegate();
-
-   var haxis = new Axis([0, 1000], [0, 10], hAxisDelegate);
-   var vaxis = new Axis([20, 500], [0, 10], vAxisDelegate, true);
-
-
-   layer.add(triangle);
-   haxis.attach(hAxisLayer);
-   vaxis.attach(vAxisLayer);
-
-   stage.add(layer);
-   stage.add(hAxisLayer);
-   stage.add(vAxisLayer);
-
-   let canvasLayer = new Konva.Layer();
-   canvasLayer.x(100);
-
-   let series1 = [];
-   // let pointCount = 10;
-   // let dx = 0.2;
-   let points = [
-      [1.5, 3],
-      [2.0, 1],
-      [3.0, 0],
-      [4.5, 3.4]
-   ];
-   series1 = new LineSeries(points);
-   series1.attach(canvasLayer, haxis, vaxis);
-
-   stage.add(canvasLayer);
-
-   window.setTimeout(function(){
-      haxis.setDomain([-5, 15]);
-      vaxis.setDomain([-10, 10]);
-      series1.update();
-   }, 2000);
-
-   // window.setTimeout(function(){
-   //    console.log('timeout');
-   //    triangle.x(95);
-   //    // triangle.absolutePosition(95, 120);
-   //    // triangle.draw();
-   // }, 2000);
+function generateRandomPoints(count){
+   let ret = [];
+   let xlim = [0, 10];
+   let ylim = [0, 10];
+   let dx = (xlim[1] - xlim[0])/count;
+   for (let i=0; i<count; ++i){
+      let x = xlim[0] + dx*i;
+      let y = Math.random() * (ylim[1] - ylim[0]) + ylim[0];
+      ret.push([x, y]);
+   }
+   return ret;
 }
+
+export class Plot{
+
+   constructor(parent){
+      parent = 'container';
+      this.stage = new Konva.Stage({
+         container: parent,
+         width: window.innerWidth,
+         height: window.innerHeight,
+      });
+
+      let hAxisLayer = new Konva.Layer({
+         x: 100,
+         y: 500
+      });
+
+      let vAxisLayer = new Konva.Layer({
+         x: 100
+      });
+
+      let hAxisDelegate = new HAxisRenderDelegate();
+      let vAxisDelegate = new VAxisRenderDelegate();
+
+      this.haxis = new Axis([0, 1000], [0, 10], hAxisDelegate);
+      this.vaxis = new Axis([500, 20], [0, 10], vAxisDelegate);
+
+      this.haxis.attach(hAxisLayer);
+      this.vaxis.attach(vAxisLayer);
+
+      this.stage.add(hAxisLayer);
+      this.stage.add(vAxisLayer);
+
+      this.canvasLayer = new Konva.Layer({
+         x: 100,
+         listening: false
+      });
+
+      this.tooltipLayer = new Konva.Layer();
+      this.eventRect = new Konva.Rect({
+         x: 100,
+         y: 20,
+         width: 1000,
+         height: 500-20,
+         fill: 'blue',
+         opacity: 0.2
+      });
+
+      this.tooltip = new Konva.Rect({
+         width: 50,
+         height: 50,
+         fill: 'red'
+      });
+
+      this.eventRect.on('mousemove', ()=>{
+         var mousePos = this.stage.getPointerPosition();
+         this.updateTooltip(mousePos.x, mousePos.y, 'val');
+      });
+
+      // Add series
+      let points1 = generateRandomPoints(1000);
+      let points2 = generateRandomPoints(1000);
+      let points3 = generateRandomPoints(1000);
+      let series1 = new LineSeries(points1, {stroke: 'red'});
+      let series2 = new LineSeries(points2, {
+         stroke: 'blue', strokeWidth: 1});
+      let series3 = new LineSeries(points3, {stroke: 'green'});
+      series1.attach(this.canvasLayer, this.haxis, this.vaxis);
+      series2.attach(this.canvasLayer, this.haxis, this.vaxis);
+      series3.attach(this.canvasLayer, this.haxis, this.vaxis);
+
+      this.stage.add(this.canvasLayer);
+
+      window.setTimeout(()=>{
+         this.haxis.setDomain([-5, 15]);
+         this.vaxis.setDomain([-2, 10]);
+
+         series1.update();
+         series2.update();
+         series3.update();
+      }, 2000);
+
+      this.tooltipLayer.add(this.eventRect);
+      this.tooltipLayer.add(this.tooltip);
+      this.stage.add(this.tooltipLayer);
+   }
+
+   // eslint-disable-next-line no-unused-vars
+   updateTooltip(x, y, text){
+      this.tooltip.to({
+         x: x,
+         y: y,
+         duration: 0.125,
+         easing: Konva.Easings['StrongEaseOut']
+      });
+   }
+
+}
+
+
+
 
 // module.exports.Foo = Foo;
