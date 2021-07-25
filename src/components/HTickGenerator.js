@@ -33,7 +33,8 @@ export class HTickGenerator{
          ),
          fill: 'black',
       });
-      text.y(canvasValue - text.width());
+      text.x(-text.width());
+      text.y(canvasValue - text.height()/2);
       return text;
    }
 }

@@ -127,7 +127,7 @@ export class VAxisRenderDelegate extends AbstractRenderDelegate{
          let tweent = new Konva.Tween({
             node: this.tickLabels[i],
             duration: duration,
-            y: canv_val1 - this.tickLabels[i].width(),
+            y: canv_val1 - this.tickLabels[i].height()/2,
             easing: Konva.Easings['StrongEaseOut']
          });
          tweent.play();
