@@ -120,10 +120,7 @@ class VTickGenerator{
 }
 
 
-/** Delegate for drawing axis and labels
- *
- */
-export class AxisRenderDelegate{
+export class AbstractRenderDelegate{
    constructor(tickHeight, tickCount, tickGenerator){
       this.tickHeight = tickHeight || 5;
       this.tickCount = tickCount || 10;
@@ -132,17 +129,14 @@ export class AxisRenderDelegate{
    }
 
    // Return an axis line object
-   _createAxisLine(range){
-      return new Konva.Line({
-         points: [
-            range[0], 0,
-            range[1], 0
-         ],
-         stroke: 'black',
-         strokeWidth: 2,
-         lineCap: 'round',
-         lineJoin: 'round',
-      });
+   // eslint-disable-next-line no-unused-vars
+   createAxisLine(range){
+      return undefined;
+   }
+
+   // eslint-disable-next-line no-unused-vars
+   update(oldDomain, newDomain, scale){
+      return;
    }
 
    // Return new tick line objects
@@ -185,7 +179,7 @@ export class AxisRenderDelegate{
 
    __attach(layer, scale, oldDomain, newDomain){
       this.layer = layer;
-      this.axisLine = this._createAxisLine(scale.range);
+      this.axisLine = this.createAxisLine(scale.range);
       layer.add(this.axisLine);
 
       this.ticks = scale.genTicks(
@@ -206,6 +200,36 @@ export class AxisRenderDelegate{
    // Draw the axis to given layer
    attach(layer, scale){
       this.__attach(layer, scale, scale.domain, scale.domain);
+   }
+
+}
+
+
+/** Delegate for drawing axis and labels
+ *
+ */
+export class HAxisRenderDelegate extends AbstractRenderDelegate{
+
+   constructor(tickHeight, tickCount, tickGenerator){
+      super(tickHeight, tickCount, tickGenerator);
+      // this.tickHeight = tickHeight || 5;
+      // this.tickCount = tickCount || 10;
+      this.tickGenerator =
+         tickGenerator || new VTickGenerator(this.tickHeight);
+   }
+
+   // Return an axis line object
+   createAxisLine(range){
+      return new Konva.Line({
+         points: [
+            range[0], 0,
+            range[1], 0
+         ],
+         stroke: 'black',
+         strokeWidth: 2,
+         lineCap: 'round',
+         lineJoin: 'round',
+      });
    }
 
    update(oldDomain, newDomain, scale){
@@ -245,6 +269,68 @@ export class AxisRenderDelegate{
       }
    }
 
+
+
+export class VAxisRenderDelegate extends AbstractRenderDelegate{
+
+   constructor(tickHeight, tickCount, tickGenerator){
+      super(tickHeight, tickCount, tickGenerator);
+      // this.tickHeight = tickHeight || 5;
+      // this.tickCount = tickCount || 10;
+      this.tickGenerator =
+         tickGenerator || new HTickGenerator(this.tickHeight);
+   }
+
+   // Return an axis line object
+   createAxisLine(range){
+      return new Konva.Line({
+         points: [
+            0, range[0],
+            0, range[1]
+         ],
+         stroke: 'black',
+         strokeWidth: 2,
+         lineCap: 'round',
+         lineJoin: 'round',
+      });
+   }
+
+   update(oldDomain, newDomain, scale){
+      if (!this.layer){
+         return;
+      }
+
+      this.clear();
+
+      // Draw using ticks and labels on OLD domain
+      this.__attach(this.layer, scale, oldDomain, newDomain);
+
+      let duration = 0.5;
+
+      // Then apply tween to new domain
+      for (let i=0; i<this.tickLines.length; ++i){
+         let xval1 = this.ticks[i];
+         let canv_val0 = scale.toCanvas(xval1, oldDomain);
+         let canv_val1 = scale.toCanvas(xval1, newDomain);
+         let delta = canv_val1 - canv_val0;
+
+         let tween = new Konva.Tween({
+            node: this.tickLines[i],
+            duration: duration,
+            y: delta,
+            easing: Konva.Easings['StrongEaseOut']
+         });
+         tween.play();
+
+         let tweent = new Konva.Tween({
+            node: this.tickLabels[i],
+            duration: duration,
+            y: canv_val1 - this.tickLabels[i].width(),
+            easing: Konva.Easings['StrongEaseOut']
+         });
+         tweent.play();
+      }
+   }
 }
 
 
