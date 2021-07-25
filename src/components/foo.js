@@ -106,11 +106,11 @@ export function Example(){
    let hAxisDelegate = new HAxisRenderDelegate();
    let vAxisDelegate = new VAxisRenderDelegate();
 
-   var axis = new Axis([10, 1000], [0, 10], hAxisDelegate);
+   var haxis = new Axis([10, 1000], [0, 10], hAxisDelegate);
    var vaxis = new Axis([10, 600], [0, 10], vAxisDelegate);
 
    layer.add(triangle);
-   axis.attach(hAxisLayer);
+   haxis.attach(hAxisLayer);
    vaxis.attach(vAxisLayer);
 
    stage.add(layer);
@@ -118,7 +118,7 @@ export function Example(){
    stage.add(vAxisLayer);
 
    window.setTimeout(function(){
-      axis.setDomain([-5, 15]);
+      haxis.setDomain([-5, 15]);
       vaxis.setDomain([-10, 10]);
    }, 2000);
 
