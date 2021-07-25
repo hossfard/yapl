@@ -8,6 +8,7 @@ import Konva from 'konva';
 export class VTickGenerator{
    constructor(tickLength){
       this.tickLength = tickLength;
+      this.pad = 5;
    }
 
    // Vertically up
@@ -25,7 +26,7 @@ export class VTickGenerator{
    generateLabel(value, canvasValue){
       let text = new Konva.Text({
          x: canvasValue,
-         y: 0,
+         y: this.pad,
          fontFamily: 'Calibri',
          fontSize: 14,
          text: value.toLocaleString(

@@ -56,7 +56,8 @@ export function Plot(){
    let vAxisDelegate = new VAxisRenderDelegate();
 
    var haxis = new Axis([0, 1000], [0, 10], hAxisDelegate);
-   var vaxis = new Axis([0, 600], [0, 10], vAxisDelegate);
+   var vaxis = new Axis([20, 500], [0, 10], vAxisDelegate, true);
+
 
    layer.add(triangle);
    haxis.attach(hAxisLayer);

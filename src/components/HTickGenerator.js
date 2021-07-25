@@ -8,6 +8,7 @@ import Konva from 'konva';
 export class HTickGenerator{
    constructor(tickLength){
       this.tickLength = tickLength;
+      this.pad = 5;
    }
 
    // Vertically up
@@ -33,7 +34,7 @@ export class HTickGenerator{
          ),
          fill: 'black',
       });
-      text.x(-text.width());
+      text.x(-this.pad - text.width());
       text.y(canvasValue - text.height()/2);
       return text;
    }
