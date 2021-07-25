@@ -582,59 +582,6 @@ export class VAxis{
 }
 
 
-export class Axis{
-   constructor(){
-      let x0 = 10;
-      let y = 100;
-
-      this.shape = new Konva.Group({
-         x: 0,
-         y: 0,
-         rotation: 0,
-      });
-
-      this.line = new Konva.Line({
-         points: [
-            x0, y,
-            1000, y
-         ],
-         // points: [5, 70, 140, 23, 250, 60, 300, 20],
-         stroke: 'red',
-         strokeWidth: 2,
-         lineCap: 'round',
-         lineJoin: 'round',
-      });
-
-      this.ticks = new VTicks(
-         x0, y, 5, 50, {
-            stroke: 'black',
-            strokeWidth: 1,
-         }
-      );
-
-      this.shape.add(this.line);
-      this.shape.add(this.ticks.shape);
-
-      // var tween = new Konva.Tween({
-      //   node: this.tickLines.shape,
-      //   duration: 1,
-      //   x: -100,
-      //    easing: Konva.Easings['StrongEaseOut']
-      //   // fill: 'red',
-      //   // rotation: Math.PI * 2,
-      //   // opacity: 1,
-      //   // strokeWidth: 6,
-      //   // scaleX: 1.5,
-      // });
-
-      // window.setTimeout(function(){
-      //    tween.play();
-      // }, 3500);
-   }
-
-}
-
-
 export function Example(){
    var stage = new Konva.Stage({
       container: 'container',
