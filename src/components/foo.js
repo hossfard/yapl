@@ -61,7 +61,6 @@ export class Axis{
     *
     */
    attach(layer){
-      layer.y(200);
       this.axisDelegate.attach(layer, this.scale);
    }
 
@@ -90,6 +89,7 @@ export function Example(){
       height: window.innerHeight,
    });
    var layer = new Konva.Layer();
+
    var triangle = new Konva.RegularPolygon({
       x: 80,
       y: 120,
