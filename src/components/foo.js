@@ -391,7 +391,6 @@ export class Axis{
       return (x-y0)*(x1-x0)/(y1-y0) + x0;
    }
 
-
    /** Map point to canvas pixel coordinate
     *
     */
@@ -423,7 +422,6 @@ export class Axis{
       this.axisDelegate.update(
          old_domain, domain, this.scale);
    }
-
 }
 
 
