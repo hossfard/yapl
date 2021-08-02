@@ -59,7 +59,7 @@ export class LineSeries{
       layer.add(this.lineObject);
    }
 
-   update(){
+   update(transition){
       if (!this._points || !this.lineObject){
          return;
       }
@@ -67,12 +67,20 @@ export class LineSeries{
       let pList = this.__toCanvas(
          this._points,
          this.xaxis, this.yaxis);
-      let tweent = new Konva.Tween({
-         node: this.lineObject,
-         duration: .5,
-         points: pList,
-         easing: Konva.Easings['StrongEaseOut']
-      });
-      tweent.play();
+
+      if (transition === undefined){
+         transition = true;
+      }
+
+      if (!transition){
+         this.lineObject.points(pList);
+      }
+      else{
+         this.lineObject.to({
+            duration: 0.5,
+            points: pList,
+            easing: Konva.Easings['StrongEaseOut']
+         });
+      }
    }
 }
