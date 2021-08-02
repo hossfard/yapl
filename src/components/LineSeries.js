@@ -6,8 +6,9 @@ import Konva from 'konva';
 
 
 export class LineSeries{
-   constructor(points){
+   constructor(points, opts){
       this._points = points;
+      this.opts = opts;
    }
 
    setPoints(p){
@@ -36,10 +37,10 @@ export class LineSeries{
    _createLineObject(series){
       return new Konva.Line({
          points: series,
-         stroke: 'black',
-         strokeWidth: 2,
-         lineCap: 'round',
-         lineJoin: 'round',
+         stroke: this.opts.stroke || 'black',
+         strokeWidth: this.opts.strokeWidth || 1,
+         lineCap: this.opts.lineCap || 'round',
+         lineJoin: this.opts.lineJoin || 'round',
       });
    }
 
