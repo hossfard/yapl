@@ -24,8 +24,8 @@ export class LineSeries{
     *     [[x0,y0],[...]]
     *
     */
-   setPoints(p){
-      this._points = p;
+   setPoints(points){
+      this._points = points;
    }
 
    /** Convert input points to canvas coords
