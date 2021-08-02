@@ -6,6 +6,13 @@ import Konva from 'konva';
 
 
 export class LineSeries{
+
+   /** Create a line series object
+    *
+    * @param {array[array]} points line series data formatted as
+    *     [[x0,y0],[...]]
+    * @param {dict} opts optional arguments
+    */
    constructor(points, opts){
       this.opts = opts;
       this.setPoints(points);
