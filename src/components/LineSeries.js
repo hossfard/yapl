@@ -18,6 +18,12 @@ export class LineSeries{
       this.setPoints(points);
    }
 
+   /** Set series data
+    *
+    * @param {array[array]} points line series data formatted as
+    *     [[x0,y0],[...]]
+    *
+    */
    setPoints(p){
       this._points = p;
    }
