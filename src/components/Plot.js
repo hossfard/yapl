@@ -100,16 +100,20 @@ export class Plot{
       });
 
       // Add series
-      let points1 = generateRandomPoints(1000);
-      let points2 = generateRandomPoints(1000);
-      let points3 = generateRandomPoints(1000);
-      let series1 = new LineSeries(points1, {stroke: 'red'});
-      let series2 = new LineSeries(points2, {
-         stroke: 'blue', strokeWidth: 1});
-      let series3 = new LineSeries(points3, {stroke: 'green'});
-      series1.attach(this.canvasLayer, this.haxis, this.vaxis);
-      series2.attach(this.canvasLayer, this.haxis, this.vaxis);
-      series3.attach(this.canvasLayer, this.haxis, this.vaxis);
+      this.series = {};
+
+      this.plot(
+         generateRandomPoints(100),
+         {stroke: 'red'},
+         'p1');
+      this.plot(
+         generateRandomPoints(100),
+         {stroke: 'blue', strokeWidth: 1},
+         'p2');
+      this.plot(
+         generateRandomPoints(100),
+         {stroke: 'green'},
+         'p3');
 
       this.stage.add(this.canvasLayer);
 
@@ -117,14 +121,27 @@ export class Plot{
          this.haxis.setDomain([-5, 15]);
          this.vaxis.setDomain([-2, 10]);
 
-         series1.update();
-         series2.update();
-         series3.update();
+         this.__updateSeries();
       }, 2000);
+
 
       this.tooltipLayer.add(this.eventRect);
       this.tooltipLayer.add(this.tooltip);
       this.stage.add(this.tooltipLayer);
+   }
+
+
+   plot(points, opts, label){
+      label = label || '';
+      let pobj = new LineSeries(points, opts);
+      pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
+      this.series[label] = pobj;
+   }
+
+   __updateSeries(){
+      for (const label in this.series){
+         this.series[label].update();
+      }
    }
 
    // eslint-disable-next-line no-unused-vars
