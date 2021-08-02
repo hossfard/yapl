@@ -7,8 +7,8 @@ import Konva from 'konva';
 
 export class LineSeries{
    constructor(points, opts){
-      this._points = points;
       this.opts = opts;
+      this.setPoints(points);
    }
 
    setPoints(p){
