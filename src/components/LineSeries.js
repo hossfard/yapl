@@ -25,7 +25,7 @@ export class LineSeries{
     *
     */
    setPoints(points){
-      this._points = points;
+      this.points = points;
    }
 
    /** Convert input points to canvas coords
@@ -58,13 +58,13 @@ export class LineSeries{
    }
 
    attach(layer, xAxis, yAxis){
-      if (!this._points){
+      if (!this.points){
          return;
       }
 
       this.xaxis = xAxis;
       this.yaxis = yAxis;
-      let pList = this.__toCanvas(this._points, xAxis, yAxis);
+      let pList = this.__toCanvas(this.points, xAxis, yAxis);
       if (!this.lineObject){
          this.lineObject = this._createLineObject(pList);
       }
@@ -74,12 +74,12 @@ export class LineSeries{
    }
 
    update(transition){
-      if (!this._points || !this.lineObject){
+      if (!this.points || !this.lineObject){
          return;
       }
 
       let pList = this.__toCanvas(
-         this._points,
+         this.points,
          this.xaxis, this.yaxis);
 
       if (transition === undefined){
