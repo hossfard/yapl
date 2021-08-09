@@ -87,7 +87,7 @@ export class Plot{
          y: 20,
          width: 1000,
          height: 500-20,
-         fill: 'blue',
+         fill: '#fff',
          opacity: 0.2
       });
 
