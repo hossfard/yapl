@@ -32,11 +32,11 @@ class VTicks{
 function generateRandomPoints(count){
    let ret = [];
    let xlim = [0, 10];
-   let ylim = [0, 10];
+   let ylim = [0, 1];
    let dx = (xlim[1] - xlim[0])/count;
    for (let i=0; i<count; ++i){
       let x = xlim[0] + dx*i;
-      let y = Math.random() * (ylim[1] - ylim[0]) + ylim[0];
+      let y = 4 + 3*Math.sin(x) + 2*Math.random() * (ylim[1] - ylim[0]) + ylim[0];
       ret.push([x, y]);
    }
    return ret;
