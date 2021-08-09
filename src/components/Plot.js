@@ -135,7 +135,6 @@ export class Plot{
 
 
       this.tooltipLayer.add(this.eventRect);
-      this.tooltipLayer.add(this.tooltip);
       this.stage.add(this.tooltipLayer);
    }
 
