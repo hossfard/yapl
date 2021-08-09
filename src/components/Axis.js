@@ -42,7 +42,7 @@ export class Axis{
     */
    setDomain(domain){
       let old_domain = [domain[0], domain[1]];
-
+      this.scale.domain = domain;
       if (this.domain){
          old_domain = [this.domain[0], this.domain[1]];
       }
