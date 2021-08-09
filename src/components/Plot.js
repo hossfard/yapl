@@ -140,11 +140,11 @@ export class Plot{
    }
 
 
-   plot(points, opts, label){
-      label = label || '';
+   plot(points, opts){
       let pobj = new LineSeries(points, opts);
       pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
-      this.series[label] = pobj;
+      this.series.push(pobj);
+      return pobj;
    }
 
    __updateSeries(){
