@@ -11,7 +11,7 @@
  *    given index -- fn(seq, index)
  * @return {int} Index of closest point to data
  */
-export function binarySearch(data, val, fn){
+export function closestPoint(data, val, fn){
    let highIndex = data.length-1;
    let lowIndex = 0;
    while (highIndex > lowIndex){
