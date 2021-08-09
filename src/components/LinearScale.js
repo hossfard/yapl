@@ -1,6 +1,56 @@
 'use strict';
 
 
+/** Generate ticks in range [min, max]
+ *
+ * Requested number of ticks may not be honored
+ *
+ * @param {float} min minimum scale value
+ * @param {float} max maximum scale value
+ * @param {int} countHint suggested number of ticks
+ */
+function genScaleLimits(min, max, countHint){
+   let epsilon = (max - min) / 1e6;
+   max += epsilon;
+   min -= epsilon;
+   let range = max - min;
+
+   let stepCount = countHint;
+
+   // First approximation
+   let roughStep = range / (stepCount - 1);
+
+   // keep the 10 at the end
+   let goodNormalizedSteps = [1, 1.5, 2, 2.5, 5, 7.5, 10];
+   // Or use these if you prefer:  { 1, 2, 5, 10 };
+
+   // Normalize rough step to find the normalized one that fits best
+   let stepPower = Math.pow(
+      10, -Math.floor(Math.log10(Math.abs(roughStep)))
+   );
+   let normalizedStep = roughStep * stepPower;
+   let goodNormalizedStep = goodNormalizedSteps[0];
+   for (let i=0; i<goodNormalizedSteps.length; ++i){
+      if (goodNormalizedSteps[i] < normalizedStep){
+         continue;
+      }
+      goodNormalizedStep = goodNormalizedSteps[i];
+      break;
+   }
+
+   let step = goodNormalizedStep / stepPower;
+
+   // Determine the scale limits based on the chosen step.
+   let scaleMax = Math.ceil(max / step) * step;
+   let scaleMin = Math.floor(min / step) * step;
+
+   return [
+      scaleMin,
+      scaleMax,
+      step
+   ];
+}
+
 
 export class LinearScale{
 
