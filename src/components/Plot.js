@@ -93,7 +93,19 @@ export class Plot{
 
       this.eventRect.on('mousemove', ()=>{
          var mousePos = this.stage.getPointerPosition();
-         this.updateTooltip(mousePos.x, mousePos.y, 'val');
+
+         let px = this.haxis.fromCanvas(mousePos.x - 100);
+         let py = this.vaxis.fromCanvas(mousePos.y - 20);
+         let csData = this.closestSeries([px, py]);
+         if (csData === undefined){
+            return;
+         }
+
+         let series = csData.series;
+         let seriesIndex = csData.index;
+         let xCoord = this.haxis.toCanvas(series.points[seriesIndex][0]);
+         let yCoord = this.vaxis.toCanvas(series.points[seriesIndex][1]);
+         this.updateTooltip(xCoord, yCoord, series);
       });
 
       // Add series
@@ -141,17 +153,12 @@ export class Plot{
       });
    }
 
-   // eslint-disable-next-line no-unused-vars
-   updateTooltip(x, y, text){
-      this.tooltip.to({
-         x: x,
-         y: y,
-         duration: 0.125,
-         easing: Konva.Easings['StrongEaseOut']
-      });
+   updateTooltip(x, y, series){
+      this.tooltip.draw(
+         series,
+         [x+100, y]);
    }
 
-}
 
    /** Return the series object closest to p in plot coordinates
     *
@@ -203,6 +210,8 @@ export class Plot{
          index: closestIndex
       };
    }
+
+}
 
 
 // module.exports.Foo = Foo;
