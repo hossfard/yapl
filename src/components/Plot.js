@@ -224,6 +224,7 @@ export class Plot{
             }
          }
       });
+
       return {
          series: this.series[closestSeriesIndex],
          index: closestIndex
