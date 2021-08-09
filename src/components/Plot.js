@@ -101,16 +101,16 @@ export class Plot{
 
       this.plot(
          generateRandomPoints(100),
-         {stroke: 'red'},
-         'p1');
+         {stroke: 'blue', strokeWidth: 3, label: 'p1'},
+      );
       this.plot(
          generateRandomPoints(100),
-         {stroke: 'blue', strokeWidth: 1},
-         'p2');
+         {stroke: 'red', strokeWidth: 1, label: 'p2'},
+      );
       this.plot(
          generateRandomPoints(100),
-         {stroke: 'green'},
-         'p3');
+         {stroke: 'green', label: 'p4'}
+      );
 
       this.stage.add(this.canvasLayer);
 
