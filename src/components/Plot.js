@@ -142,6 +142,12 @@ export class Plot{
    }
 
 
+   /** Add line series to plot
+    *
+    * @param {Array[array]} points data points in format
+    *    [[x0,y0],[...]]
+    * @param {SeriesOptions} opts series options TODO define
+    */
    plot(points, opts){
       let pobj = new LineSeries(points, opts);
       pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
