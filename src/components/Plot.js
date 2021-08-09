@@ -153,7 +153,56 @@ export class Plot{
 
 }
 
+   /** Return the series object closest to p in plot coordinates
+    *
+    * Points are expected to be sequential
+    *
+    * @param {[x,y]} point plot coordinate of the query point
+    * @return {series: LineSeries, index: index} line series object
+    *     closest to point, or undefined if no series
+    */
+   closestSeries(point){
+      if (this.series.length === 0){
+         return undefined;
+      }
 
+      let x = point[0];
+
+      // Fn to to retrieve the x-component of the series data
+      let indexer = (seq, index)=>{
+            return seq[index][0];
+      };
+
+      let closestSeriesIndex = 0;
+      let closestIndex = 0;
+      this.series.forEach((elem, index) => {
+         let pIndex = utils.closestPoint(
+            elem.points, x, indexer
+         );
+
+         // Update closest series and index
+         if (index === 0){
+            closestSeriesIndex = 0;
+            closestIndex = pIndex;
+         }
+         else{
+            let p1 = elem.points[pIndex];
+            let p2 = this.series[closestSeriesIndex]
+                .points[closestIndex];
+
+            let d1 = utils.l2(p1[0], p1[1], point[0], point[1]);
+            let d2 = utils.l2(p2[0], p2[1], point[0], point[1]);
+            if (d1 < d2){
+               closestSeriesIndex = index;
+               closestIndex = pIndex;
+            }
+         }
+      });
+      return {
+         series: this.series[closestSeriesIndex],
+         index: closestIndex
+      };
+   }
 
 
 // module.exports.Foo = Foo;
