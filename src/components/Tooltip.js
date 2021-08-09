@@ -67,11 +67,11 @@ export class Tooltip{
       this.tooltipBox.x(-this.tooltipBox.width()/2);
       this.tooltipBox.y(10);
 
-      this.group.add(this.pointer);
       this.group.add(this.tooltipBox);
       this.group.add(this.timestampText);
       this.group.add(this.seriesLabel);
       this.group.add(this.seriesValue);
+      layer.add(this.pointer);
       layer.add(this.group);
    }
 
@@ -82,10 +82,11 @@ export class Tooltip{
       this.seriesLabel.text(label);
       this.seriesValue.text(plotCoord[1].toFixed(0));
       this.timestampText.text(plotCoord[0].toFixed(2));
+      this.pointer.to({x: canvCoord[0], y: canvCoord[1], duration: 0});
       this.group.to({
          x: canvCoord[0],
          y: canvCoord[1],
-         duration: 0.018
+         duration: 0.04
       });
    }
 
