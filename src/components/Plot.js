@@ -2,6 +2,7 @@
 
 
 import Konva from 'konva';
+import * as utils from './utils';
 import {Axis} from './Axis';
 import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
@@ -42,6 +43,7 @@ function generateRandomPoints(count){
    }
    return ret;
 }
+
 
 export class Plot{
 
