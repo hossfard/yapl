@@ -3,6 +3,7 @@
 
 import Konva from 'konva';
 import {Axis} from './Axis';
+import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
 import {
    HAxisRenderDelegate,
@@ -88,11 +89,7 @@ export class Plot{
          opacity: 0.2
       });
 
-      this.tooltip = new Konva.Rect({
-         width: 50,
-         height: 50,
-         fill: 'red'
-      });
+      this.tooltip = new Tooltip(this, this.tooltipLayer);
 
       this.eventRect.on('mousemove', ()=>{
          var mousePos = this.stage.getPointerPosition();
