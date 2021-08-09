@@ -81,10 +81,14 @@ export class Plot{
          listening: false
       });
 
-      this.tooltipLayer = new Konva.Layer();
-      this.eventRect = new Konva.Rect({
+      this.tooltipLayer = new Konva.Layer({
          x: 100,
-         y: 20,
+         y: 20
+      });
+
+      this.eventRect = new Konva.Rect({
+         x: 0,
+         y: 0,
          width: 1000,
          height: 500-20,
          fill: '#fff',
@@ -98,7 +102,7 @@ export class Plot{
          var mousePos = this.stage.getPointerPosition();
 
          let px = this.haxis.fromCanvas(mousePos.x - 100);
-         let py = this.vaxis.fromCanvas(mousePos.y - 20);
+         let py = this.vaxis.fromCanvas(mousePos.y);
          let csData = this.closestSeries([px, py]);
          if (csData === undefined){
             return;
@@ -106,9 +110,7 @@ export class Plot{
 
          let series = csData.series;
          let seriesIndex = csData.index;
-         let xCoord = this.haxis.toCanvas(series.points[seriesIndex][0]);
-         let yCoord = this.vaxis.toCanvas(series.points[seriesIndex][1]);
-         this.updateTooltip([xCoord, yCoord], series);
+         this.updateTooltip(series.points[seriesIndex], series);
       });
 
       // Add series
@@ -161,10 +163,19 @@ export class Plot{
       });
    }
 
+
+   /**
+    *
+    * @param {array} point [x,y] plot coord where to show tooltip
+    * @param {LineSeries} series Line series object
+    */
    updateTooltip(point, series){
+      let xCoord = this.haxis.toCanvas(point[0]);
+      let yCoord = this.vaxis.toCanvas(point[1]);
       this.tooltip.draw(
-         series,
-         [point[0]+100, point[1]]);
+         [point[0], point[1]],
+         [xCoord, yCoord - 20],
+         series);
    }
 
 

@@ -75,16 +75,16 @@ export class Tooltip{
       layer.add(this.group);
    }
 
-   draw(series, point){
+   draw(plotCoord, canvCoord, series){
       let color = series.opts.stroke || 'black';
       let label = series.opts.label || '';
       this.seriesLabel.fill(color);
       this.seriesLabel.text(label);
-      this.seriesValue.text(point[1].toFixed(0));
-      this.timestampText.text(point[0]);
+      this.seriesValue.text(plotCoord[1].toFixed(0));
+      this.timestampText.text(plotCoord[0].toFixed(2));
       this.group.to({
-         x: point[0],
-         y: point[1],
+         x: canvCoord[0],
+         y: canvCoord[1],
          duration: 0.018
       });
    }
