@@ -97,7 +97,7 @@ export class Plot{
       });
 
       // Add series
-      this.series = {};
+      this.series = [];
 
       this.plot(
          generateRandomPoints(100),
@@ -136,9 +136,9 @@ export class Plot{
    }
 
    __updateSeries(){
-      for (const label in this.series){
-         this.series[label].update();
-      }
+      this.series.forEach((elem) => {
+         elem.update();
+      });
    }
 
    // eslint-disable-next-line no-unused-vars
