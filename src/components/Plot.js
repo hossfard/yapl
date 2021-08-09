@@ -91,7 +91,8 @@ export class Plot{
          opacity: 0.2
       });
 
-      this.tooltip = new Tooltip(this, this.tooltipLayer);
+      this.tooltip = new Tooltip(this);
+      this.tooltip.attach(this.tooltipLayer);
 
       this.eventRect.on('mousemove', ()=>{
          var mousePos = this.stage.getPointerPosition();

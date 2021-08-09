@@ -6,12 +6,12 @@ import Konva from 'konva';
 
 export class Tooltip{
 
-   constructor(plot, layer){
+   constructor(plot){
       this.plot = plot;
+      this.group = new Konva.Group({});
+   }
 
-      this.group = new Konva.Group({
-      });
-
+   attach(layer){
       this.pointer = new Konva.Circle({
          radius: 2,
          fill: 'black'
