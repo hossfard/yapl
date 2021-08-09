@@ -99,6 +99,7 @@ export class Plot{
       this.tooltip.attach(this.tooltipLayer);
 
       this.eventRect.on('mousemove', ()=>{
+         this.tooltip.show(true);
          var mousePos = this.stage.getPointerPosition();
 
          let px = this.haxis.fromCanvas(mousePos.x - 100);
@@ -111,6 +112,10 @@ export class Plot{
          let series = csData.series;
          let seriesIndex = csData.index;
          this.updateTooltip(series.points[seriesIndex], series);
+      });
+
+      this.eventRect.on('mouseout', ()=>{
+         this.tooltip.show(false);
       });
 
       // Add series
