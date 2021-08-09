@@ -90,4 +90,13 @@ export class Tooltip{
       });
    }
 
+   show(tf){
+      if (tf){
+         this.group.show();
+      }
+      else{
+         this.group.hide();
+      }
+   }
+
 }
