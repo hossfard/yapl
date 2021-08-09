@@ -105,10 +105,16 @@ export class LinearScale{
     * @return {list} list of tick values in plot coordinates
     */
    genTicks(domain, count){
+      let [minLim, , step] = genScaleLimits(
+         domain[0], domain[1], count);
+
+      let x0 = minLim;
       let ret = [];
-      let dx = (domain[1] - domain[0])/count;
-      for (let i=0; i<count; ++i){
-         ret.push(domain[0] + dx*i);
+      while (x0 < domain[1]){
+         if (x0 >= domain[0]){
+            ret.push(x0);
+         }
+         x0 += step;
       }
       return ret;
    }
