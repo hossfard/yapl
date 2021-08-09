@@ -108,7 +108,7 @@ export class Plot{
          let seriesIndex = csData.index;
          let xCoord = this.haxis.toCanvas(series.points[seriesIndex][0]);
          let yCoord = this.vaxis.toCanvas(series.points[seriesIndex][1]);
-         this.updateTooltip(xCoord, yCoord, series);
+         this.updateTooltip([xCoord, yCoord], series);
       });
 
       // Add series
@@ -161,10 +161,10 @@ export class Plot{
       });
    }
 
-   updateTooltip(x, y, series){
+   updateTooltip(point, series){
       this.tooltip.draw(
          series,
-         [x+100, y]);
+         [point[0]+100, point[1]]);
    }
 
 
