@@ -13,8 +13,8 @@ export class Tooltip{
 
    attach(layer){
       this.pointer = new Konva.Circle({
-         radius: 2,
-         fill: 'black'
+         radius: 8,
+         fill: '#00000069'
       });
 
       this.timestampText = new Konva.Text({
