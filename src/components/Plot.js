@@ -141,7 +141,23 @@ export class Plot{
       let pobj = new LineSeries(points, opts);
       pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
       this.series.push(pobj);
+      this.fitToContent();
       return pobj;
+   }
+
+   fitToContent(padx=0.10, pady=0.1){
+      let ext = this.extent();
+      if ((ext.x[0] === undefined) || (ext.y[0] === undefined)){
+         return;
+      }
+
+      let dx = Math.abs(ext.x[1] - ext.x[0]);
+      let dy = Math.abs(ext.y[1] - ext.y[0]);
+      let x = [ext.x[0]-dx*padx, ext.x[1]+dx*padx];
+      let y = [ext.y[0]-dy*pady, ext.y[1]+dy*pady];
+      this.haxis.setDomain(x);
+      this.vaxis.setDomain(y);
+      this.__updateSeries();
    }
 
    extent(){
