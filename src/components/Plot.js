@@ -126,15 +126,6 @@ export class Plot{
       this.series = [];
 
       this.stage.add(this.canvasLayer);
-
-      window.setTimeout(()=>{
-         this.haxis.setDomain([-5, 15]);
-         this.vaxis.setDomain([-2, 10]);
-
-         this.__updateSeries();
-      }, 2000);
-
-
       this.tooltipLayer.add(this.eventRect);
       this.stage.add(this.tooltipLayer);
    }

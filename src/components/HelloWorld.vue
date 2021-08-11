@@ -29,6 +29,13 @@ export default {
          plt.generateRandomPoints(100),
          {stroke: 'green', label: 'p4'}
       );
+      window.setTimeout(()=>{
+         this._plot.setExtent(
+            [-5, 15],
+            [-2, 10]
+         );
+      }, 2000);
+
    }
 }
 </script>
