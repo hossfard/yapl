@@ -158,7 +158,7 @@ export class Plot{
          }
          ret.x[0] = Math.min(ret.x[0], ext.x[0]);
          ret.x[1] = Math.max(ret.x[1], ext.x[1]);
-         ret.y[0] = Math.max(ret.y[0], ext.y[0]);
+         ret.y[0] = Math.min(ret.y[0], ext.y[0]);
          ret.y[1] = Math.max(ret.y[1], ext.y[1]);
       }
       return ret;
