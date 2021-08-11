@@ -20,11 +20,11 @@ export class Tooltip{
       this.timestampText = new Konva.Text({
          x: 0,
          y: 0,
-         text: '123484937479',
+         width: 100,
+         text: '',
          fontSize: 18,
          fontFamily: 'Calibri',
          fill: 'black',
-         // width: 200,
          padding: 20,
          align: 'center',
       });
@@ -38,9 +38,9 @@ export class Tooltip{
       });
 
       this.seriesLabel = new Konva.Text({
-         x: -this.tooltipBox.width()/2 + 10,
+         x: 0,
          y: this.timestampText.height(),
-         text: 'ABCD',
+         text: '',
          fontSize: 18,
          fontFamily: 'Calibri',
          fontStyle: 'bold',
@@ -50,15 +50,15 @@ export class Tooltip{
       });
 
       this.seriesValue = new Konva.Text({
-         x: 30 + this.seriesLabel.x() + this.seriesLabel.width(),
+         x: 0,
          y: this.timestampText.height(),
-         text: '192.383',
+         text: '',
          fontSize: 18,
          fontFamily: 'Calibri',
          fontStyle: 'bold',
          fill: 'black',
          padding: 0,
-         align: 'center',
+         align: 'left',
       });
 
       this.timestampText.x(-this.timestampText.width()/2);
@@ -73,6 +73,7 @@ export class Tooltip{
       this.group.add(this.seriesValue);
       layer.add(this.pointer);
       layer.add(this.group);
+      this.show(false);
    }
 
    draw(plotCoord, canvCoord, series){
@@ -82,11 +83,21 @@ export class Tooltip{
       this.seriesLabel.text(label);
       this.seriesValue.text(plotCoord[1].toFixed(0));
       this.timestampText.text(plotCoord[0].toFixed(2));
-      this.pointer.to({x: canvCoord[0], y: canvCoord[1], duration: 0});
+
+      // Update label/value position
+      let sw = this.seriesLabel.width();
+      let sv = this.seriesValue.width();
+      let pad = 10;
+      this.seriesLabel.x(-(sw+sv+pad)/2);
+      this.seriesValue.x(pad);
+
+      this.pointer.position({
+         x: canvCoord[0], y: canvCoord[1]
+      });
       this.group.to({
          x: canvCoord[0],
          y: canvCoord[1],
-         duration: 0.04
+         duration: 0.02
       });
    }
 
