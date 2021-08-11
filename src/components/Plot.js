@@ -102,25 +102,8 @@ export class Plot{
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
 
-      this.eventRect.on('mousemove', ()=>{
-         this.tooltip.show(true);
-         var mousePos = this.stage.getPointerPosition();
-
-         let px = this.haxis.fromCanvas(mousePos.x - 100);
-         let py = this.vaxis.fromCanvas(mousePos.y);
-         let csData = this.closestSeries([px, py]);
-         if (csData === undefined){
-            return;
-         }
-
-         let series = csData.series;
-         let seriesIndex = csData.index;
-         this.updateTooltip(series.points[seriesIndex], series);
-      });
-
-      this.eventRect.on('mouseout', ()=>{
-         this.tooltip.show(false);
-      });
+      this.eventRect.on('mousemove', this.mousemove.bind(this));
+      this.eventRect.on('mouseout', this.mouseout.bind(this));
 
       // Add series
       this.series = [];
@@ -260,6 +243,27 @@ export class Plot{
          index: closestIndex
       };
    }
+
+   mousemove(){
+      this.tooltip.show(true);
+      var mousePos = this.stage.getPointerPosition();
+
+      let px = this.haxis.fromCanvas(mousePos.x - 100);
+      let py = this.vaxis.fromCanvas(mousePos.y);
+      let csData = this.closestSeries([px, py]);
+      if (csData === undefined){
+         return;
+      }
+
+      let series = csData.series;
+      let seriesIndex = csData.index;
+      this.updateTooltip(series.points[seriesIndex], series);
+   }
+
+   mouseout(){
+      this.tooltip.show(false);
+   }
+
 
 }
 
