@@ -1,3 +1,4 @@
+'use strict';
 
 
 import Konva from 'konva';
