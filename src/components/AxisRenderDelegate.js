@@ -282,7 +282,7 @@ export class VAxisRenderDelegate{
          this.ticks, scale, oldDomain, this.tickHeight,
          {stroke: 'black'});
       this.gridLines = this.__genTickLines(
-         this.ticks, scale, oldDomain, 1000-20,
+         this.ticks, scale, oldDomain, this.gridLength,
          {stroke: '#c8c8c8'});
 
       this.tickLabels = this.genTickLabels(
