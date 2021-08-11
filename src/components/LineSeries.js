@@ -97,4 +97,30 @@ export class LineSeries{
          });
       }
    }
+
+   /** Return series extent in x and y direction
+    *
+    * @return {Object} extent series extent
+    * @return {Array} extent.x extent in x direction
+    * @return {Array} extent.y extent in y direction
+    */
+   extent(){
+      let ret = {
+         x: [undefined, undefined],
+         y: [undefined, undefined]
+      };
+
+      for (let i=0; i<this.points.length; ++i){
+         if (i === 0){
+            ret.x = [this.points[i][0], this.points[i][0]];
+            ret.y = [this.points[i][1], this.points[i][1]];
+            continue;
+         }
+         ret.x[0] = Math.min(ret.x[0], this.points[i][0]);
+         ret.x[1] = Math.max(ret.x[1], this.points[i][0]);
+         ret.y[0] = Math.min(ret.y[0], this.points[i][1]);
+         ret.y[1] = Math.max(ret.y[1], this.points[i][1]);
+      }
+      return ret;
+   }
 }

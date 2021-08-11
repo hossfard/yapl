@@ -153,6 +153,33 @@ export class Plot{
       return pobj;
    }
 
+   extent(){
+      let ret = {
+         x: [undefined, undefined],
+         y: [undefined, undefined]
+      };
+
+      for (let i=0; i<this.series.length; ++i){
+         let ext = this.series[i].extent();
+         if (i === 0){
+            ret.x = ext.x;
+            ret.y = ext.y;
+            continue;
+         }
+         ret.x[0] = Math.min(ret.x[0], ext.x[0]);
+         ret.x[1] = Math.max(ret.x[1], ext.x[1]);
+         ret.y[0] = Math.max(ret.y[0], ext.y[0]);
+         ret.y[1] = Math.max(ret.y[1], ext.y[1]);
+      }
+      return ret;
+   }
+
+   setExtent(x, y){
+      this.haxis.setDomain(x);
+      this.vaxis.setDomain(y);
+      this.__updateSeries();
+   }
+
    __updateSeries(){
       this.series.forEach((elem) => {
          elem.update();
