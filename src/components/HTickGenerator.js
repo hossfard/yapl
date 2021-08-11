@@ -6,19 +6,19 @@ import Konva from 'konva';
 
 
 export class HTickGenerator{
-   constructor(tickLength){
-      this.tickLength = tickLength;
+   constructor(){
       this.pad = 5;
    }
 
    // Vertically up
-   generateTick(canvasValue){
+   generateTick(canvasValue, tickLength, opts){
+      opts = opts || {};
       return new Konva.Line({
          points: [
             0, canvasValue,
-            0+this.tickLength, canvasValue
+            0+tickLength, canvasValue
          ],
-         stroke: 'black',
+         stroke: opts.stroke || 'black',
          strokeWidth: 1
       });
    }

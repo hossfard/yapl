@@ -67,8 +67,12 @@ export class Plot{
       let hAxisDelegate = new HAxisRenderDelegate();
       let vAxisDelegate = new VAxisRenderDelegate();
 
-      this.haxis = new Axis([0, 1000], [0, 10], hAxisDelegate);
-      this.vaxis = new Axis([500, 20], [0, 10], vAxisDelegate);
+      this.haxis = new Axis(
+         [0, 1000], [0, 10], hAxisDelegate,
+         {gridLength: 500-20});
+      this.vaxis = new Axis(
+         [500, 20], [0, 10], vAxisDelegate,
+         {gridLength: 1000});
 
       this.haxis.attach(hAxisLayer);
       this.vaxis.attach(vAxisLayer);

@@ -8,13 +8,15 @@ import {HAxisRenderDelegate} from './AxisRenderDelegate';
 
 export class Axis{
 
-   constructor(range, domain, axisDelegate){
+   constructor(range, domain, axisDelegate, opts){
       this.tickHeight = 5;
       this.range = range;
       this.domain = domain;
       this.tickCount = 20;
       this.scale = new LinearScale(this.domain, this.range);
       this.axisDelegate = axisDelegate || new HAxisRenderDelegate();
+      this.opts = opts || {};
+      this.axisDelegate.setGridLength(this.opts.gridLength || 0);
    }
 
    // Untested
