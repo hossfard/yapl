@@ -8,7 +8,7 @@
 <script>
 
 
-import {Plot} from './Plot.js';
+import * as plt from './Plot.js';
 
 
 export default {
@@ -17,7 +17,18 @@ export default {
       msg: String
    },
    mounted: function(){
-      this._canvas = new Plot();
+      this._plot = new plt.Plot();
+      this._plot.plot(plt.generateRandomPoints(100), {
+         stroke: 'blue', strokeWidth: 3, label: 'p1'
+      });
+      this._plot.plot(
+         plt.generateRandomPoints(100),
+         {stroke: 'red', strokeWidth: 1, label: 'p2'}
+      );
+      this._plot.plot(
+         plt.generateRandomPoints(100),
+         {stroke: 'green', label: 'p4'}
+      );
    }
 }
 </script>

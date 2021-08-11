@@ -31,7 +31,7 @@ class VTicks{
 }
 
 
-function generateRandomPoints(count){
+export function generateRandomPoints(count){
    let ret = [];
    let xlim = [0, 10];
    let ylim = [0, 1];
@@ -124,19 +124,6 @@ export class Plot{
 
       // Add series
       this.series = [];
-
-      this.plot(
-         generateRandomPoints(100),
-         {stroke: 'blue', strokeWidth: 3, label: 'p1'},
-      );
-      this.plot(
-         generateRandomPoints(100),
-         {stroke: 'red', strokeWidth: 1, label: 'p2'},
-      );
-      this.plot(
-         generateRandomPoints(100),
-         {stroke: 'green', label: 'p4'}
-      );
 
       this.stage.add(this.canvasLayer);
 
