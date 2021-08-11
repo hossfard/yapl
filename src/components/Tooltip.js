@@ -104,8 +104,10 @@ export class Tooltip{
    show(tf){
       if (tf){
          this.group.show();
+         this.pointer.show();
       }
       else{
+         this.pointer.hide();
          this.group.hide();
       }
    }
