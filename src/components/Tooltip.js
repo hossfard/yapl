@@ -91,8 +91,15 @@ export class Tooltip{
       this.seriesLabel.x(-(sw+sv+pad)/2);
       this.seriesValue.x(pad);
 
+      this.pointer.radius(0);
+
       this.pointer.position({
          x: canvCoord[0], y: canvCoord[1]
+      });
+      this.pointer.to({
+         radius: 10,
+         duration: 0.5,
+         easing: Konva.Easings['StrongEaseOut']
       });
       this.group.to({
          x: canvCoord[0],
