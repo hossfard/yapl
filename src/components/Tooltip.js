@@ -14,6 +14,7 @@ export class Tooltip{
    attach(layer){
       this.pointer = new Konva.Circle({
          radius: 8,
+         opacity: 0.5,
          fill: '#00000069'
       });
 
@@ -98,6 +99,7 @@ export class Tooltip{
       this.seriesLabel.x(-(sw+sv+pad)/2);
       this.seriesValue.x(pad);
 
+      this.pointer.fill(color);
       this.pointer.radius(0);
 
       this.pointer.position({
