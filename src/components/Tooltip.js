@@ -77,6 +77,13 @@ export class Tooltip{
    }
 
    draw(plotCoord, canvCoord, series){
+      let pOld = this.pointer.position();
+      let TOL = 1E-5;
+      if ((Math.abs(canvCoord[0]- pOld.x)<TOL) &&
+          (Math.abs(canvCoord[1]- pOld.y)<TOL)){
+         return;
+      }
+
       let color = series.opts.stroke || 'black';
       let label = series.opts.label || '';
       this.seriesLabel.fill(color);
