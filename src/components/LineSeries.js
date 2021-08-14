@@ -2,7 +2,7 @@
 
 
 import Konva from 'konva';
-
+import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
 
 
 export class LineSeries{
@@ -48,12 +48,22 @@ export class LineSeries{
    }
 
    _createLineObject(series){
-      return new Konva.Line({
+      let misc = {};
+      if ('dash' in this.opts){
+         misc.dash = this.opts.dash;
+      }
+      if ('markersize' in this.opts){
+         misc.markersize = this.opts.markersize;
+      }
+
+      // return new Konva.Line({
+      return new LineSeriesGraphicsItem({
          points: series,
          stroke: this.opts.stroke || 'black',
          strokeWidth: this.opts.strokeWidth || 1,
          lineCap: this.opts.lineCap || 'round',
          lineJoin: this.opts.lineJoin || 'round',
+         ...misc
       });
    }
 
