@@ -34,32 +34,40 @@ class VTicks{
 
 export class Plot{
 
-   constructor(parent){
+   constructor(parent, opts){
+      opts = opts || {};
       this.stage = new Konva.Stage({
          container: parent,
-         width: window.innerWidth,
-         height: window.innerHeight,
+         width: opts.width || window.innerWidth,
+         height: opts.height || window.innerHeight
       });
-
-      let hAxisLayer = new Konva.Layer({
-         x: 100,
-         y: 500
-      });
-
-      let vAxisLayer = new Konva.Layer({
-         x: 100
-      });
-
-      let hAxisDelegate = new HAxisRenderDelegate();
-      let vAxisDelegate = new VAxisRenderDelegate();
 
       let xRange = 1300;
 
+      // Rectangle defining the plottable area of chart
+      this.canvasBoundingBox = {
+         x: 100,
+         y: 20,
+         width: xRange,
+         height: 500-20
+      };
+      let canvasBoundingBox = this.canvasBoundingBox;
+
+      let hAxisLayer = new Konva.Layer({
+         x: canvasBoundingBox.x,
+         y: canvasBoundingBox.y + canvasBoundingBox.height
+      });
+
+      let vAxisLayer = new Konva.Layer({
+         x: canvasBoundingBox.x,
+         y: canvasBoundingBox.y
+      });
+
       this.haxis = new Axis(
-         [0, xRange], [0, 10], hAxisDelegate,
-         {gridLength: 500-20});
+         [0, xRange], [0, 10], new HAxisRenderDelegate(),
+         {gridLength: canvasBoundingBox.height});
       this.vaxis = new Axis(
-         [500, 20], [0, 10], vAxisDelegate,
+         [canvasBoundingBox.height, 0], [0, 10], new VAxisRenderDelegate(),
          {gridLength: xRange});
 
       this.haxis.attach(hAxisLayer);
@@ -69,25 +77,26 @@ export class Plot{
       this.stage.add(vAxisLayer);
 
       this.canvasLayer = new Konva.Layer({
-         x: 100,
+         x: canvasBoundingBox.x,
          listening: false
       });
 
       this.legendLayer = new Konva.Layer({
-         x: 100,
-         y: 20
+         x: canvasBoundingBox.x,
+         y: canvasBoundingBox.y
       });
 
+      // Align tooltip layer with top-left of the canvaslayer
       this.tooltipLayer = new Konva.Layer({
-         x: 100,
-         y: 20
+         x: canvasBoundingBox.x,
+         y: canvasBoundingBox.y
       });
 
+      // Define a rectangle over the plottable area to listen for
+      // mouse events
       this.eventRect = new Konva.Rect({
-         x: 0,
-         y: 0,
-         width: xRange,
-         height: 500-20,
+         width: canvasBoundingBox.width,
+         height: canvasBoundingBox.height,
          fill: '#fff',
          opacity: 0.2
       });
@@ -107,30 +116,8 @@ export class Plot{
       this.stage.add(this.legendLayer);
 
       this.legend = new Legend();
-      this.legend.subscribe('legendmouseover', (data)=>{
-         let legendlabel = data.legendlabel;
-         let series = this.seriesByKey(legendlabel);
-         if (series === undefined){
-            return;
-         }
-         series.lineObject._strokeWidth = series.lineObject.strokeWidth();
-         series.lineObject.to({
-            strokeWidth: series.lineObject.strokeWidth() * 2,
-            duration: 0.1
-         });
-      });
-
-      this.legend.subscribe('legendmouseend', (data)=>{
-         let legendlabel = data.legendlabel;
-         let series = this.seriesByKey(legendlabel);
-         if (series === undefined){
-            return;
-         }
-         series.lineObject.to({
-            strokeWidth: series.lineObject._strokeWidth,
-            duration: 0.1
-         });
-      });
+      this.legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
+      this.legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
 
       this.legend.attach(this.legendLayer);
    }
@@ -143,6 +130,32 @@ export class Plot{
       }
       return undefined;
    }
+
+   legendmouseover(data){
+      let legendlabel = data.legendlabel;
+      let series = this.seriesByKey(legendlabel);
+      if (series === undefined){
+         return;
+      }
+      series.lineObject._strokeWidth = series.lineObject.strokeWidth();
+      series.lineObject.to({
+         strokeWidth: series.lineObject.strokeWidth() * 2,
+         duration: 0.1
+      });
+   }
+
+   legendmouseend(data){
+      let legendlabel = data.legendlabel;
+      let series = this.seriesByKey(legendlabel);
+      if (series === undefined){
+         return;
+      }
+      series.lineObject.to({
+         strokeWidth: series.lineObject._strokeWidth,
+         duration: 0.1
+      });
+   }
+
 
    /** Add line series to plot
     *
@@ -219,7 +232,7 @@ export class Plot{
       let yCoord = this.vaxis.toCanvas(point[1]);
       this.tooltip.draw(
          [point[0], point[1]],
-         [xCoord, yCoord - 20],
+         [xCoord, yCoord - this.canvasBoundingBox.y],
          series);
    }
 
@@ -280,7 +293,7 @@ export class Plot{
       this.tooltip.show(true);
       var mousePos = this.stage.getPointerPosition();
 
-      let px = this.haxis.fromCanvas(mousePos.x - 100);
+      let px = this.haxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
       let py = this.vaxis.fromCanvas(mousePos.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
