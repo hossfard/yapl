@@ -54,12 +54,14 @@ export class Plot{
       let hAxisDelegate = new HAxisRenderDelegate();
       let vAxisDelegate = new VAxisRenderDelegate();
 
+      let xRange = 1300;
+
       this.haxis = new Axis(
-         [0, 1000], [0, 10], hAxisDelegate,
+         [0, xRange], [0, 10], hAxisDelegate,
          {gridLength: 500-20});
       this.vaxis = new Axis(
          [500, 20], [0, 10], vAxisDelegate,
-         {gridLength: 1000});
+         {gridLength: xRange});
 
       this.haxis.attach(hAxisLayer);
       this.vaxis.attach(vAxisLayer);
@@ -85,7 +87,7 @@ export class Plot{
       this.eventRect = new Konva.Rect({
          x: 0,
          y: 0,
-         width: 1000,
+         width: xRange,
          height: 500-20,
          fill: '#fff',
          opacity: 0.2
