@@ -20,7 +20,7 @@ export class Tooltip{
 
       this.timestampText = new Konva.Text({
          x: 0,
-         y: 0,
+         y: 10,
          width: 100,
          text: '',
          fontSize: 18,
@@ -66,7 +66,7 @@ export class Tooltip{
       this.timestampText.width(this.timestampText.width());
 
       this.tooltipBox.x(-this.tooltipBox.width()/2);
-      this.tooltipBox.y(10);
+      this.tooltipBox.y(20);
 
       this.group.add(this.tooltipBox);
       this.group.add(this.timestampText);
