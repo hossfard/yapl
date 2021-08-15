@@ -8,7 +8,7 @@
 <script>
 
 
-import * as plt from './Plot.js';
+import * as plt from '../yapl/Plot.js';
 
 
 function generateRandomPoints(count, x0=4, A=3){
