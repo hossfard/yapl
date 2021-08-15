@@ -21,8 +21,10 @@ export class LineSeriesGraphicsItem extends Konva.Line{
       if (rad == 0){
          return ret;
       }
+      let color = this.stroke();
       let points = this.points();
       let N = points.length;
+      context.fillStyle = color;
       for (let i=0; i<N; i+=2){
          context.beginPath();
          context.moveTo(points[i], points[i+1]);
