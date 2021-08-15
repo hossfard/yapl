@@ -1,6 +1,19 @@
 {
+  "libs": [
+     "browser"
+  ],
+  "loadEagerly": [
+     "src/**/*.js"
+  ],
+  "dontLoad": [
+  ],
   "plugins": {
-    "node": {
+    "modules": {},
+    "es_modules": {},
+    "node": {},
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": true
     }
   }
 }
