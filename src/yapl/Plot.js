@@ -35,7 +35,6 @@ class VTicks{
 export class Plot{
 
    constructor(parent){
-      parent = 'container';
       this.stage = new Konva.Stage({
          container: parent,
          width: window.innerWidth,
