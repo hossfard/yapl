@@ -6,6 +6,7 @@ import * as utils from './utils';
 import {Axis} from './Axis';
 import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
+import {Legend} from './Legend';
 import {
    HAxisRenderDelegate,
    VAxisRenderDelegate} from './AxisRenderDelegate';
@@ -85,6 +86,11 @@ export class Plot{
          listening: false
       });
 
+      this.legendLayer = new Konva.Layer({
+         x: 100,
+         y: 20
+      });
+
       this.tooltipLayer = new Konva.Layer({
          x: 100,
          y: 20
@@ -111,8 +117,45 @@ export class Plot{
       this.stage.add(this.canvasLayer);
       this.tooltipLayer.add(this.eventRect);
       this.stage.add(this.tooltipLayer);
+      this.stage.add(this.legendLayer);
+
+      this.legend = new Legend();
+      this.legend.subscribe('legendmouseover', (data)=>{
+         let legendlabel = data.legendlabel;
+         let series = this.seriesByKey(legendlabel);
+         if (series === undefined){
+            return;
+         }
+         series.lineObject._strokeWidth = series.lineObject.strokeWidth();
+         series.lineObject.to({
+            strokeWidth: series.lineObject.strokeWidth() * 2,
+            duration: 0.1
+         });
+      });
+
+      this.legend.subscribe('legendmouseend', (data)=>{
+         let legendlabel = data.legendlabel;
+         let series = this.seriesByKey(legendlabel);
+         if (series === undefined){
+            return;
+         }
+         series.lineObject.to({
+            strokeWidth: series.lineObject._strokeWidth,
+            duration: 0.1
+         });
+      });
+
+      this.legend.attach(this.legendLayer);
    }
 
+   seriesByKey(key){
+      for (let series of this.series){
+         if (series.opts.label === key){
+            return series;
+         }
+      }
+      return undefined;
+   }
 
    /** Add line series to plot
     *
@@ -125,6 +168,8 @@ export class Plot{
       pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
       this.series.push(pobj);
       this.fitToContent();
+
+      this.legend.setSeries(this.series);
       return pobj;
    }
 
