@@ -79,7 +79,6 @@ export class LineSeries{
          this.lineObject = this._createLineObject(pList);
       }
 
-      // this.update(xAxis, yAxis);
       layer.add(this.lineObject);
    }
 
