@@ -11,6 +11,20 @@
 import * as plt from './Plot.js';
 
 
+function generateRandomPoints(count, x0=4, A=3){
+   let ret = [];
+   let xlim = [0, 10];
+   let ylim = [0, 1];
+   let dx = (xlim[1] - xlim[0])/count;
+   for (let i=0; i<count; ++i){
+      let x = xlim[0] + dx*i;
+      let y = x0 + A*Math.sin(x) + 1.5*Math.random() * (ylim[1] - ylim[0]) + ylim[0];
+      ret.push([x, y]);
+   }
+   return ret;
+}
+
+
 export default {
    name: 'HelloWorld',
    props: {
@@ -18,16 +32,21 @@ export default {
    },
    mounted: function(){
       this._plot = new plt.Plot();
-      this._plot.plot(plt.generateRandomPoints(100), {
+      this._plot.plot(generateRandomPoints(100), {
          stroke: 'blue', strokeWidth: 3, label: 'p1'
       });
       this._plot.plot(
-         plt.generateRandomPoints(100),
-         {stroke: 'red', strokeWidth: 1, label: 'p2'}
+         generateRandomPoints(100, 3, 2),
+         {
+            stroke: 'red',
+            strokeWidth: 1,
+            label: 'p2',
+            dash: [5, 5]
+         }
       );
       this._plot.plot(
-         plt.generateRandomPoints(100),
-         {stroke: 'green', label: 'p4'}
+         generateRandomPoints(100, 2, 3),
+         {stroke: 'green', label: 'p4', markersize: 3}
       );
       window.setTimeout(()=>{
          this._plot.setExtent(
