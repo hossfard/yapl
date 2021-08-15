@@ -63,15 +63,15 @@ export class Plot{
          y: canvasBoundingBox.y
       });
 
-      this.haxis = new Axis(
+      this.bottomAxis = new Axis(
          [0, xRange], [0, 10], new HAxisRenderDelegate(),
          {gridLength: canvasBoundingBox.height});
-      this.vaxis = new Axis(
+      this.leftAxis = new Axis(
          [canvasBoundingBox.height, 0], [0, 10], new VAxisRenderDelegate(),
          {gridLength: xRange});
 
-      this.haxis.attach(hAxisLayer);
-      this.vaxis.attach(vAxisLayer);
+      this.bottomAxis.attach(hAxisLayer);
+      this.leftAxis.attach(vAxisLayer);
 
       this.stage.add(hAxisLayer);
       this.stage.add(vAxisLayer);
@@ -165,7 +165,7 @@ export class Plot{
     */
    plot(points, opts){
       let pobj = new LineSeries(points, opts);
-      pobj.attach(this.canvasLayer, this.haxis, this.vaxis);
+      pobj.attach(this.canvasLayer, this.bottomAxis, this.leftAxis);
       this.series.push(pobj);
       this.fitToContent();
 
@@ -183,8 +183,8 @@ export class Plot{
       let dy = Math.abs(ext.y[1] - ext.y[0]);
       let x = [ext.x[0]-dx*padx, ext.x[1]+dx*padx];
       let y = [ext.y[0]-dy*pady, ext.y[1]+dy*pady];
-      this.haxis.setDomain(x);
-      this.vaxis.setDomain(y);
+      this.bottomAxis.setDomain(x);
+      this.leftAxis.setDomain(y);
       this.__updateSeries();
    }
 
@@ -210,8 +210,8 @@ export class Plot{
    }
 
    setExtent(x, y){
-      this.haxis.setDomain(x);
-      this.vaxis.setDomain(y);
+      this.bottomAxis.setDomain(x);
+      this.leftAxis.setDomain(y);
       this.__updateSeries();
    }
 
@@ -228,8 +228,8 @@ export class Plot{
     * @param {LineSeries} series Line series object
     */
    updateTooltip(point, series){
-      let xCoord = this.haxis.toCanvas(point[0]);
-      let yCoord = this.vaxis.toCanvas(point[1]);
+      let xCoord = this.bottomAxis.toCanvas(point[0]);
+      let yCoord = this.leftAxis.toCanvas(point[1]);
       this.tooltip.draw(
          [point[0], point[1]],
          [xCoord, yCoord - this.canvasBoundingBox.y],
@@ -293,8 +293,8 @@ export class Plot{
       this.tooltip.show(true);
       var mousePos = this.stage.getPointerPosition();
 
-      let px = this.haxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
-      let py = this.vaxis.fromCanvas(mousePos.y);
+      let px = this.leftAxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
+      let py = this.leftAxis.fromCanvas(mousePos.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
          return;
