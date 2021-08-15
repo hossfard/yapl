@@ -1,6 +1,6 @@
 <template>
 <div class="hello">
-  <h1>{{ msg }}</h1>
+  <h1> Examples </h1>
   <div id="container"></div>
 </div>
 </template>
@@ -26,9 +26,8 @@ function generateRandomPoints(count, x0=4, A=3){
 
 
 export default {
-   name: 'HelloWorld',
+   name: 'Examples',
    props: {
-      msg: String
    },
    mounted: function(){
       this._plot = new plt.Plot();
@@ -48,12 +47,12 @@ export default {
          generateRandomPoints(100, 2, 3),
          {stroke: 'green', label: 'p4', markersize: 3}
       );
-      window.setTimeout(()=>{
-         this._plot.setExtent(
-            [-5, 15],
-            [-2, 10]
-         );
-      }, 2000);
+      // window.setTimeout(()=>{
+      //    this._plot.setExtent(
+      //       [-5, 15],
+      //       [-2, 10]
+      //    );
+      // }, 2000);
 
    }
 }
