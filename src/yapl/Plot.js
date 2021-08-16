@@ -8,6 +8,7 @@ import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
 import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
+import {AxisGraphicsItem} from './AxisGraphicsItem';
 
 
 
@@ -64,16 +65,6 @@ export class Plot{
       let canvasBoundingBox = this.canvasBoundingBox;
       let xRange = this.canvasBoundingBox.width;
 
-      let hAxisLayer = new Konva.Layer({
-         x: canvasBoundingBox.x,
-         y: canvasBoundingBox.y + canvasBoundingBox.height
-      });
-
-      let vAxisLayer = new Konva.Layer({
-         x: canvasBoundingBox.x,
-         y: canvasBoundingBox.y
-      });
-
       this.bottomAxis = axisFactory(
          [0, xRange], [0, 10],
          {gridLength: canvasBoundingBox.height, orientation: 'bottom'}
@@ -83,11 +74,15 @@ export class Plot{
          {gridLength: xRange, orientation: 'left'}
       );
 
-      this.bottomAxis.attach(hAxisLayer);
-      this.leftAxis.attach(vAxisLayer);
+      this.bottomAxisGi = new AxisGraphicsItem(
+         this.bottomAxis, canvasBoundingBox,
+         {orientation: 'bottom'});
+      this.leftAxisGi = new AxisGraphicsItem(
+         this.leftAxis, canvasBoundingBox,
+         {orientation: 'left'});
 
-      this.stage.add(hAxisLayer);
-      this.stage.add(vAxisLayer);
+      this.bottomAxisGi.attach(this.stage);
+      this.leftAxisGi.attach(this.stage);
 
       this.canvasLayer = new Konva.Layer({
          x: canvasBoundingBox.x,

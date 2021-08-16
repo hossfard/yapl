@@ -3,6 +3,7 @@
 
 import {LinearScale} from './LinearScale';
 import * as utils from './utils';
+import {EventEmitter} from './EventEmitter';
 import {
    HAxisRenderDelegate,
    VAxisRenderDelegate} from './AxisRenderDelegate';
@@ -17,9 +18,8 @@ export class Axis{
       this.domain = domain;
       this.tickCount = 20;
       this.scale = new LinearScale(this.domain, this.range);
-      this.axisDelegate = axisDelegate || new HAxisRenderDelegate();
       this.opts = opts || {};
-      this.axisDelegate.setGridLength(this.opts.gridLength || 0);
+      this._eventEmitter = new EventEmitter();
    }
 
    // Untested
@@ -34,15 +34,6 @@ export class Axis{
       return this.scale.toCanvas(x, this.domain);
    }
 
-
-   /** Attach axis to a layer
-    *
-    */
-   attach(layer){
-      this.axisDelegate.attach(layer, this.scale);
-   }
-
-
    /** Set the domain of the axis
     */
    setDomain(domain){
@@ -53,24 +44,42 @@ export class Axis{
       }
 
       this.domain = domain;
+      this.notify('domainchange', {
+         old: old_domain,
+         new: domain
+      });
+   }
 
-      this.axisDelegate.update(
-         old_domain, domain, this.scale);
+   subscribe(event, cb){
+      this._eventEmitter.subscribe(event, cb);
+   }
+
+   notify(event, data){
+      this._eventEmitter.notify(event, data);
    }
 }
 
 
-function axisRenderDelegateFactory(orientation){
+export function axisRenderDelegateFactory(orientation, bbox){
    let orient = orientation.toLowerCase();
+   let delegate = undefined;
+   let gridLength = 0;
+   bbox = bbox || {};
 
    if (orient === 'bottom'){
-      return new HAxisRenderDelegate();
+      delegate = new HAxisRenderDelegate();
+      gridLength = bbox.height || 0;
    }
    if (orient === 'left'){
-      return new VAxisRenderDelegate();
+      delegate = new VAxisRenderDelegate();
+      gridLength = bbox.width || 0;
    }
 
-   return undefined;
+   if (delegate){
+      delegate.setGridLength(gridLength);
+   }
+
+   return delegate;
 }
 
 
