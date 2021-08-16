@@ -30,7 +30,11 @@ export default {
    props: {
    },
    mounted: function(){
-      this._plot = new plt.Plot('container');
+      this._plot = new plt.Plot('container', {
+         width: 1400,
+         height: 600
+      });
+
       this._plot.plot(generateRandomPoints(100), {
          stroke: 'blue', strokeWidth: 3, label: 'p1'
       });
