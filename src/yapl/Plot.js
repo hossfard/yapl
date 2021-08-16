@@ -86,6 +86,7 @@ export class Plot{
 
       this.canvasLayer = new Konva.Layer({
          x: canvasBoundingBox.x,
+         y: canvasBoundingBox.y,
          listening: false
       });
 
@@ -238,7 +239,7 @@ export class Plot{
       let yCoord = this.leftAxis.toCanvas(point[1]);
       this.tooltip.draw(
          [point[0], point[1]],
-         [xCoord, yCoord - this.canvasBoundingBox.y],
+         [xCoord, yCoord],
          series);
    }
 
@@ -298,9 +299,14 @@ export class Plot{
    mousemove(){
       this.tooltip.show(true);
       var mousePos = this.stage.getPointerPosition();
+      // Canvas coordinate taking into account offsets
+      let cpos = {
+         x: mousePos.x - this.canvasBoundingBox.x,
+         y: mousePos.y - this.canvasBoundingBox.y
+      };
 
-      let px = this.bottomAxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
-      let py = this.leftAxis.fromCanvas(mousePos.y);
+      let px = this.bottomAxis.fromCanvas(cpos.x);
+      let py = this.leftAxis.fromCanvas(cpos.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
          return;
