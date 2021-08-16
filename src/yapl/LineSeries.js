@@ -56,7 +56,6 @@ export class LineSeries{
          misc.markersize = this.opts.markersize;
       }
 
-      // return new Konva.Line({
       return new LineSeriesGraphicsItem({
          points: series,
          stroke: this.opts.stroke || 'black',

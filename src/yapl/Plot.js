@@ -12,25 +12,6 @@ import {AxisGraphicsItem} from './AxisGraphicsItem';
 
 
 
-// eslint-disable-next-line no-unused-vars
-class VTicks{
-   constructor(x, y, h, dx, opts){
-      this.shape = new Konva.Shape({
-         sceneFunc: function (context, shape) {
-            context.beginPath();
-            for (let i=0; i<120; ++i){
-               context.moveTo(x+dx*i, y);
-               context.lineTo(x+dx*i, y-h);
-            }
-            // (!) Konva specific method, it is very important
-            context.fillStrokeShape(shape);
-         },
-         ...opts
-      });
-   }
-}
-
-
 export class Plot{
 
    constructor(parent, opts){
