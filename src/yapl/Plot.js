@@ -6,6 +6,7 @@ import * as utils from './utils';
 import {Axis} from './Axis';
 import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
+import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
 import {
    HAxisRenderDelegate,
@@ -40,6 +41,8 @@ export class Plot{
          height: window.innerHeight
       };
       opts = utils.setDefaults(opts, defaults);
+
+      this._eventEmitter = new EventEmitter();
 
       this.stage = new Konva.Stage({
          container: parent,
@@ -117,9 +120,6 @@ export class Plot{
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
 
-      this.eventRect.on('mousemove', this.mousemove.bind(this));
-      this.eventRect.on('mouseout', this.mouseout.bind(this));
-
       // Add series
       this.series = [];
 
@@ -131,7 +131,6 @@ export class Plot{
       this.legend = new Legend();
       this.legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
       this.legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
-
       this.legend.attach(this.legendLayer);
    }
 
@@ -316,12 +315,19 @@ export class Plot{
       let series = csData.series;
       let seriesIndex = csData.index;
       this.updateTooltip(series.points[seriesIndex], series);
+
+      this._eventEmitter.notify('mousemove', {x: px, y: py});
    }
 
    mouseout(){
       this.tooltip.show(false);
+
+      this._eventEmitter.notify('mousemove');
    }
 
+   subscribe(event, cb){
+      this._eventEmitter.subscribe(event, cb);
+   }
 
 }
 
