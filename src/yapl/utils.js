@@ -63,3 +63,18 @@ export function l2(x1, y1, x2, y2){
       (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)
    );
 }
+
+
+export function setDefaults(dict, defaults){
+   if (dict === undefined){
+      return defaults;
+   }
+
+   for (let key in defaults){
+      if (key in dict){
+         continue;
+      }
+      dict[key] = defaults[key];
+   }
+   return dict;
+}
