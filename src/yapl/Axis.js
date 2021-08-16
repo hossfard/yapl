@@ -4,9 +4,7 @@
 import {LinearScale} from './LinearScale';
 import * as utils from './utils';
 import {EventEmitter} from './EventEmitter';
-import {
-   HAxisRenderDelegate,
-   VAxisRenderDelegate} from './AxisRenderDelegate';
+import * as renderDelegate from './AxisRenderDelegate';
 
 
 
@@ -60,33 +58,10 @@ export class Axis{
 }
 
 
-export function axisRenderDelegateFactory(orientation, bbox){
-   let orient = orientation.toLowerCase();
-   let delegate = undefined;
-   let gridLength = 0;
-   bbox = bbox || {};
-
-   if (orient === 'bottom'){
-      delegate = new HAxisRenderDelegate();
-      gridLength = bbox.height || 0;
-   }
-   if (orient === 'left'){
-      delegate = new VAxisRenderDelegate();
-      gridLength = bbox.width || 0;
-   }
-
-   if (delegate){
-      delegate.setGridLength(gridLength);
-   }
-
-   return delegate;
-}
-
-
 export function axisFactory(range, domain, opts){
    opts = utils.setDefaults(opts, {
       orientation: 'bottom',
    });
-   let delegate = axisRenderDelegateFactory(opts.orientation);
+   let delegate = renderDelegate.axisRenderDelegateFactory(opts.orientation);
    return new Axis(range, domain, delegate, opts);
 }

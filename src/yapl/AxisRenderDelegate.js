@@ -304,3 +304,26 @@ export class VAxisRenderDelegate{
       this.__attach(layer, scale, scale.domain, scale.domain);
    }
 }
+
+
+export function axisRenderDelegateFactory(orientation, bbox){
+   let orient = orientation.toLowerCase();
+   let delegate = undefined;
+   let gridLength = 0;
+   bbox = bbox || {};
+
+   if (orient === 'bottom'){
+      delegate = new HAxisRenderDelegate();
+      gridLength = bbox.height || 0;
+   }
+   if (orient === 'left'){
+      delegate = new VAxisRenderDelegate();
+      gridLength = bbox.width || 0;
+   }
+
+   if (delegate){
+      delegate.setGridLength(gridLength);
+   }
+
+   return delegate;
+}

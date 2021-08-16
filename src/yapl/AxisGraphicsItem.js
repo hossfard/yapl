@@ -2,8 +2,7 @@
 
 import Konva from 'konva';
 import * as utils from './utils';
-import * as axis from './Axis';
-
+import * as renderDelegate from './AxisRenderDelegate';
 
 
 function axisLayer(orientation, bbox){
@@ -36,7 +35,7 @@ export class AxisGraphicsItem{
       };
 
       opts = utils.setDefaults(opts, defaults);
-      this.renderDelegate = axis.axisRenderDelegateFactory(
+      this.renderDelegate = renderDelegate.axisRenderDelegateFactory(
          opts.orientation, this.bbox);
       this.layer = axisLayer(opts.orientation, this.bbox);
 
