@@ -2,7 +2,10 @@
 
 
 import {LinearScale} from './LinearScale';
-import {HAxisRenderDelegate} from './AxisRenderDelegate';
+import * as utils from './utils';
+import {
+   HAxisRenderDelegate,
+   VAxisRenderDelegate} from './AxisRenderDelegate';
 
 
 
@@ -54,4 +57,27 @@ export class Axis{
       this.axisDelegate.update(
          old_domain, domain, this.scale);
    }
+}
+
+
+function axisRenderDelegateFactory(orientation){
+   let orient = orientation.toLowerCase();
+
+   if (orient === 'bottom'){
+      return new HAxisRenderDelegate();
+   }
+   if (orient === 'left'){
+      return new VAxisRenderDelegate();
+   }
+
+   return undefined;
+}
+
+
+export function axisFactory(range, domain, opts){
+   opts = utils.setDefaults(opts, {
+      orientation: 'bottom',
+   });
+   let delegate = axisRenderDelegateFactory(opts.orientation);
+   return new Axis(range, domain, delegate, opts);
 }

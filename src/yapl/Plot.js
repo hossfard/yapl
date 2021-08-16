@@ -3,14 +3,11 @@
 
 import Konva from 'konva';
 import * as utils from './utils';
-import {Axis} from './Axis';
+import {axisFactory} from './Axis';
 import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
 import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
-import {
-   HAxisRenderDelegate,
-   VAxisRenderDelegate} from './AxisRenderDelegate';
 
 
 
@@ -77,12 +74,14 @@ export class Plot{
          y: canvasBoundingBox.y
       });
 
-      this.bottomAxis = new Axis(
-         [0, xRange], [0, 10], new HAxisRenderDelegate(),
-         {gridLength: canvasBoundingBox.height});
-      this.leftAxis = new Axis(
-         [canvasBoundingBox.height, 0], [0, 10], new VAxisRenderDelegate(),
-         {gridLength: xRange});
+      this.bottomAxis = axisFactory(
+         [0, xRange], [0, 10],
+         {gridLength: canvasBoundingBox.height, orientation: 'bottom'}
+      );
+      this.leftAxis = axisFactory(
+         [canvasBoundingBox.height, 0], [0, 10],
+         {gridLength: xRange, orientation: 'left'}
+      );
 
       this.bottomAxis.attach(hAxisLayer);
       this.leftAxis.attach(vAxisLayer);
