@@ -35,23 +35,34 @@ class VTicks{
 export class Plot{
 
    constructor(parent, opts){
-      opts = opts || {};
+      let defaults = {
+         width: window.innerWidth,
+         height: window.innerHeight
+      };
+      opts = utils.setDefaults(opts, defaults);
+
       this.stage = new Konva.Stage({
          container: parent,
-         width: opts.width || window.innerWidth,
-         height: opts.height || window.innerHeight
+         width: opts.width,
+         height: opts.height
       });
 
-      let xRange = 1300;
+      let canvasPad = {
+         left: 100,
+         top: 20,
+         bottom: 40,
+         right: 20
+      };
 
       // Rectangle defining the plottable area of chart
       this.canvasBoundingBox = {
-         x: 100,
-         y: 20,
-         width: xRange,
-         height: 500-20
+         x: canvasPad.left,
+         y: canvasPad.top,
+         width: opts.width - canvasPad.left - canvasPad.right,
+         height: opts.height - canvasPad.top - canvasPad.bottom
       };
       let canvasBoundingBox = this.canvasBoundingBox;
+      let xRange = this.canvasBoundingBox.width;
 
       let hAxisLayer = new Konva.Layer({
          x: canvasBoundingBox.x,
@@ -100,6 +111,8 @@ export class Plot{
          fill: '#fff',
          opacity: 0.2
       });
+      this.eventRect.on('mousemove', this.mousemove.bind(this));
+      this.eventRect.on('mouseout', this.mouseout.bind(this));
 
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
