@@ -305,7 +305,7 @@ export class Plot{
       this.tooltip.show(true);
       var mousePos = this.stage.getPointerPosition();
 
-      let px = this.leftAxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
+      let px = this.bottomAxis.fromCanvas(mousePos.x - this.canvasBoundingBox.x);
       let py = this.leftAxis.fromCanvas(mousePos.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
