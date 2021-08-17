@@ -1,21 +1,48 @@
 'use strict';
 
 
-import {LinearScale} from './LinearScale';
 import * as utils from './utils';
-import {EventEmitter} from './EventEmitter';
 import * as renderDelegate from './AxisRenderDelegate';
+import {LinearScale} from './LinearScale';
+import {EventEmitter} from './EventEmitter';
+import Konva from 'konva';
 
 
 
-export class Axis{
+function axisLayer(orientation, bbox){
+   let orient = orientation.toLowerCase();
+   if (orient === 'bottom'){
+      return new Konva.Layer({
+         x: bbox.x,
+         y: bbox.y + bbox.height
+      });
+   }
+   if (orient === 'left'){
+      return new Konva.Layer({
+         x: bbox.x,
+         y: bbox.y
+      });
+   }
+   return undefined;
+}
 
-   constructor(range, domain, axisDelegate, opts){
+
+export class Axis extends EventEmitter{
+
+   constructor(range, domain, renderDel, boundingBox, opts){
+      super();
       this.range = range;
       this.domain = domain;
       this.scale = new LinearScale(this.domain, this.range);
-      this.opts = opts || {};
-      this._eventEmitter = new EventEmitter();
+
+      this.opts = utils.setDefaults(opts, {
+         orientation: 'bottom'
+      });
+
+      this._views = [];
+      this.renderDelegate = renderDel || renderDelegate.axisRenderDelegateFactory(
+         opts.orientation, boundingBox);
+      this.layer = axisLayer(opts.orientation, boundingBox);
    }
 
    // Untested
@@ -30,6 +57,20 @@ export class Axis{
       return this.scale.toCanvas(x, this.domain);
    }
 
+   attach(view){
+      this.renderDelegate.attach(this.layer, this.scale);
+      view.add(this.layer);
+      this._views.push(view);
+   }
+
+   detach(view){
+      let viewIndex = this._views.indexOf(view);
+      if (viewIndex < 0){
+         return;
+      }
+      this._views.splice(viewIndex, 1);
+   }
+
    /** Set the domain of the axis
     */
    setDomain(domain){
@@ -40,26 +81,19 @@ export class Axis{
       }
 
       this.domain = domain;
+      this.renderDelegate.update(old_domain, domain, this.scale);
       this.notify('domainchange', {
          old: old_domain,
          new: domain
       });
    }
-
-   subscribe(event, cb){
-      this._eventEmitter.subscribe(event, cb);
-   }
-
-   notify(event, data){
-      this._eventEmitter.notify(event, data);
-   }
 }
 
 
-export function axisFactory(range, domain, opts){
+export function axisFactory(range, domain, boundingBox, opts){
    opts = utils.setDefaults(opts, {
       orientation: 'bottom',
    });
-   let delegate = renderDelegate.axisRenderDelegateFactory(opts.orientation);
-   return new Axis(range, domain, delegate, opts);
+   let delegate = renderDelegate.axisRenderDelegateFactory(opts.orientation, boundingBox);
+   return new Axis(range, domain, delegate, boundingBox, opts);
 }

@@ -7,7 +7,6 @@ import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
 import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
-import {AxisGraphicsItem} from './AxisGraphicsItem';
 import {CanvasContainer} from './CanvasContainer';
 import {CanvasLayer} from './CanvasLayer';
 import {MouseEventListener} from './MouseEventListener';
@@ -50,22 +49,17 @@ export class Plot{
 
       this.bottomAxis = axisFactory(
          [0, xRange], [0, 10],
+         canvasBoundingBox,
          {gridLength: canvasBoundingBox.height, orientation: 'bottom'}
       );
       this.leftAxis = axisFactory(
          [canvasBoundingBox.height, 0], [0, 10],
+         canvasBoundingBox,
          {gridLength: xRange, orientation: 'left'}
       );
 
-      this.bottomAxisGi = new AxisGraphicsItem(
-         this.bottomAxis, canvasBoundingBox,
-         {orientation: 'bottom'});
-      this.leftAxisGi = new AxisGraphicsItem(
-         this.leftAxis, canvasBoundingBox,
-         {orientation: 'left'});
-
-      this.bottomAxisGi.attach(this.stage);
-      this.leftAxisGi.attach(this.stage);
+      this.bottomAxis.attach(this.stage);
+      this.leftAxis.attach(this.stage);
 
       this.canvasLayer = new CanvasLayer({
          x: canvasBoundingBox.x,
