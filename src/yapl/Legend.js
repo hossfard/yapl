@@ -84,17 +84,8 @@ export class Legend{
 
          this.labelTexts.push(text);
 
-         text.on('mouseover', ()=>{
-            Cursor.set('pointer');
-            this.notify('legendmouseover', {
-               legendlabel: label
-            });
-         });
-
-         text.on('mouseleave', ()=>{
-            Cursor.set('');
-            this.notify('legendmouseend', {legendlabel: label});
-         });
+         text.on('mouseover', this.__onmousehover.bind(this));
+         text.on('mouseleave', this.__onmouseleave.bind(this));
 
          this.dashLines.push(legendLine);
          this.group.add(text);
@@ -119,6 +110,18 @@ export class Legend{
          ret.y = Math.max(text.y() + text.height(), ret.y);
       }
       return ret;
+   }
+
+   __onmousehover(elem){
+      Cursor.set('pointer');
+      this.notify('legendmouseover', {
+         legendlabel: elem.target.text()
+      });
+   }
+
+   __onmouseleave(elem){
+      Cursor.set('');
+      this.notify('legendmouseend', {legendlabel: elem.target.text()});
    }
 
    subscribe(event, cb){
