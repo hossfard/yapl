@@ -11,10 +11,8 @@ import * as renderDelegate from './AxisRenderDelegate';
 export class Axis{
 
    constructor(range, domain, axisDelegate, opts){
-      this.tickHeight = 5;
       this.range = range;
       this.domain = domain;
-      this.tickCount = 20;
       this.scale = new LinearScale(this.domain, this.range);
       this.opts = opts || {};
       this._eventEmitter = new EventEmitter();
