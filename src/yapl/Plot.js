@@ -1,7 +1,6 @@
 'use strict';
 
 
-import Konva from 'konva';
 import * as utils from './utils';
 import {axisFactory} from './Axis';
 import {Tooltip} from './Tooltip';
@@ -9,6 +8,9 @@ import {LineSeries} from './LineSeries';
 import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
 import {AxisGraphicsItem} from './AxisGraphicsItem';
+import {CanvasContainer} from './CanvasContainer';
+import {CanvasLayer} from './CanvasLayer';
+import {MouseEventListener} from './MouseEventListener';
 
 
 
@@ -23,8 +25,7 @@ export class Plot{
 
       this._eventEmitter = new EventEmitter();
 
-      this.stage = new Konva.Stage({
-         container: parent,
+      this.stage = new CanvasContainer(parent, {
          width: opts.width,
          height: opts.height
       });
@@ -65,33 +66,25 @@ export class Plot{
       this.bottomAxisGi.attach(this.stage);
       this.leftAxisGi.attach(this.stage);
 
-      this.canvasLayer = new Konva.Layer({
+      this.canvasLayer = new CanvasLayer({
          x: canvasBoundingBox.x,
          y: canvasBoundingBox.y,
-         listening: false
       });
 
-      this.legendLayer = new Konva.Layer({
+      this.legendLayer = new CanvasLayer({
          x: canvasBoundingBox.x,
          y: canvasBoundingBox.y
       });
 
       // Align tooltip layer with top-left of the canvaslayer
-      this.tooltipLayer = new Konva.Layer({
+      this.tooltipLayer = new CanvasLayer({
          x: canvasBoundingBox.x,
          y: canvasBoundingBox.y
       });
 
-      // Define a rectangle over the plottable area to listen for
-      // mouse events
-      this.eventRect = new Konva.Rect({
-         width: canvasBoundingBox.width,
-         height: canvasBoundingBox.height,
-         fill: '#fff',
-         opacity: 0.2
-      });
-      this.eventRect.on('mousemove', this.mousemove.bind(this));
-      this.eventRect.on('mouseout', this.mouseout.bind(this));
+      this._eventRect = new MouseEventListener(canvasBoundingBox);
+      this._eventRect.subscribe('mousemove', this.mousemove.bind(this));
+      this._eventRect.subscribe('mouseout', this.mouseout.bind(this));
 
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
@@ -99,14 +92,14 @@ export class Plot{
       // Add series
       this.series = [];
 
-      this.stage.add(this.canvasLayer);
-      this.tooltipLayer.add(this.eventRect);
-      this.stage.add(this.tooltipLayer);
-      this.stage.add(this.legendLayer);
+      this.canvasLayer.attach(this.stage);
+      this.tooltipLayer.attach(this.stage);
+      this.legendLayer.attach(this.stage);
 
       this.legend = new Legend();
       this.legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
       this.legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
+      this._eventRect.attach(this.legendLayer);
       this.legend.attach(this.legendLayer);
    }
 
@@ -277,17 +270,10 @@ export class Plot{
       };
    }
 
-   mousemove(){
+   mousemove(point){
       this.tooltip.show(true);
-      var mousePos = this.stage.getPointerPosition();
-      // Canvas coordinate taking into account offsets
-      let cpos = {
-         x: mousePos.x - this.canvasBoundingBox.x,
-         y: mousePos.y - this.canvasBoundingBox.y
-      };
-
-      let px = this.bottomAxis.fromCanvas(cpos.x);
-      let py = this.leftAxis.fromCanvas(cpos.y);
+      let px = this.bottomAxis.fromCanvas(point.x);
+      let py = this.leftAxis.fromCanvas(point.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
          return;
@@ -302,7 +288,6 @@ export class Plot{
 
    mouseout(){
       this.tooltip.show(false);
-
       this._eventEmitter.notify('mousemove');
    }
 
