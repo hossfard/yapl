@@ -96,7 +96,14 @@ export class Plot{
       this.tooltipLayer.attach(this.stage);
       this.legendLayer.attach(this.stage);
 
-      this.legend = new Legend();
+      this.legend = new Legend([], {
+         bbox: {
+            x: 0,
+            y: 0,
+            width: canvasBoundingBox.width,
+            height: canvasBoundingBox.height
+         }
+      });
       this.legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
       this.legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
       this._eventRect.attach(this.legendLayer);

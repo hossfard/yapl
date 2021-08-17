@@ -2,6 +2,7 @@
 
 
 import Konva from 'konva';
+import * as utils from './utils';
 import {Cursor} from './Cursor';
 import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
 
@@ -9,11 +10,18 @@ import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
 
 export class Legend{
    constructor(series, opts){
-      this.opts = opts || {};
+      this.opts = utils.setDefaults(opts, {
+         bbox: {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+         }
+      });
 
       this.group = new Konva.Group({
-         y: 20,
-         x: 20
+         x: 20 + this.opts.bbox.x,
+         y: 20 + this.opts.bbox.y,
       });
 
       this.bg = new Konva.Rect({
@@ -93,7 +101,24 @@ export class Legend{
          this.group.add(legendLine);
          pad += text.height() + pad0;
       }
-      this.bg.height(pad + pad0);
+      this.__repositionBox();
+   }
+
+   __repositionBox(){
+      let pad = {x: 40, y: 20};
+      let boxDim = this.__computeBoxDimension(this.labelTexts);
+      this.bg.width(boxDim.x + 20);
+      this.group.x(this.opts.bbox.width - boxDim.x - pad.x);
+      this.bg.height(boxDim.y + pad.y);
+   }
+
+   __computeBoxDimension(labelTexts){
+      let ret = {x: 0, y: 0};
+      for (let text of labelTexts){
+         ret.x = Math.max(text.x() + text.width(), ret.x);
+         ret.y = Math.max(text.y() + text.height(), ret.y);
+      }
+      return ret;
    }
 
    subscribe(event, cb){
