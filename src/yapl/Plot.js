@@ -154,7 +154,7 @@ export class Plot{
       return pobj;
    }
 
-   fitToContent(padx=0.10, pady=0.1){
+   fitToContent(padx=0.10, pady=0.10){
       let ext = this.extent();
       if ((ext.x[0] === undefined) || (ext.y[0] === undefined)){
          return;
