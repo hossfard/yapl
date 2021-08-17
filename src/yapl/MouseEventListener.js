@@ -49,7 +49,7 @@ export class MouseEventListener extends EventEmitter{
    }
 
    _mouseout(){
-      this.notify('mouseout', {});
+      this.notify('mouseout');
    }
 
 }
