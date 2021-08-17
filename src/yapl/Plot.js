@@ -23,6 +23,7 @@ export class Plot{
       };
       opts = utils.setDefaults(opts, defaults);
 
+      this.series = [];
       this._eventEmitter = new EventEmitter();
 
       this.stage = new CanvasContainer(parent, {
@@ -88,9 +89,6 @@ export class Plot{
 
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
-
-      // Add series
-      this.series = [];
 
       this.canvasLayer.attach(this.stage);
       this.tooltipLayer.attach(this.stage);
