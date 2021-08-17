@@ -10,21 +10,13 @@ export class MouseEventListener extends EventEmitter{
       super();
       this._x = opts.x;
       this._y = opts.y;
-      // this._layer = new Konva.Layer({
-      //    x: opts.x,
-      //    y: opts.y,
-      //    listening: true
-      // });
 
       this._eventRect = new Konva.Rect({
          x: opts.x,
          y: opts.y,
          width: opts.width,
          height: opts.height,
-         // fill: 'red',
-         // opacity: 0.2
       });
-      // this._layer.add(this._eventRect);
       this._eventRect.on('mousemove', this._mousemove.bind(this));
       this._eventRect.on('mouseout', this._mouseout.bind(this));
    }
