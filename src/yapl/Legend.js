@@ -86,6 +86,7 @@ export class Legend{
 
          text.on('mouseover', this.__onmousehover.bind(this));
          text.on('mouseleave', this.__onmouseleave.bind(this));
+         text.on('click', this.__onclick.bind(this));
 
          this.dashLines.push(legendLine);
          this.group.add(text);
@@ -115,6 +116,12 @@ export class Legend{
    __onmousehover(elem){
       Cursor.set('pointer');
       this.notify('legendmouseover', {
+         legendlabel: elem.target.text()
+      });
+   }
+
+   __onclick(elem){
+      this.notify('click', {
          legendlabel: elem.target.text()
       });
    }
