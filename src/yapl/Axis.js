@@ -27,6 +27,19 @@ function axisLayer(orientation, bbox){
 }
 
 
+function bboxGridLength(bbox, orientation){
+   let len = 0;
+   let orient = orientation.toLocaleLowerCase();
+   if ((orient === 'bottom') || (orient === 'top')){
+      len = bbox.height;
+   }
+   else{
+      len = bbox.width;
+   }
+   return len;
+}
+
+
 export class Axis extends EventEmitter{
 
    constructor(range, domain, renderDel, boundingBox, opts){
@@ -39,10 +52,26 @@ export class Axis extends EventEmitter{
          orientation: 'bottom'
       });
 
+      this.bbox = boundingBox;
       this._views = [];
       this.renderDelegate = renderDel || renderDelegate.axisRenderDelegateFactory(
          opts.orientation, boundingBox);
       this.layer = axisLayer(opts.orientation, boundingBox);
+   }
+
+   grid(tf){
+      if (!tf){
+         this.renderDelegate.gridLength = 0;
+      }
+      else{
+         this.renderDelegate.gridLength =
+            bboxGridLength(this.bbox, this.opts.orientation);
+      }
+      this.__draw();
+   }
+
+   __draw(){
+      this.renderDelegate.draw();
    }
 
    // Untested
