@@ -123,6 +123,7 @@ export class HAxisRenderDelegate{
 
    __attach(layer, scale, oldDomain, newDomain){
       this.layer = layer;
+      this._scalecache = scale;
       this.axisLine = this.__createAxisLine(scale.range);
       layer.add(this.axisLine);
 
@@ -156,6 +157,14 @@ export class HAxisRenderDelegate{
    // Draw the axis to given layer
    attach(layer, scale){
       this.__attach(layer, scale, scale.domain, scale.domain);
+   }
+
+   draw(){
+      if (!this._scalecache){
+         return;
+      }
+      this.update(
+         this._scalecache.domain, this._scalecache.domain, this._scalecache);
    }
 
 }
@@ -273,6 +282,7 @@ export class VAxisRenderDelegate{
 
    __attach(layer, scale, oldDomain, newDomain){
       this.layer = layer;
+      this._scalecache = scale;
       this.axisLine = this.__createAxisLine(scale.range);
       layer.add(this.axisLine);
 
@@ -303,6 +313,12 @@ export class VAxisRenderDelegate{
    attach(layer, scale){
       this.__attach(layer, scale, scale.domain, scale.domain);
    }
+
+   draw(){
+      this.update(
+         this._scalecache.domain, this._scalecache.domain, this._scalecache);
+   }
+
 }
 
 
