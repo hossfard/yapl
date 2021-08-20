@@ -1,7 +1,10 @@
 <template>
 <div class="hello">
   <h1> Examples </h1>
-  <div id="container"></div>
+  <div class="plot-container">
+    <div id="plot1"></div>
+    <div id="plot2"></div>
+  </div>
 </div>
 </template>
 
@@ -30,15 +33,15 @@ export default {
    props: {
    },
    mounted: function(){
-      this._plot = new plt.Plot('container', {
+      this._plot1 = new plt.Plot('plot1', {
          width: 1400,
-         height: 600
+         height: 500
       });
 
-      this._plot.plot(generateRandomPoints(100), {
+      this._plot1.plot(generateRandomPoints(100), {
          stroke: 'blue', strokeWidth: 3, label: 'p1'
       });
-      this._plot.plot(
+      this._plot1.plot(
          generateRandomPoints(100, 3, 2),
          {
             stroke: 'red',
@@ -47,7 +50,30 @@ export default {
             dash: [5, 5]
          }
       );
-      this._plot.plot(
+      this._plot1.plot(
+         generateRandomPoints(100, 2, 3),
+         {stroke: 'green', label: 'p4', markersize: 3}
+      );
+
+      this._plot2 = new plt.Plot('plot2', {
+         width: 1400,
+         height: 500,
+         showTooltip: false
+      });
+
+      this._plot2.plot(generateRandomPoints(100), {
+         stroke: 'blue', strokeWidth: 3, label: 'p1'
+      });
+      this._plot2.plot(
+         generateRandomPoints(100, 3, 2),
+         {
+            stroke: 'red',
+            strokeWidth: 1,
+            label: 'p2',
+            dash: [5, 5]
+         }
+      );
+      this._plot2.plot(
          generateRandomPoints(100, 2, 3),
          {stroke: 'green', label: 'p4', markersize: 3}
       );
@@ -62,7 +88,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 h3 {
     margin: 40px 0 0;
 }
@@ -77,7 +103,10 @@ li {
 a {
     color: #42b983;
 }
-#container{
-    border: solid black 1px;
+
+.plot-container{
+    height: 500px;
+    white-space: nowrap;
 }
+
 </style>
