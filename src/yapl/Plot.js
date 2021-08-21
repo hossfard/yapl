@@ -2,7 +2,7 @@
 
 
 import * as utils from './utils';
-import {axisFactory} from './Axis';
+import {Axis} from './Axis';
 import {Tooltip} from './Tooltip';
 import {LineSeries} from './LineSeries';
 import {EventEmitter} from './EventEmitter';
@@ -18,9 +18,11 @@ export class Plot{
    constructor(parent, opts){
       let defaults = {
          width: window.innerWidth,
-         height: window.innerHeight
+         height: window.innerHeight,
+         showTooltip: true
       };
-      opts = utils.setDefaults(opts, defaults);
+      this.opts = utils.setDefaults(opts, defaults);
+      opts = this.opts;
 
       this.series = [];
       this._eventEmitter = new EventEmitter();
@@ -47,15 +49,14 @@ export class Plot{
       let canvasBoundingBox = this.canvasBoundingBox;
       let xRange = this.canvasBoundingBox.width;
 
-      this.bottomAxis = axisFactory(
-         [0, xRange], [0, 10],
-         canvasBoundingBox,
-         {gridLength: canvasBoundingBox.height, orientation: 'bottom'}
+      this.bottomAxis = new Axis(
+         [0, xRange], [0, 10], canvasBoundingBox,
+         {orientation: 'bottom'}
       );
-      this.leftAxis = axisFactory(
+      this.leftAxis = new Axis(
          [canvasBoundingBox.height, 0], [0, 10],
          canvasBoundingBox,
-         {gridLength: xRange, orientation: 'left'}
+         {orientation: 'left'}
       );
 
       this.bottomAxis.attach(this.stage);

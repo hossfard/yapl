@@ -40,9 +40,26 @@ function bboxGridLength(bbox, orientation){
 }
 
 
+export class AxisConfig{
+   constructor(opts){
+      let defaults = {
+         gridlineStroke: '#c8c8c8',
+         gridlineStokeWidth: 1,
+         tickLength: 5,
+         tickCount: 10,
+         orientation: 'bottom'
+      };
+      opts = utils.setDefaults(opts, defaults);
+      for (let key in opts){
+         this[key] = opts[key];
+      }
+   }
+}
+
+
 export class Axis extends EventEmitter{
 
-   constructor(range, domain, renderDel, boundingBox, opts){
+   constructor(range, domain, boundingBox, opts){
       super();
       this.range = range;
       this.domain = domain;
@@ -51,12 +68,20 @@ export class Axis extends EventEmitter{
       this.opts = utils.setDefaults(opts, {
          orientation: 'bottom'
       });
+      this.cfg = new AxisConfig(this.opts);
 
       this.bbox = boundingBox;
       this._views = [];
-      this.renderDelegate = renderDel || renderDelegate.axisRenderDelegateFactory(
-         opts.orientation, boundingBox);
+      this.renderDelegate = opts.renderDel ||
+         renderDelegate.axisRenderDelegateFactory(
+            opts.orientation, boundingBox, this.opts);
       this.layer = axisLayer(opts.orientation, boundingBox);
+   }
+
+   setOption(key, value){
+      this.opts[key] = value;
+      this.delegate.setOptions(this.opts);
+      this.__draw();
    }
 
    grid(tf){
@@ -116,13 +141,4 @@ export class Axis extends EventEmitter{
          new: domain
       });
    }
-}
-
-
-export function axisFactory(range, domain, boundingBox, opts){
-   opts = utils.setDefaults(opts, {
-      orientation: 'bottom',
-   });
-   let delegate = renderDelegate.axisRenderDelegateFactory(opts.orientation, boundingBox);
-   return new Axis(range, domain, delegate, boundingBox, opts);
 }

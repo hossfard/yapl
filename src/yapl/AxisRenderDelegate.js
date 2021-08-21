@@ -9,11 +9,9 @@ import {HTickGenerator} from './HTickGenerator';
 
 export class HAxisRenderDelegate{
 
-   constructor(tickHeight, tickCount, tickGenerator){
-      this.tickHeight = tickHeight || 5;
-      this.tickCount = tickCount || 10;
-      this.tickGenerator =
-         tickGenerator || new VTickGenerator();
+   constructor(opts){
+      this.opts = opts;
+      this.tickGenerator = new VTickGenerator();
       this.gridLines = [];
    }
 
@@ -128,9 +126,9 @@ export class HAxisRenderDelegate{
       layer.add(this.axisLine);
 
       this.ticks = scale.genTicks(
-         newDomain, this.tickCount);
+         newDomain, this.opts.tickCount);
       this.tickLines = this.__genTickLines(
-         this.ticks, scale, oldDomain, this.tickHeight,
+         this.ticks, scale, oldDomain, this.opts.tickLength,
          {stroke: 'black'});
 
       if (this.gridLength !== 0){
@@ -159,6 +157,10 @@ export class HAxisRenderDelegate{
       this.__attach(layer, scale, scale.domain, scale.domain);
    }
 
+   setOptions(opts){
+      this.opts = opts;
+   }
+
    draw(){
       if (!this._scalecache){
          return;
@@ -172,11 +174,9 @@ export class HAxisRenderDelegate{
 
 export class VAxisRenderDelegate{
 
-   constructor(tickHeight, tickCount, tickGenerator){
-      this.tickHeight = tickHeight || 5;
-      this.tickCount = tickCount || 10;
-      this.tickGenerator =
-         tickGenerator || new HTickGenerator();
+   constructor(opts){
+      this.opts = opts;
+      this.tickGenerator = new HTickGenerator();
    }
 
    setGridLength(length){
@@ -287,9 +287,9 @@ export class VAxisRenderDelegate{
       layer.add(this.axisLine);
 
       this.ticks = scale.genTicks(
-         newDomain, this.tickCount);
+         newDomain, this.opts.tickCount);
       this.tickLines = this.__genTickLines(
-         this.ticks, scale, oldDomain, this.tickHeight,
+         this.ticks, scale, oldDomain, this.opts.tickLength,
          {stroke: 'black'});
       this.gridLines = this.__genTickLines(
          this.ticks, scale, oldDomain, this.gridLength,
@@ -322,18 +322,18 @@ export class VAxisRenderDelegate{
 }
 
 
-export function axisRenderDelegateFactory(orientation, bbox){
+export function axisRenderDelegateFactory(orientation, bbox, opts){
    let orient = orientation.toLowerCase();
    let delegate = undefined;
    let gridLength = 0;
    bbox = bbox || {};
 
    if (orient === 'bottom'){
-      delegate = new HAxisRenderDelegate();
+      delegate = new HAxisRenderDelegate(opts);
       gridLength = bbox.height || 0;
    }
    if (orient === 'left'){
-      delegate = new VAxisRenderDelegate();
+      delegate = new VAxisRenderDelegate(opts);
       gridLength = bbox.width || 0;
    }
 
