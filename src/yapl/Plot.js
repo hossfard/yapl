@@ -137,6 +137,15 @@ export class Plot{
       });
    }
 
+   axis(location){
+      if (location === 'left'){
+         return this.leftAxis;
+      }
+      if (location === 'bottom'){
+         return this.bottomAxis;
+      }
+      return undefined;
+   }
 
    /** Add line series to plot
     *
@@ -271,6 +280,11 @@ export class Plot{
    }
 
    mousemove(point){
+      if (!this.opts.showTooltip){
+         this._eventEmitter.notify('mousemove', {x: px, y: py});
+         return;
+      }
+
       this.tooltip.show(true);
       let px = this.bottomAxis.fromCanvas(point.x);
       let py = this.leftAxis.fromCanvas(point.y);
