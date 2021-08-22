@@ -26,6 +26,8 @@ export class LineSeries{
     */
    setPoints(points){
       this._points = points;
+      this.update();
+   }
 
    points(){
       return this._points;
