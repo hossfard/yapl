@@ -9,6 +9,7 @@ import {EventEmitter} from './EventEmitter';
 import {Legend} from './Legend';
 import {CanvasContainer} from './CanvasContainer';
 import {CanvasLayer} from './CanvasLayer';
+import {PlotView} from './PlotView';
 import {MouseEventListener} from './MouseEventListener';
 
 
@@ -63,10 +64,10 @@ export class Plot{
       this.bottomAxis.attach(this.stage);
       this.leftAxis.attach(this.stage);
 
-      this.canvasLayer = new CanvasLayer({
+      this.canvasGroup = new PlotView({
          x: canvasBoundingBox.x,
-         y: canvasBoundingBox.y,
-      });
+         y: canvasBoundingBox.y
+      }, canvasBoundingBox);
 
       this.legendLayer = new CanvasLayer({
          x: canvasBoundingBox.x,
@@ -86,7 +87,7 @@ export class Plot{
       this.tooltip = new Tooltip(this);
       this.tooltip.attach(this.tooltipLayer);
 
-      this.canvasLayer.attach(this.stage);
+      this.canvasGroup.attach(this.stage);
       this.tooltipLayer.attach(this.stage);
       this.legendLayer.attach(this.stage);
 
@@ -156,7 +157,7 @@ export class Plot{
     */
    plot(points, opts){
       let pobj = new LineSeries(points, opts);
-      pobj.attach(this.canvasLayer, this.bottomAxis, this.leftAxis);
+      pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
       this.series.push(pobj);
       this.fitToContent();
 
