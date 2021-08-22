@@ -32,6 +32,21 @@ export class LineSeries{
    points(){
       return this._points;
    }
+
+   append(points){
+      this._points = this._points.concat(points);
+
+      // Insert placeholder for new point. Set the placeholder equal
+      // to last point, if any, for smoother transition
+      let ps = this.lineObject.points();
+      if (ps.length > 1){
+         let last = [ps[ps.length-2], ps[ps.length-1]];
+         this.lineObject.points(
+            this.lineObject.points().concat(last)
+         );
+      }
+
+      this.update();
    }
 
    /** Convert input points to canvas coords
