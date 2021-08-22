@@ -260,7 +260,7 @@ export class Plot{
       let closestIndex = 0;
       this.series.forEach((elem, index) => {
          let pIndex = utils.closestPoint(
-            elem.points, x, indexer
+            elem.points(), x, indexer
          );
 
          // Update closest series and index
@@ -269,9 +269,9 @@ export class Plot{
             closestIndex = pIndex;
          }
          else{
-            let p1 = elem.points[pIndex];
+            let p1 = elem.points()[pIndex];
             let p2 = this.series[closestSeriesIndex]
-                .points[closestIndex];
+                .points()[closestIndex];
 
             let d1 = utils.l2(p1[0], p1[1], point[0], point[1]);
             let d2 = utils.l2(p2[0], p2[1], point[0], point[1]);
@@ -304,7 +304,7 @@ export class Plot{
 
       let series = csData.series;
       let seriesIndex = csData.index;
-      this.updateTooltip(series.points[seriesIndex], series);
+      this.updateTooltip(series.points()[seriesIndex], series);
 
       this._eventEmitter.notify('mousemove', {x: px, y: py});
    }

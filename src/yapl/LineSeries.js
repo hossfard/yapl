@@ -25,7 +25,7 @@ export class LineSeries{
     *
     */
    setPoints(points){
-      this.points = points;
+      this._points = points;
    }
 
    /** Convert input points to canvas coords
@@ -67,13 +67,13 @@ export class LineSeries{
    }
 
    attach(layer, xAxis, yAxis){
-      if (!this.points){
+      if (!this._points){
          return;
       }
 
       this.xaxis = xAxis;
       this.yaxis = yAxis;
-      let pList = this.__toCanvas(this.points, xAxis, yAxis);
+      let pList = this.__toCanvas(this._points, xAxis, yAxis);
       if (!this.lineObject){
          this.lineObject = this._createLineObject(pList);
       }
@@ -82,12 +82,12 @@ export class LineSeries{
    }
 
    update(transition){
-      if (!this.points || !this.lineObject){
+      if (!this._points || !this.lineObject){
          return;
       }
 
       let pList = this.__toCanvas(
-         this.points,
+         this._points,
          this.xaxis, this.yaxis);
 
       if (transition === undefined){
@@ -118,16 +118,16 @@ export class LineSeries{
          y: [undefined, undefined]
       };
 
-      for (let i=0; i<this.points.length; ++i){
+      for (let i=0; i<this._points.length; ++i){
          if (i === 0){
-            ret.x = [this.points[i][0], this.points[i][0]];
-            ret.y = [this.points[i][1], this.points[i][1]];
+            ret.x = [this._points[i][0], this._points[i][0]];
+            ret.y = [this._points[i][1], this._points[i][1]];
             continue;
          }
-         ret.x[0] = Math.min(ret.x[0], this.points[i][0]);
-         ret.x[1] = Math.max(ret.x[1], this.points[i][0]);
-         ret.y[0] = Math.min(ret.y[0], this.points[i][1]);
-         ret.y[1] = Math.max(ret.y[1], this.points[i][1]);
+         ret.x[0] = Math.min(ret.x[0], this._points[i][0]);
+         ret.x[1] = Math.max(ret.x[1], this._points[i][0]);
+         ret.y[0] = Math.min(ret.y[0], this._points[i][1]);
+         ret.y[1] = Math.max(ret.y[1], this._points[i][1]);
       }
       return ret;
    }
