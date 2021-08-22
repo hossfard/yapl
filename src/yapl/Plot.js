@@ -32,6 +32,7 @@ export class Plot{
          height: opts.height
       });
 
+      // Location of the area where graphs are plotted
       let canvasPad = {
          left: 100,
          top: 20,
@@ -163,6 +164,14 @@ export class Plot{
       return pobj;
    }
 
+   /** Fit canvas to contents of the plot
+    *
+    * @param {number} padx padding, in percet of the content width, in
+    *     the x dir
+    * @param {number} pady padding, in percent of the content height,
+    *     in the y dir
+    * @return {undefined} none
+    */
    fitToContent(padx=0.10, pady=0.10){
       let ext = this.extent();
       if ((ext.x[0] === undefined) || (ext.y[0] === undefined)){
