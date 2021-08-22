@@ -26,6 +26,10 @@ export class LineSeries{
     */
    setPoints(points){
       this._points = points;
+
+   points(){
+      return this._points;
+   }
    }
 
    /** Convert input points to canvas coords
