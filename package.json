@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build-docs": "jsdoc ./src/yapl/*.js -t node_modules/docdash"
+    "build:docs": "jsdoc ./src/yapl/*.js -t node_modules/docdash"
   },
   "dependencies": {
     "core-js": "^3.6.5",
