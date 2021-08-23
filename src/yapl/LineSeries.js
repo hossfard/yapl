@@ -114,7 +114,7 @@ export class LineSeries{
 
    /** Attach line series to a canvas or layer
     *
-    * @param {CanvasLayer} layer asd ad
+    * @param {CanvasLayer} layer parent canvas or layer
     */
    attach(layer, xAxis, yAxis){
       if (!this._points){
