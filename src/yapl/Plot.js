@@ -91,7 +91,7 @@ export class Plot{
       this.tooltipLayer.attach(this.stage);
       this.legendLayer.attach(this.stage);
 
-      this.legend = new Legend([], {
+      this._legend = new Legend([], {
          bbox: {
             x: 0,
             y: 0,
@@ -99,10 +99,10 @@ export class Plot{
             height: canvasBoundingBox.height
          }
       });
-      this.legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
-      this.legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
+      this._legend.subscribe('legendmouseover', this.legendmouseover.bind(this));
+      this._legend.subscribe('legendmouseend', this.legendmouseend.bind(this));
       this._eventRect.attach(this.legendLayer);
-      this.legend.attach(this.legendLayer);
+      this._legend.attach(this.legendLayer);
    }
 
    seriesByKey(key){
@@ -161,7 +161,7 @@ export class Plot{
       this.series.push(pobj);
       this.fitToContent();
 
-      this.legend.setSeries(this.series);
+      this._legend.setSeries(this.series);
       return pobj;
    }
 
