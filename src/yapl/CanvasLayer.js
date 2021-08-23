@@ -5,7 +5,8 @@ import Konva from 'konva';
 import * as utils from './utils';
 
 
-
+/** Canvas Layer
+ */
 export class CanvasLayer{
    constructor(opts){
       opts = utils.setDefaults(opts, {
