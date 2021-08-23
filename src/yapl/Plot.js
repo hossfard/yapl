@@ -13,7 +13,25 @@ import {PlotView} from './PlotView';
 import {MouseEventListener} from './MouseEventListener';
 
 
+/**
+ * @typedef {Object} Point
+ * @property {number} x X coordinate
+ * @property {number} y Y coordinate
+ *
+ */
 
+
+/**
+ * @typedef {Object} ClosestSeriesType
+ * @property {LineSeries} series X coordinate
+ * @property {number} index series index
+ *
+ */
+
+
+
+/** Plot type
+ */
 export class Plot{
 
    constructor(parent, opts){
@@ -155,7 +173,7 @@ export class Plot{
 
    /** Add line series to plot
     *
-    * @param {Array[array]} points data points in format
+    * @param {array} points data points in format
     *    [[x0,y0],[...]]
     * @param {SeriesOptions} opts series options TODO define
     */
@@ -245,8 +263,8 @@ export class Plot{
     *
     * Points are expected to be sequential
     *
-    * @param {[x,y]} point plot coordinate of the query point
-    * @return {series: LineSeries, index: index} line series object
+    * @param {Point} point plot coordinate of the query point
+    * @return {ClosestSeriesType} line series object
     *     closest to point, or undefined if no series
     */
    closestSeries(point){
