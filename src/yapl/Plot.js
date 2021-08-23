@@ -254,7 +254,7 @@ export class Plot{
 
       // Fn to to retrieve the x-component of the series data
       let indexer = (seq, index)=>{
-            return seq[index][0];
+         return seq[index][0];
       };
 
       let closestSeriesIndex = 0;
