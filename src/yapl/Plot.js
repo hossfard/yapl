@@ -105,6 +105,10 @@ export class Plot{
       this._legend.attach(this.legendLayer);
    }
 
+   legend(){
+      return this._legend;
+   }
+
    seriesByKey(key){
       for (let series of this.series){
          if (series.opts.label === key){
