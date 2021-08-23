@@ -5,11 +5,23 @@ import Konva from 'konva';
 import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
 
 
+/**
+ * @typedef {Object} LineSeriesExtent
+ * @property {array} x - The X Coordinate
+ * @property {array} y - The Y Coordinate
+ *
+ */
+
+/** Plottable Line Series object
+ *
+ */
 export class LineSeries{
 
    /** Create a line series object
     *
-    * @param {array[array]} points line series data formatted as
+    * Data is expected to be sequentially ordered for line series
+    *
+    * @param {array} points line series data formatted as
     *     [[x0,y0],[...]]
     * @param {dict} opts optional arguments
     */
@@ -20,19 +32,30 @@ export class LineSeries{
 
    /** Set series data
     *
-    * @param {array[array]} points line series data formatted as
+    * @param {array} points line series data formatted as
     *     [[x0,y0],[...]]
-    *
     */
    setPoints(points){
       this._points = points;
       this.update();
    }
 
+   /** Return the existing data points
+    *
+    * @see LineSeries#setPoints
+    * @returns {array} data points
+    */
    points(){
       return this._points;
    }
 
+   /** Append new data point(s) to line series
+    *
+    * Will internally update drawn line on canvas
+    *
+    * @see LineSeries#setPoints
+    * @param {array} points new data points
+    */
    append(points){
       this._points = this._points.concat(points);
 
@@ -51,7 +74,9 @@ export class LineSeries{
 
    /** Convert input points to canvas coords
     *
-    * @param {array[array]} pList series coordinates
+    * @private
+    *
+    * @param {array} pList series coordinates
     * @param {Axis} xAxis x-axis for points
     * @param {Axis} yAxis y-axis for points
     * @return {array} [x0,y0, y0,y1, ...] points in
@@ -87,6 +112,10 @@ export class LineSeries{
       });
    }
 
+   /** Attach line series to a canvas or layer
+    *
+    * @param {CanvasLayer} layer asd ad
+    */
    attach(layer, xAxis, yAxis){
       if (!this._points){
          return;
@@ -129,9 +158,10 @@ export class LineSeries{
 
    /** Return series extent in x and y direction
     *
-    * @return {Object} extent series extent
-    * @return {Array} extent.x extent in x direction
-    * @return {Array} extent.y extent in y direction
+    * For empty line series, values for extent ranges are of type
+    * `undefined`
+    *
+    * @return {LineSeriesExtent} extent in x and y direction
     */
    extent(){
       let ret = {
