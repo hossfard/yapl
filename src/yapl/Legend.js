@@ -8,6 +8,8 @@ import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
 
 
 
+/** Plottable plot legends
+ */
 export class Legend{
    constructor(series, opts){
       this.opts = utils.setDefaults(opts, {
@@ -40,11 +42,19 @@ export class Legend{
       this.setSeries(series);
    }
 
+   /** Attach legend to a canvas or layer
+    *
+    * @param {CanvasLayer} layer parent canvas or layer
+    */
    attach(layer){
       layer.add(this.group);
       this._layer = layer;
    }
 
+   /** Toggle visibility of legend
+    *
+    * @param {boolean} tf true if visible, false otherwise
+    */
    show(tf){
       if (tf){
          this.group.show();
@@ -54,15 +64,29 @@ export class Legend{
       }
    }
 
+
+   /** Return if the legend is visible or hidden
+    *
+    * @return {boolean} true if visible, false otherwise
+    */
    isVisible(){
       return this.group.isVisible();
    }
 
+
+   /** Set series whose legends are to be displayed
+    *
+    * @param {Array.<LineSeries>} series list of series
+    */
    setSeries(series){
       this.series = series || [];
       this.draw();
    }
 
+
+   /** (Re)draw legends on canvas
+    *
+    */
    draw(){
       this._clear();
       let pad0 = 10,
