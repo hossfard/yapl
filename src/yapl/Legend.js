@@ -53,11 +53,11 @@ export class Legend{
 
    /** Toggle visibility of legend
     *
-    * @param {boolean} tf true if visible, false otherwise
+    * @param {boolean} tf true if hiding, false otherwise
     */
-   show(tf){
+   hide(tf){
       if (tf){
-         this.group.show();
+         this.group.hide();
       }
       else{
          this.group.hide();
