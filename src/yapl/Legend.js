@@ -42,6 +42,20 @@ export class Legend{
 
    attach(layer){
       layer.add(this.group);
+      this._layer = layer;
+   }
+
+   show(tf){
+      if (tf){
+         this.group.show();
+      }
+      else{
+         this.group.hide();
+      }
+   }
+
+   isVisible(){
+      return this.group.isVisible();
    }
 
    setSeries(series){
