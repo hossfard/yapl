@@ -214,6 +214,13 @@ export class Plot{
       this.__updateSeries();
    }
 
+   /** Return maximum series extent in x and y direction
+    *
+    * For empty line series, values for extent ranges are of type
+    * `undefined`
+    *
+    * @return {LineSeriesExtent} extent in x and y direction
+    */
    extent(){
       let ret = {
          x: [undefined, undefined],
@@ -235,6 +242,11 @@ export class Plot{
       return ret;
    }
 
+   /** Set left and bottom axis domains
+    *
+    * @param {array} x domain of the bottom axis
+    * @param {array} y domain of the left axis
+    */
    setDomain(x, y){
       this.bottomAxis.setDomain(x);
       this.leftAxis.setDomain(y);
