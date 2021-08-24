@@ -1,6 +1,8 @@
 **WARNING**
 Under intermittent rapid development. Expect constant breakage.
 
+![Demo](./demo/demo.gif)
+
 # About
 
 Yet Another Plotting Library
