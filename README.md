@@ -1,5 +1,5 @@
 **WARNING**
-Under intermittent rapid development. Expect costant breakage.
+Under intermittent rapid development. Expect constant breakage.
 
 # About
 
