@@ -1,6 +1,10 @@
+**WARNING**
+Under intermittent rapid development. Expect costant breakage.
+
 # About
 
 Yet Another Plotting Library
+
 
 # Development
 
