@@ -1,24 +1,24 @@
-# konvajs-test
+# About
 
-## Project setup
-```
+Yet Another Plotting Library
+
+# Development
+
+1. Install dependencies
+
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+2. Run dev server
+
+```bash
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
+# Documentation
+
+```bash
+npm run build:docs
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
