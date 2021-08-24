@@ -235,7 +235,7 @@ export class Plot{
       return ret;
    }
 
-   setExtent(x, y){
+   setDomain(x, y){
       this.bottomAxis.setDomain(x);
       this.leftAxis.setDomain(y);
       this.__updateSeries();
