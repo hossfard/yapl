@@ -127,6 +127,10 @@ export class Plot{
       return this._legend;
    }
 
+   enableTooltip(tf){
+      this.opts.showTooltip = tf;
+   }
+
    seriesByKey(key){
       for (let series of this.series){
          if (series.opts.label === key){
