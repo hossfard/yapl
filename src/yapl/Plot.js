@@ -123,6 +123,10 @@ export class Plot{
       this._legend.attach(this.legendLayer);
    }
 
+   /** Return plot's legend object
+    *
+    * @return {Legend} legend object
+    */
    legend(){
       return this._legend;
    }
@@ -165,6 +169,11 @@ export class Plot{
       });
    }
 
+   /** Return plot axis objects
+    *
+    * @param {('left'|'bottom')} location axis location
+    * @return {Axis} axis
+    */
    axis(location){
       if (location === 'left'){
          return this.leftAxis;
