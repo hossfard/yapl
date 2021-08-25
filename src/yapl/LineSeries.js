@@ -94,21 +94,9 @@ export class LineSeries{
    }
 
    _createLineObject(series){
-      let misc = {};
-      if ('dash' in this.opts){
-         misc.dash = this.opts.dash;
-      }
-      if ('markersize' in this.opts){
-         misc.markersize = this.opts.markersize;
-      }
-
       return new LineSeriesGraphicsItem({
          points: series,
-         stroke: this.opts.stroke || 'black',
-         strokeWidth: this.opts.strokeWidth || 1,
-         lineCap: this.opts.lineCap || 'round',
-         lineJoin: this.opts.lineJoin || 'round',
-         ...misc
+         ...this.opts
       });
    }
 

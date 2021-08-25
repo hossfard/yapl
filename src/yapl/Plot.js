@@ -22,6 +22,24 @@ import {MouseEventListener} from './MouseEventListener';
 
 
 /**
+ * @typedef {Object} PlotOptions
+ * @property {string} [label] series label
+ * @property {string} [stroke='#00f'] line color
+ * @property {int} [markersize] size of markers
+ * @property {int} [strokeWidth=1] plot line thickness
+ * @property {string} [lineCap='round']
+ * @property {string} [lineJoin='round']
+ * @property {array} [dash]
+ */
+var DEFAULT_PLOT_OPTIONS = {
+   stroke: '#00f',
+   strokeWidth: 1,
+   lineCap: 'round',
+   lineJoin: 'round'
+};
+
+
+/**
  * @typedef {Object} ClosestSeriesType
  * @property {LineSeries} series X coordinate
  * @property {number} index series index
@@ -188,9 +206,10 @@ export class Plot{
     *
     * @param {array} points data points in format
     *    [[x0,y0],[...]]
-    * @param {SeriesOptions} opts series options TODO define
+    * @param {PlotOptions} opts series options TODO define
     */
    plot(points, opts){
+      opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
       let pobj = new LineSeries(points, opts);
       pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
       this.series.push(pobj);
