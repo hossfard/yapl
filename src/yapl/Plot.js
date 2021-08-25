@@ -22,7 +22,7 @@ import {MouseEventListener} from './MouseEventListener';
 
 
 /**
- * @typedef {Object} PlotOptions
+ * @typedef {Object} SeriesPlotOptions
  * @property {string} [label] series label
  * @property {string} [stroke='#00f'] line color
  * @property {int} [markersize] size of markers
@@ -206,7 +206,7 @@ export class Plot{
     *
     * @param {array} points data points in format
     *    [[x0,y0],[...]]
-    * @param {PlotOptions} opts series options TODO define
+    * @param {SeriesPlotOptions} opts series options
     */
    plot(points, opts){
       opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
