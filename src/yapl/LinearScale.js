@@ -69,19 +69,6 @@ export class LinearScale{
       return (x-y0)*(x1-x0)/(y1-y0) + x0;
    }
 
-   // /** Map point to canvas pixel coordinate
-   //  *
-   //  */
-   // toCanvas(x){
-   //    let x0 = this.domain[0];
-   //    let x1 = this.domain[1];
-
-   //    let y0 = this.range[0];
-   //    let y1 = this.range[1];
-
-   //    return y0 + (y1-y0)/(x1-x0)*(x-x0);
-   // }
-
    /** Map point to canvas pixel coordinate
     *
     */
