@@ -78,3 +78,19 @@ export function setDefaults(dict, defaults){
    }
    return dict;
 }
+
+
+/** Combine two arrays into array of points
+ *
+ * @param {list} x first array
+ * @param {list} y second array
+ * @return {int} [[x0, y0], ...] new array made up of x,y components
+ */
+export function mergeArray(x, y){
+   let N = Math.min(x.length, y.length);
+   let ret = [];
+   for (let i=0; i<N; ++i){
+      ret.push([x[i], y[i]]);
+   }
+   return ret;
+}
