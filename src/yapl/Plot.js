@@ -208,9 +208,9 @@ export class Plot{
     *    [[x0,y0],[...]]
     * @param {SeriesPlotOptions} opts series options
     */
-   plot(points, opts){
+   plot(x, y, opts){
       opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
-      let pobj = new LineSeries(points, opts);
+      let pobj = new LineSeries(x, y, opts);
       pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
       this.series.push(pobj);
       this.fitToContent();

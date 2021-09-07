@@ -3,6 +3,8 @@
 
 import Konva from 'konva';
 import {LineSeriesGraphicsItem} from './LineSeriesGraphicsItem';
+import * as utils from './utils';
+
 
 
 /**
@@ -25,9 +27,9 @@ export class LineSeries{
     *     [[x0,y0],[...]]
     * @param {dict} opts optional arguments
     */
-   constructor(points, opts){
+   constructor(x, y, opts){
       this.opts = opts;
-      this.setPoints(points);
+      this.setPoints(x, y);
    }
 
    /** Set series data
@@ -35,8 +37,8 @@ export class LineSeries{
     * @param {array} points line series data formatted as
     *     [[x0,y0],[...]]
     */
-   setPoints(points){
-      this._points = points;
+   setPoints(x, y){
+      this._points = utils.mergeArray(x, y);
       this.update();
    }
 
