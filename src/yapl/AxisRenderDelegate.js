@@ -4,6 +4,14 @@
 import Konva from 'konva';
 
 
+/**
+ * @typedef {Object} Font
+ * @property {number} fontWidth font width
+ * @property {number} fontHeight font height
+ *
+ */
+
+
 export class HAxisRenderDelegate{
 
    constructor(opts){
