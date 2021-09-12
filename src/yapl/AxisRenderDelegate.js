@@ -45,7 +45,7 @@ export class HAxisRenderDelegate{
          fontWidth: dummyText.width(),
          fontHeight: dummyText.height()
       };
-      let str = this.labelToString(value, dx, font);
+      let str = this.labelToString(value, font, dx);
 
       let text = new Konva.Text({
          x: canvasValue,
@@ -59,7 +59,7 @@ export class HAxisRenderDelegate{
       return text;
    }
 
-   labelToString(value, dx){
+   labelToString(value, font, dx){
       dx;
       if (typeof(value.getHours) === 'function'){
          return value.toLocaleDateString('en-US');
