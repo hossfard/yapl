@@ -111,7 +111,6 @@ a {
 }
 
 .plot-container{
-    height: 500px;
     white-space: nowrap;
 }
 
