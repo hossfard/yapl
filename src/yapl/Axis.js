@@ -72,7 +72,7 @@ export class Axis extends EventEmitter{
 
       this.bbox = boundingBox;
       this._views = [];
-      this.renderDelegate = opts.renderDel ||
+      this.renderDelegate = opts.renderDelegate ||
          renderDelegate.axisRenderDelegateFactory(
             opts.orientation, boundingBox, this.opts);
       this.layer = axisLayer(opts.orientation, boundingBox);
