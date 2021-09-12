@@ -147,7 +147,7 @@ export class HAxisRenderDelegate{
    genTickLabels(ticks, scale, domain){
       let ret = [];
       // horizontal space allocated fot a tick label
-      let dx = (scale.range[1] - scale.range[0])/ticks.lenght + 5;
+      let dx = (scale.range[1] - scale.range[0])/ticks.length + 5;
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
