@@ -25,8 +25,19 @@ export class HAxisRenderDelegate{
       });
    }
 
-   _generateLabel(value, canvasValue){
-      let str = this.labelToString(value);
+   _generateLabel(value, canvasValue, dx){
+      let dummyText = new Konva.Text({
+         fontFamily: 'Calibri',
+         fontSize: 14,
+         text: 'x',
+         fill: 'black',
+      });
+
+      let font = {
+         fontWidth: dummyText.width(),
+         fontHeight: dummyText.height()
+      };
+      let str = this.labelToString(value, dx, font);
 
       let text = new Konva.Text({
          x: canvasValue,
@@ -40,7 +51,8 @@ export class HAxisRenderDelegate{
       return text;
    }
 
-   labelToString(value){
+   labelToString(value, dx){
+      dx;
       if (typeof(value.getHours) === 'function'){
          return value.toLocaleDateString('en-US');
       }
@@ -126,11 +138,13 @@ export class HAxisRenderDelegate{
    // Create tick label objects
    genTickLabels(ticks, scale, domain){
       let ret = [];
+      // horizontal space allocated fot a tick label
+      let dx = (scale.range[1] - scale.range[0])/ticks.lenght + 5;
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this._generateLabel(xval, canv_val)
+            this._generateLabel(xval, canv_val, dx)
          );
       }
       return ret;
