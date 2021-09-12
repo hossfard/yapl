@@ -2,17 +2,51 @@
 
 
 import Konva from 'konva';
-import {VTickGenerator} from './VTickGenerator';
-import {HTickGenerator} from './HTickGenerator';
-
 
 
 export class HAxisRenderDelegate{
 
    constructor(opts){
       this.opts = opts;
-      this.tickGenerator = new VTickGenerator();
       this.gridLines = [];
+      this.pad = 5;
+   }
+
+   // Vertically up
+   _generateTick(canvasValue, tickLength, opts){
+      opts = opts || {};
+      return new Konva.Line({
+         points: [
+            canvasValue, 0,
+            canvasValue, 0-tickLength
+         ],
+         stroke: opts.stroke || 'black',
+         strokeWidth: 1
+      });
+   }
+
+   _generateLabel(value, canvasValue){
+      let str = this.labelToString(value);
+
+      let text = new Konva.Text({
+         x: canvasValue,
+         y: this.pad,
+         fontFamily: 'Calibri',
+         fontSize: 14,
+         text: str,
+         fill: 'black',
+      });
+      text.x(canvasValue - text.width()/2);
+      return text;
+   }
+
+   labelToString(value){
+      if (typeof(value.getHours) === 'function'){
+         return value.toLocaleDateString('en-US');
+      }
+      return value.toLocaleString(
+         undefined, {minimumFractionDigits: 2}
+      );
    }
 
    setGridLength(length){
@@ -82,7 +116,7 @@ export class HAxisRenderDelegate{
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this.tickGenerator.generateTick(
+            this._generateTick(
                canv_val, tickLength, opts)
          );
       }
@@ -96,7 +130,7 @@ export class HAxisRenderDelegate{
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this.tickGenerator.generateLabel(xval, canv_val)
+            this._generateLabel(xval, canv_val)
          );
       }
       return ret;
@@ -176,11 +210,42 @@ export class VAxisRenderDelegate{
 
    constructor(opts){
       this.opts = opts;
-      this.tickGenerator = new HTickGenerator();
+      this.pad = 5;
    }
 
    setGridLength(length){
       this.gridLength = length;
+   }
+
+   // Vertically up
+   _generateTick(canvasValue, tickLength, opts){
+      opts = opts || {};
+      return new Konva.Line({
+         points: [
+            0, canvasValue,
+            0+tickLength, canvasValue
+         ],
+         stroke: opts.stroke || 'black',
+         strokeWidth: 1
+      });
+   }
+
+   _generateLabel(value, canvasValue){
+      let str = value.toLocaleString(
+         undefined, {minimumFractionDigits: 2}
+      );
+
+      let text = new Konva.Text({
+         x: 0,
+         y: canvasValue,
+         fontFamily: 'Calibri',
+         fontSize: 14,
+         text: str,
+         fill: 'black',
+      });
+      text.x(-this.pad - text.width());
+      text.y(canvasValue - text.height()/2);
+      return text;
    }
 
    // Return an axis line object
@@ -245,7 +310,7 @@ export class VAxisRenderDelegate{
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this.tickGenerator.generateTick(
+            this._generateTick(
                canv_val, tickLength, opts)
          );
       }
@@ -259,7 +324,7 @@ export class VAxisRenderDelegate{
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this.tickGenerator.generateLabel(xval, canv_val)
+            this._generateLabel(xval, canv_val)
          );
       }
       return ret;
