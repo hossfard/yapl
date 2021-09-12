@@ -73,6 +73,7 @@ export class LinearScale{
     *
     */
    toCanvas(x, domain){
+      let DOMAIN_MAX = 10000;
       domain = domain || this.domain;
 
       let x0 = domain[0];
@@ -81,7 +82,7 @@ export class LinearScale{
       let y0 = this.range[0];
       let y1 = this.range[1];
 
-      return y0 + (y1-y0)/(x1-x0)*(x-x0);
+      return Math.min(y0 + (y1-y0)/(x1-x0)*(x-x0), DOMAIN_MAX);
    }
 
 
