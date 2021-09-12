@@ -138,7 +138,11 @@ export class Legend{
       let pad = {x: 40, y: 20};
       let boxDim = this.__computeBoxDimension(this.labelTexts);
       this.bg.width(boxDim.x + 20);
-      this.group.x(this.opts.bbox.width - boxDim.x - pad.x);
+      this.group.to({
+         x: this.opts.bbox.width - boxDim.x - pad.x,
+         duration: 0.5,
+         easing: Konva.Easings['StrongEaseOut']
+      });
       this.bg.height(boxDim.y + pad.y);
    }
 
