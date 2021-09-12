@@ -209,6 +209,16 @@ export class Plot{
     * @param {SeriesPlotOptions} opts series options
     */
    plot(x, y, opts){
+      if (x.length < 0){
+         return undefined;
+      }
+
+      if (utils.isDateObject(x[0])){
+         this.axis('bottom')
+            .renderDelegate
+            .labelToString = utils.timeAxisLabelFormat;
+      }
+
       opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
       let pobj = new LineSeries(x, y, opts);
       pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
