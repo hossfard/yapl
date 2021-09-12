@@ -1,7 +1,7 @@
 'use strict';
 
-
 import Konva from 'konva';
+import * as utils from './utils';
 
 
 export class Tooltip{
@@ -21,7 +21,6 @@ export class Tooltip{
       this.timestampText = new Konva.Text({
          x: 0,
          y: 10,
-         width: 100,
          text: '',
          fontSize: 18,
          fontFamily: 'Calibri',
@@ -31,7 +30,7 @@ export class Tooltip{
       });
 
       this.tooltipBox = new Konva.Rect({
-         width: this.timestampText.width() + 40,
+         width: 40,
          height: 80,
          fill: '#d0b0d0',
          opacity: 0.9,
@@ -62,9 +61,6 @@ export class Tooltip{
          align: 'left',
       });
 
-      this.timestampText.x(-this.timestampText.width()/2);
-      this.timestampText.width(this.timestampText.width());
-
       this.tooltipBox.x(-this.tooltipBox.width()/2);
       this.tooltipBox.y(20);
 
@@ -90,14 +86,25 @@ export class Tooltip{
       this.seriesLabel.fill(color);
       this.seriesLabel.text(label);
       this.seriesValue.text(plotCoord[1].toFixed(0));
-      this.timestampText.text(plotCoord[0].toFixed(2));
+
+      let str = '';
+      if (utils.isDateObject(plotCoord[0])){
+         str = plotCoord[0].toLocaleDateString('en-US') +
+            ' ' + plotCoord[0].toLocaleTimeString();
+      }
+      else{
+         str = plotCoord[0].toFixed(2);
+      }
+      this.timestampText.text(str);
+      this.tooltipBox.width(this.timestampText.width() + 40);
 
       // Update label/value position
+      let bw = this.tooltipBox.width();
       let sw = this.seriesLabel.width();
       let sv = this.seriesValue.width();
       let pad = 10;
-      this.seriesLabel.x(-(sw+sv+pad)/2);
-      this.seriesValue.x(pad);
+      this.seriesLabel.x(-(sw+sv+pad-bw/2)/2);
+      this.seriesValue.x(this.seriesLabel.x() + this.seriesLabel.width() + pad);
 
       this.pointer.fill(color);
       this.pointer.radius(0);
