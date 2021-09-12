@@ -94,3 +94,13 @@ export function mergeArray(x, y){
    }
    return ret;
 }
+
+
+/** Check if object is a Date object
+ *
+ * @param {object} obj test object
+ * @return {bool} True if Date object, false otherwise
+ */
+export function isDateObject(obj){
+   return typeof(obj.getHours) === 'function';
+}
