@@ -104,3 +104,20 @@ export function mergeArray(x, y){
 export function isDateObject(obj){
    return typeof(obj.getHours) === 'function';
 }
+
+
+/** Custom strategy for converting timestamps to str
+ *
+ * @param {(number|Date)} value timestamp in milliseconds since epoch
+ * @param {Font} font rendering font
+ * @param {number} dx available space for rendering
+ */
+export function timeAxisLabelFormat(value, font, dx){
+   let charCount = dx/font.fontWidth;
+   let dt = new Date(value);
+   if (charCount < 'mm/dd/yyyy hh:mm:dd pm'.length){
+      return dt.toLocaleTimeString();
+   }
+   return dt.toLocaleDateString('en-US')
+      + ' ' + dt.toLocaleTimeString();
+}
