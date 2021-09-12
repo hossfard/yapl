@@ -42,6 +42,11 @@ export class Legend{
       this.setSeries(series);
    }
 
+   setBoundingBox(bbox){
+      this.opts.bbox = bbox;
+      this.__repositionBox();
+   }
+
    /** Attach legend to a canvas or layer
     *
     * @param {CanvasLayer} layer parent canvas or layer
