@@ -61,9 +61,8 @@ export class Axis extends EventEmitter{
 
    constructor(range, domain, boundingBox, opts){
       super();
-      this.range = range;
       this.domain = domain;
-      this.scale = new LinearScale(this.domain, this.range);
+      this.scale = new LinearScale(this.domain, range);
 
       this.opts = utils.setDefaults(opts, {
          orientation: 'bottom'
