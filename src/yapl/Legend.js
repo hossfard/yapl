@@ -99,11 +99,14 @@ export class Legend{
           textPad = 30,
           dashLength = 20;
 
+      let hasLabels = false;
       for (const series of this.series){
          let label = series.opts.label;
          if (!label){
             continue;
          }
+
+         hasLabels = hasLabels || label !== '';
 
          // Legend text
          let text = new Konva.Text({
@@ -137,6 +140,7 @@ export class Legend{
          pad += text.height() + pad0;
       }
       this.__repositionBox();
+      this.hide(!hasLabels);
    }
 
    __repositionBox(){
