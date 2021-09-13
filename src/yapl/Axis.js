@@ -77,6 +77,16 @@ export class Axis extends EventEmitter{
       this.layer = axisLayer(opts.orientation, boundingBox);
    }
 
+   setBoundingBox(bbox){
+      this.bbox = bbox;
+      if (this.opts.orientation === 'left'){
+         this.renderDelegate.setGridLength(bbox.width);
+      }
+      else{
+         this.renderDelegate.setGridLength(bbox.height);
+      }
+   }
+
    setOption(key, value){
       this.opts[key] = value;
       this.delegate.setOptions(this.opts);
