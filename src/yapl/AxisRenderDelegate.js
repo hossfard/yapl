@@ -168,6 +168,7 @@ export class HAxisRenderDelegate{
          this.gridLines[i].destroy();
       }
 
+      this._label.destroy();
       this.axisLine.destroy();
 
       this.tickLines = [];
@@ -175,11 +176,27 @@ export class HAxisRenderDelegate{
       this.gridLines = [];
    }
 
+   __createAxisLabel(str, scale){
+      let ret = new Konva.Text({
+         fontFamily: 'Calibri',
+         fontSize: 16,
+         fontStyle: 'bold',
+         text: str,
+         fill: 'black',
+      });
+      ret.x((scale.range[1] - scale.range[0])*0.5 - ret.width()*0.5);
+      ret.y(this.pad + ret.height());
+      return ret;
+   }
+
    __attach(layer, scale, oldDomain, newDomain){
       this.layer = layer;
       this._scalecache = scale;
       this.axisLine = this.__createAxisLine(scale.range);
       layer.add(this.axisLine);
+
+      this._label = this.__createAxisLabel(this.opts.label, scale);
+      layer.add(this._label);
 
       this.ticks = scale.genTicks(
          newDomain, this.opts.tickCount);
@@ -250,6 +267,20 @@ export class VAxisRenderDelegate{
          stroke: opts.stroke || 'black',
          strokeWidth: 1
       });
+   }
+
+   __createAxisLabel(str, scale){
+      let ret = new Konva.Text({
+         fontFamily: 'Calibri',
+         fontSize: 16,
+         fontStyle: 'bold',
+         text: str,
+         fill: 'black',
+      });
+      ret.y(-(scale.range[1] - scale.range[0])*0.5 + ret.width()*0.5);
+      ret.x(-this.pad - ret.height() - this.tickLabelMaxWidth * 1.1);
+      ret.rotation(270);
+      return ret;
    }
 
    _generateLabel(value, canvasValue){
@@ -342,12 +373,13 @@ export class VAxisRenderDelegate{
    // Create tick label objects
    genTickLabels(ticks, scale, domain){
       let ret = [];
+      this.tickLabelMaxWidth = 0;
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
-         ret.push(
-            this._generateLabel(xval, canv_val)
-         );
+         let item = this._generateLabel(xval, canv_val);
+         this.tickLabelMaxWidth = Math.max(this.tickLabelMaxWidth, item.width());
+         ret.push(item);
       }
       return ret;
    }
@@ -359,6 +391,7 @@ export class VAxisRenderDelegate{
          this.tickLabels[i].destroy();
       }
       this.axisLine.destroy();
+      this._label.destroy();
 
       for (let i=0; i<this.gridLines.length; ++i){
          this.gridLines[i].destroy();
@@ -385,6 +418,9 @@ export class VAxisRenderDelegate{
       this.tickLabels = this.genTickLabels(
          this.ticks, scale, oldDomain);
 
+      this._label = this.__createAxisLabel(this.opts.label, scale);
+      layer.add(this._label);
+
       for (let i=0; i<this.gridLines.length; ++i){
          layer.add(this.gridLines[i]);
       }
@@ -406,6 +442,9 @@ export class VAxisRenderDelegate{
          this._scalecache.domain, this._scalecache.domain, this._scalecache);
    }
 
+   setOptions(opts){
+      this.opts = opts;
+   }
 }
 
 

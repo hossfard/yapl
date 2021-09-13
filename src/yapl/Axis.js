@@ -156,4 +156,14 @@ export class Axis extends EventEmitter{
       this.renderDelegate.update(this.scale.domain, this.scale.domain, this.scale);
    }
 
+
+   label(str){
+      if (str === undefined){
+         return this._label;
+      }
+      this._label = str;
+      this.setOption('label', str);
+      return this;
+   }
+
 }
