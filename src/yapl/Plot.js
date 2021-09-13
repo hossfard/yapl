@@ -70,7 +70,7 @@ export class Plot{
       });
 
       // Location of the area where graphs are plotted
-      let canvasPad = {
+      this.canvasPad = {
          left: 100,
          top: 20,
          bottom: 40,
@@ -79,10 +79,10 @@ export class Plot{
 
       // Rectangle defining the plottable area of chart
       this.canvasBoundingBox = {
-         x: canvasPad.left,
-         y: canvasPad.top,
-         width: opts.width - canvasPad.left - canvasPad.right,
-         height: opts.height - canvasPad.top - canvasPad.bottom
+         x: this.canvasPad.left,
+         y: this.canvasPad.top,
+         width: opts.width - this.canvasPad.left - this.canvasPad.right,
+         height: opts.height - this.canvasPad.top - this.canvasPad.bottom
       };
       let canvasBoundingBox = this.canvasBoundingBox;
       let xRange = this.canvasBoundingBox.width;
