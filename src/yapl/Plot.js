@@ -141,6 +141,33 @@ export class Plot{
       this._legend.attach(this.legendLayer);
    }
 
+
+   resize(width, height){
+      height = height || this.stage.height();
+
+      this.stage.width(width);
+      this.stage.height(height);
+      this.canvasGroup.width(width);
+      this.canvasGroup.height(height);
+
+      this.opts.width = width;
+      this.opts.height = height;
+      this.canvasBoundingBox = {
+         x: this.canvasPad.left,
+         y: this.canvasPad.top,
+         width: this.opts.width - this.canvasPad.left - this.canvasPad.right,
+         height: this.opts.height - this.canvasPad.top - this.canvasPad.bottom
+      };
+
+      this.bottomAxis.setRange([0, this.canvasBoundingBox.width]);
+      this.leftAxis.setRange([this.canvasBoundingBox.height, 0]);
+      this.bottomAxis.setBoundingBox(this.canvasBoundingBox);
+      this.leftAxis.setBoundingBox(this.canvasBoundingBox);
+      this._legend.setBoundingBox(this.canvasBoundingBox);
+      this.fitToContent();
+   }
+
+
    /** Return plot's legend object
     *
     * @return {Legend} legend object
