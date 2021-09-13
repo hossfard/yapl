@@ -89,7 +89,7 @@ export class Axis extends EventEmitter{
 
    setOption(key, value){
       this.opts[key] = value;
-      this.delegate.setOptions(this.opts);
+      this.renderDelegate.setOptions(this.opts);
       this.__draw();
    }
 
