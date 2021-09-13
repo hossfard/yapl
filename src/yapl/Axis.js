@@ -140,4 +140,10 @@ export class Axis extends EventEmitter{
          new: domain
       });
    }
+
+   setRange(range){
+      this.scale.range = range;
+      this.renderDelegate.update(this.scale.domain, this.scale.domain, this.scale);
+   }
+
 }
