@@ -20,4 +20,21 @@ export class CanvasContainer{
    cursorPosition(){
       return this._stage.getPointerPosition();
    }
+
+   width(w){
+      if (w === undefined){
+         return this._stage.width();
+      }
+      this._stage.width(w);
+      return undefined;
+   }
+
+   height(h){
+      if (h === undefined){
+         return this._stage.height();
+      }
+      this._stage.height(h);
+      return undefined;
+   }
+
 }
