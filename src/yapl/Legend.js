@@ -65,7 +65,7 @@ export class Legend{
          this.group.hide();
       }
       else{
-         this.group.hide();
+         this.group.show();
       }
    }
 
