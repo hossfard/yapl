@@ -23,4 +23,22 @@ export class PlotView extends CanvasLayer{
    add(drawable){
       this._group.add(drawable);
    }
+
+   width(w){
+      if (w === undefined){
+         return this._stage.width();
+      }
+      this._group.width(w);
+      this._group.clipWidth(w);
+      return undefined;
+   }
+
+   height(h){
+      if (h === undefined){
+         return this._stage.height();
+      }
+      this._group.height(h);
+      this._group.clipHeight(h);
+      return undefined;
+   }
 }
