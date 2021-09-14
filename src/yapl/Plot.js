@@ -89,12 +89,18 @@ export class Plot{
 
       this.bottomAxis = new Axis(
          [0, xRange], [0, 10], canvasBoundingBox,
-         {orientation: 'bottom'}
+         {
+            orientation: 'bottom',
+            tickCount: utils.tickCountHint(xRange)
+         }
       );
       this.leftAxis = new Axis(
          [canvasBoundingBox.height, 0], [0, 10],
          canvasBoundingBox,
-         {orientation: 'left'}
+         {
+            orientation: 'left',
+            tickCount: utils.tickCountHint(canvasBoundingBox.height)
+         }
       );
 
       this.bottomAxis.attach(this.stage);
