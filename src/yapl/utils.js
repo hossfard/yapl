@@ -121,3 +121,23 @@ export function timeAxisLabelFormat(value, font, dx){
    return dt.toLocaleDateString('en-US')
       + ' ' + dt.toLocaleTimeString();
 }
+
+
+/** Return suggested number of ticks for an axis size
+ *
+ * @param {number} length axis size in pixels
+ * @return {number} suggested tick count
+ */
+export function tickCountHint(length){
+   if (length < 250){
+      return 3;
+   }
+   if (length < 500){
+      return 6;
+   }
+   if (length < 800){
+      return 8;
+   }
+
+   return 10;
+}
