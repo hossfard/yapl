@@ -167,6 +167,11 @@ export class Plot{
          height: this.opts.height - this.canvasPad.top - this.canvasPad.bottom
       };
 
+      this.bottomAxis.setOption(
+         'tickCount', utils.tickCountHint(this.canvasBoundingBox.width));
+      this.leftAxis.setOption(
+         'tickCount', utils.tickCountHint(this.canvasBoundingBox.height));
+
       this.bottomAxis.setRange([0, this.canvasBoundingBox.width]);
       this.leftAxis.setRange([this.canvasBoundingBox.height, 0]);
       this.bottomAxis.setBoundingBox(this.canvasBoundingBox);
