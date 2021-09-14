@@ -189,7 +189,7 @@ export class Plot{
       return this._legend;
    }
 
-   enableTooltip(tf){
+   showTooltip(tf){
       this.opts.showTooltip = tf;
    }
 
