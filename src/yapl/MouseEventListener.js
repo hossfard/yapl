@@ -44,4 +44,20 @@ export class MouseEventListener extends EventEmitter{
       this.notify('mouseout');
    }
 
+   width(w){
+      if (w === undefined){
+         return this._eventRect.width();
+      }
+      this._eventRect.width(w);
+      return undefined;
+   }
+
+   height(h){
+      if (h === undefined){
+         return this._eventRect.height();
+      }
+      this._eventRect.height(h);
+      return undefined;
+   }
+
 }

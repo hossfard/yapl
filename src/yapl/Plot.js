@@ -149,6 +149,8 @@ export class Plot{
       this.stage.height(height);
       this.canvasGroup.width(width);
       this.canvasGroup.height(height);
+      this._eventRect.width(width);
+      this._eventRect.height(height);
 
       this.opts.width = width;
       this.opts.height = height;
