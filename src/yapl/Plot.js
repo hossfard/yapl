@@ -407,7 +407,7 @@ export class Plot{
 
    mousemove(point){
       if (!this.opts.showTooltip){
-         this._eventEmitter.notify('mousemove', {x: px, y: py});
+         this._eventEmitter.notify('mousemove', {x: point.x, y: point.y});
          return;
       }
 
