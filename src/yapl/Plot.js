@@ -122,7 +122,13 @@ export class Plot{
          y: canvasBoundingBox.y
       });
 
-      this._eventRect = new MouseEventListener(canvasBoundingBox);
+      this._eventRect = new MouseEventListener({
+         x: 0,
+         y: 0,
+         width: this.canvasBoundingBox.width,
+         height: this.canvasBoundingBox.height
+      });
+
       this._eventRect.subscribe('mousemove', this.mousemove.bind(this));
       this._eventRect.subscribe('mouseout', this.mouseout.bind(this));
 
@@ -406,6 +412,10 @@ export class Plot{
    }
 
    mousemove(point){
+      // Adjust for parent layer offset
+      point.x -= this.canvasBoundingBox.x;
+      point.y -= this.canvasBoundingBox.y;
+
       if (!this.opts.showTooltip){
          this._eventEmitter.notify('mousemove', {x: point.x, y: point.y});
          return;
