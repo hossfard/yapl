@@ -121,6 +121,10 @@ export class LineSeries{
       layer.add(this.lineObject);
    }
 
+   detach(){
+       this.lineObject.destroy();
+   }
+
    update(transition){
       if (!this._points || !this.lineObject){
          return;
