@@ -275,6 +275,13 @@ export class Plot{
       return pobj;
    }
 
+    clear(){
+        for (let i=0; i<this.series.length; ++i){
+            this.series[i].detach();
+        }
+        this.series = [];
+    }
+
    /** Fit canvas to contents of the plot
     *
     * @param {number} padx padding, in percet of the content width, in
