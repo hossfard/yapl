@@ -67,11 +67,14 @@ export default {
          showTooltip: false
       });
 
-      this._plot2.plot(generateRandomPoints(100), {
+      let p1 = generateRandomPoints(100);
+      this._plot2.plot(p1.x, p1.y, {
          stroke: 'blue', strokeWidth: 3, label: 'p1'
       });
+
+      let p2 = generateRandomPoints(100, 3, 2)
       this._plot2.plot(
-         generateRandomPoints(100, 3, 2),
+         p2.x, p2.y,
          {
             stroke: 'red',
             strokeWidth: 1,
@@ -79,8 +82,9 @@ export default {
             dash: [5, 5]
          }
       );
+      let p3 = generateRandomPoints(100, 2, 3)
       this._plot2.plot(
-         generateRandomPoints(100, 2, 3),
+         p3.x, p3.y,
          {stroke: 'green', label: 'p4', markersize: 3}
       );
       // window.setTimeout(()=>{
