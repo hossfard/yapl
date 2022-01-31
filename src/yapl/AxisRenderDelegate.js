@@ -378,7 +378,7 @@ export class VAxisRenderDelegate{
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
-         let item = this._generateLabel(xval, canv_val);
+         let item = this._generateLabel(xval, canv_val, domain);
          this.tickLabelMaxWidth = Math.max(this.tickLabelMaxWidth, item.width());
          ret.push(item);
       }
