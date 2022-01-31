@@ -72,7 +72,7 @@ export class Plot{
 
       // Location of the area where graphs are plotted
       this.canvasPad = {
-         left: 100,
+         left: 50,
          top: 20,
          bottom: 40,
          right: 20
