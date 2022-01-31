@@ -160,8 +160,11 @@ export function timeAxisLabelFormat(value, font, dx, domain){
  * @return {number} suggested tick count
  */
 export function tickCountHint(length){
-   if (length < 250){
+   if (length < 150){
       return 3;
+   }
+   if (length < 250){
+      return 5;
    }
    if (length < 500){
       return 6;
