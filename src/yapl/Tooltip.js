@@ -24,11 +24,9 @@ function valueToString(value, digits){
 }
 
 
-const TooltipDefaultOpts = {
-   valueToString: {
-      x: valueToString,
-      y: valueToString
-   }
+export const TooltipDefaultOpts = {
+   xValueToString: valueToString,
+   yValueToString: valueToString
 };
 
 
@@ -102,8 +100,8 @@ export class TooltipRectContentDraw{
       let label = series.opts.label || '';
       this.content.labelText.fill(color);
       this.content.labelText.text(label);
-      this.content.timestampText.text(this.opts.valueToString.x(plotCoord[0]));
-      this.content.valueText.text(this.opts.valueToString.y(plotCoord[1]));
+      this.content.timestampText.text(this.opts.xValueToString(plotCoord[0]));
+      this.content.valueText.text(this.opts.yValueToString(plotCoord[1]));
 
       const ltw = this.content.labelText.width();
       const vtw = this.content.valueText.width();
@@ -129,7 +127,7 @@ export class TooltipRectContentDraw{
 
       // Center timestamp object
       this.content.timestampText.setPosition({
-         x: -timestampWidth/2 + 10, // reported width does not match actual width
+         x: -timestampWidth/2,
          y: -contentHeight/2
       });
 
