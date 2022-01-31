@@ -311,13 +311,13 @@ export class VAxisRenderDelegate{
    }
 
    labelToString(value, font, dx, domain){
-      dx, domain;
-      if (typeof(value.getHours) === 'function'){
-         return value.toLocaleDateString('en-US');
+      let dy = domain[1] - domain[0];
+      let fracDigits = 0;
+      if (dy < 1){
+         fracDigits = 2;
       }
-      return value.toLocaleString(
-         undefined, {minimumFractionDigits: 2}
-      );
+
+      return value.toLocaleString(undefined, {minimumFractionDigits: fracDigits});
    }
 
    // Return an axis line object
