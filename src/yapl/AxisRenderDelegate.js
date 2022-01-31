@@ -283,7 +283,8 @@ export class VAxisRenderDelegate{
       return ret;
    }
 
-   _generateLabel(value, canvasValue){
+   _generateLabel(value, canvasValue, domain){
+      domain;
       let str = value.toLocaleString(
          undefined, {minimumFractionDigits: 2}
       );
