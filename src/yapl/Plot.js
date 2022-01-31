@@ -56,7 +56,8 @@ export class Plot{
       let defaults = {
          width: window.innerWidth,
          height: window.innerHeight,
-         showTooltip: true
+         showTooltip: true,
+         tooltip: Tooltip.TooltipDefaultOpts
       };
       this.opts = utils.setDefaults(opts, defaults);
       opts = this.opts;
@@ -132,7 +133,7 @@ export class Plot{
       this._eventRect.subscribe('mousemove', this.mousemove.bind(this));
       this._eventRect.subscribe('mouseout', this.mouseout.bind(this));
 
-      this.tooltip = new Tooltip(this);
+      this.tooltip = new Tooltip(this, this.opts.tooltip);
       this.tooltip.attach(this.tooltipLayer);
 
       this.canvasGroup.attach(this.stage);
