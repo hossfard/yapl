@@ -428,13 +428,13 @@ export class Plot{
          return;
       }
 
-      this.tooltip.show(true);
       let px = this.bottomAxis.fromCanvas(point.x);
       let py = this.leftAxis.fromCanvas(point.y);
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
          return;
       }
+      this.tooltip.show(true);
 
       let series = csData.series;
       let seriesIndex = csData.index;
