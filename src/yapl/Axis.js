@@ -57,6 +57,12 @@ export class AxisConfig{
 }
 
 
+export const AxisDefaultOpts = {
+   orientation: 'bottom',
+   tickCount: 5
+};
+
+
 export class Axis extends EventEmitter{
 
    constructor(range, domain, boundingBox, opts){
@@ -64,9 +70,7 @@ export class Axis extends EventEmitter{
       this.domain = domain;
       this.scale = new LinearScale(this.domain, range);
 
-      this.opts = utils.setDefaults(opts, {
-         orientation: 'bottom'
-      });
+      this.opts = utils.setDefaults(opts, AxisDefaultOpts);
       this.cfg = new AxisConfig(this.opts);
 
       this.bbox = boundingBox;
