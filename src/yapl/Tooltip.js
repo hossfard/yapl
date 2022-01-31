@@ -20,7 +20,7 @@ function valueToString(value, digits){
    if (digits === undefined){
       digits = 2;
    }
-   return value.toFixed(digits);
+   return value.toLocaleString(undefined, {minimumFractionDigits: digits});
 }
 
 
