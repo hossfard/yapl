@@ -4,70 +4,172 @@ import Konva from 'konva';
 import * as utils from './utils';
 
 
-export class Tooltip{
+function dateTimeToString(date){
+   const dateStr = date.toLocaleDateString('en-US');
+   const timeStr = date.toLocaleTimeString('en-GB', {
+      hour: '2-digit', minute:'2-digit'});
+   return dateStr + ' ' + timeStr;
+}
 
-   constructor(plot){
-      this.plot = plot;
-      this.group = new Konva.Group({});
+
+function valueToString(value, digits){
+   if (utils.isDateObject(value)){
+      return dateTimeToString(value);
    }
 
+   if (digits === undefined){
+      digits = 2;
+   }
+   return value.toFixed(digits);
+}
+
+
+const TooltipDefaultOpts = {
+   valueToString: {
+      x: valueToString,
+      y: valueToString
+   }
+};
+
+
+export class TooltipRectContentDraw{
+   constructor(opts){
+      this.opts = utils.setDefaults(opts, TooltipDefaultOpts);
+
+      this.content = {
+         tooltipRect: new Konva.Rect({
+            width: 40,
+            height: 80,
+            fill: '#fff',
+            stroke: '#666',
+            strokeWidth: 1,
+            opacity: 0.9,
+            cornerRadius: 0
+         }),
+
+         timestampText: new Konva.Text({
+            x: 0,
+            y: 0,
+            text: '',
+            fontSize: 18,
+            fontFamily: 'Calibri',
+            fill: 'black',
+            padding: 0,
+            align: 'left'
+         }),
+
+         labelText: new Konva.Text({
+            x: 0,
+            y: 0,
+            text: '',
+            fontSize: 18,
+            fontFamily: 'Calibri',
+            fontStyle: 'bold',
+            fill: 'blue',
+            padding: 0,
+            align: 'left'
+         }),
+
+         valueText: new Konva.Text({
+            x: 0,
+            y: 0,
+            text: '',
+            fontSize: 18,
+            fontFamily: 'Calibri',
+            fontStyle: 'bold',
+            fill: 'black',
+            padding: 0,
+            align: 'left'
+         })
+      };
+   }
+
+   destroy(){
+      for (const key in this.content){
+         this.content[key].destroy();
+      }
+      this.pointer.destroy();
+   }
+
+   attach(parent){
+      for (const key in this.content){
+         parent.add(this.content[key]);
+      }
+   }
+
+   update(plotCoord, canvCoord, series){
+      let color = series.opts.stroke || 'black';
+      let label = series.opts.label || '';
+      this.content.labelText.fill(color);
+      this.content.labelText.text(label);
+      this.content.timestampText.text(this.opts.valueToString.x(plotCoord[0]));
+      this.content.valueText.text(this.opts.valueToString.y(plotCoord[1]));
+
+      const ltw = this.content.labelText.width();
+      const vtw = this.content.valueText.width();
+
+      const pad = 5;
+      const labelValueWidth = ltw + vtw + pad;
+      const timestampWidth = this.content.timestampText.width();
+      const tooltipRectWidth = Math.max(labelValueWidth, timestampWidth) + 5*pad;
+
+      this.content.tooltipRect.width(tooltipRectWidth);
+      const th = this.content.timestampText.height();
+      const contentHeight = th + pad + this.content.valueText.height();
+
+      // Center label and value text objects
+      this.content.labelText.setPosition({
+         x: -labelValueWidth/2,
+         y: contentHeight/2 - th
+      });
+      this.content.valueText.setPosition({
+         x: +labelValueWidth/2-vtw,
+         y: contentHeight/2 - th
+      });
+
+      // Center timestamp object
+      this.content.timestampText.setPosition({
+         x: -timestampWidth/2 + 10, // reported width does not match actual width
+         y: -contentHeight/2
+      });
+
+      this.content.tooltipRect.height(contentHeight + pad*2);
+      this.content.tooltipRect.setPosition({
+         x: -tooltipRectWidth/2,
+         y: -this.content.tooltipRect.height()/2
+      });
+   }
+
+   size(){
+      return {
+         width: this.content.tooltipRect.width(),
+         height: this.content.tooltipRect.height()
+      };
+   }
+
+}
+
+
+export class Tooltip{
+
+   constructor(plot, opts){
+      this.opts = utils.setDefaults(opts, TooltipDefaultOpts);
+      this.plot = plot;
+      this.group = new Konva.Group({});
+      this.content = new TooltipRectContentDraw(this.opts);
+   }
+
+   /** Attach tooltip to a plot
+    *
+    */
    attach(layer){
+      this.content.attach(this.group);
       this.pointer = new Konva.Circle({
          radius: 8,
          opacity: 0.5,
          fill: '#00000069'
       });
 
-      this.timestampText = new Konva.Text({
-         x: 0,
-         y: 10,
-         text: '',
-         fontSize: 18,
-         fontFamily: 'Calibri',
-         fill: 'black',
-         padding: 20,
-         align: 'center',
-      });
-
-      this.tooltipBox = new Konva.Rect({
-         width: 40,
-         height: 80,
-         fill: '#d0b0d0',
-         opacity: 0.9,
-         cornerRadius: 10
-      });
-
-      this.seriesLabel = new Konva.Text({
-         x: 0,
-         y: this.timestampText.height(),
-         text: '',
-         fontSize: 18,
-         fontFamily: 'Calibri',
-         fontStyle: 'bold',
-         fill: 'blue',
-         padding: 0,
-         align: 'left',
-      });
-
-      this.seriesValue = new Konva.Text({
-         x: 0,
-         y: this.timestampText.height(),
-         text: '',
-         fontSize: 18,
-         fontFamily: 'Calibri',
-         fontStyle: 'bold',
-         fill: 'black',
-         padding: 0,
-         align: 'left',
-      });
-
-      this.tooltipBox.x(-this.tooltipBox.width()/2);
-      this.tooltipBox.y(20);
-
-      this.group.add(this.tooltipBox);
-      this.group.add(this.timestampText);
-      this.group.add(this.seriesLabel);
-      this.group.add(this.seriesValue);
       layer.add(this.pointer);
       layer.add(this.group);
       this.show(false);
@@ -81,31 +183,17 @@ export class Tooltip{
          return;
       }
 
+      this.content.update(plotCoord, canvCoord, series);
+      const pointerRadius = 7;
+
+      const cSize = this.content.size();
+      this.group.to({
+         x: canvCoord[0],
+         y: canvCoord[1] + cSize.height/2 + pointerRadius*1.5,
+         duration: 0.02
+      });
+
       let color = series.opts.stroke || 'black';
-      let label = series.opts.label || '';
-      this.seriesLabel.fill(color);
-      this.seriesLabel.text(label);
-      this.seriesValue.text(plotCoord[1].toFixed(0));
-
-      let str = '';
-      if (utils.isDateObject(plotCoord[0])){
-         str = plotCoord[0].toLocaleDateString('en-US') +
-            ' ' + plotCoord[0].toLocaleTimeString();
-      }
-      else{
-         str = plotCoord[0].toFixed(2);
-      }
-      this.timestampText.text(str);
-      this.tooltipBox.width(this.timestampText.width() + 40);
-
-      // Update label/value position
-      let bw = this.tooltipBox.width();
-      let sw = this.seriesLabel.width();
-      let sv = this.seriesValue.width();
-      let pad = 10;
-      this.seriesLabel.x(-(sw+sv+pad-bw/2)/2);
-      this.seriesValue.x(this.seriesLabel.x() + this.seriesLabel.width() + pad);
-
       this.pointer.fill(color);
       this.pointer.radius(0);
 
@@ -113,14 +201,9 @@ export class Tooltip{
          x: canvCoord[0], y: canvCoord[1]
       });
       this.pointer.to({
-         radius: 10,
+         radius: pointerRadius,
          duration: 0.5,
          easing: Konva.Easings['StrongEaseOut']
-      });
-      this.group.to({
-         x: canvCoord[0],
-         y: canvCoord[1],
-         duration: 0.02
       });
    }
 
