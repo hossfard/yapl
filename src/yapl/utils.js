@@ -106,20 +106,51 @@ export function isDateObject(obj){
 }
 
 
+/** Map of different time units to seconds
+*/
+const TimeToSecondsMap = {
+   second: 1,
+   minute: 60,
+   hour: 3600,
+   day: 3600*24,
+   week: 3600*24*7,
+   month: 3600*24*7*4.34524,
+   year: 3600*24*7*52
+};
+
+
 /** Custom strategy for converting timestamps to str
  *
  * @param {(number|Date)} value timestamp in milliseconds since epoch
  * @param {Font} font rendering font
  * @param {number} dx available space for rendering
  */
-export function timeAxisLabelFormat(value, font, dx){
+export function timeAxisLabelFormat(value, font, dx, domain){
    let charCount = dx/font.fontWidth;
-   let dt = new Date(value);
-   if (charCount < 'mm/dd/yyyy hh:mm:dd pm'.length){
-      return dt.toLocaleTimeString();
+   let date = new Date(value);
+   let dt_seconds = (domain[1] - domain[0])/1000;
+
+   if (dt_seconds > TimeToSecondsMap.year){
+      return date.toLocaleDateString('en-US');
    }
-   return dt.toLocaleDateString('en-US')
-      + ' ' + dt.toLocaleTimeString();
+   else if (dt_seconds > TimeToSecondsMap.month){
+      return date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+   }
+   else if (dt_seconds > TimeToSecondsMap.week){
+      return date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+   }
+   else if (dt_seconds > TimeToSecondsMap.day){
+      let datestr = date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+      let timestr = date.toLocaleTimeString('en-US', {
+         hour: 'digit', minute: 'digit'});
+      return datestr + ' ' + timestr;
+   }
+
+   if (charCount < 'mm/dd/yyyy hh:mm:dd pm'.length){
+      return date.toLocaleTimeString();
+   }
+   return date.toLocaleDateString('en-US')
+      + ' ' + date.toLocaleTimeString();
 }
 
 
