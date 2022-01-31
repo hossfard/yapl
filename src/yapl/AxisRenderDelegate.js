@@ -343,7 +343,7 @@ export class VAxisRenderDelegate{
 
       // Draw using ticks and labels on OLD domain
       this.__attach(this.layer, scale, oldDomain, newDomain);
-
+      this.scale = scale;
       let duration = 0.5;
 
       // Then apply tween to new domain
