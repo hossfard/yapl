@@ -283,11 +283,19 @@ export class VAxisRenderDelegate{
       return ret;
    }
 
-   _generateLabel(value, canvasValue, domain){
+   _generateLabel(value, canvasValue, dx, domain){
       domain;
-      let str = value.toLocaleString(
-         undefined, {minimumFractionDigits: 2}
-      );
+      let dummyText = new Konva.Text({
+         fontFamily: 'Calibri',
+         fontSize: 14,
+         text: 'x'
+      });
+
+      let font = {
+         fontWidth: dummyText.width(),
+         fontHeight: dummyText.height()
+      };
+      let str = this.labelToString(value, font, dx, domain);
 
       let text = new Konva.Text({
          x: 0,
@@ -300,6 +308,16 @@ export class VAxisRenderDelegate{
       text.x(-this.pad - text.width());
       text.y(canvasValue - text.height()/2);
       return text;
+   }
+
+   labelToString(value, font, dx, domain){
+      dx, domain;
+      if (typeof(value.getHours) === 'function'){
+         return value.toLocaleDateString('en-US');
+      }
+      return value.toLocaleString(
+         undefined, {minimumFractionDigits: 2}
+      );
    }
 
    // Return an axis line object
@@ -375,10 +393,11 @@ export class VAxisRenderDelegate{
    genTickLabels(ticks, scale, domain){
       let ret = [];
       this.tickLabelMaxWidth = 0;
+      let dx = (scale.range[1] - scale.range[0])/ticks.length + 5;
       for (let i=0; i<ticks.length; ++i){
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
-         let item = this._generateLabel(xval, canv_val, domain);
+         let item = this._generateLabel(xval, canv_val, dx, domain);
          this.tickLabelMaxWidth = Math.max(this.tickLabelMaxWidth, item.width());
          ret.push(item);
       }
