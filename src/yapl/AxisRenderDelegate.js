@@ -426,8 +426,11 @@ export class VAxisRenderDelegate{
       this.axisLine = this.__createAxisLine(scale.range);
       layer.add(this.axisLine);
 
+      // Final position of the ticks
       this.ticks = scale.genTicks(
          newDomain, this.opts.tickCount);
+
+      // Draw ticks on the old position
       this.tickLines = this.__genTickLines(
          this.ticks, scale, oldDomain, this.opts.tickLength,
          {stroke: 'black'});
