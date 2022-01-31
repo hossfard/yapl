@@ -33,7 +33,7 @@ export class HAxisRenderDelegate{
       });
    }
 
-   _generateLabel(value, canvasValue, dx){
+   _generateLabel(value, canvasValue, dx, domain){
       let dummyText = new Konva.Text({
          fontFamily: 'Calibri',
          fontSize: 14,
@@ -45,7 +45,7 @@ export class HAxisRenderDelegate{
          fontWidth: dummyText.width(),
          fontHeight: dummyText.height()
       };
-      let str = this.labelToString(value, font, dx);
+      let str = this.labelToString(value, font, dx, domain);
 
       let text = new Konva.Text({
          x: canvasValue,
@@ -152,7 +152,7 @@ export class HAxisRenderDelegate{
          let xval = ticks[i];
          let canv_val = scale.toCanvas(xval, domain);
          ret.push(
-            this._generateLabel(xval, canv_val, dx)
+            this._generateLabel(xval, canv_val, dx, domain)
          );
       }
       return ret;
