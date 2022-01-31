@@ -317,7 +317,18 @@ export class VAxisRenderDelegate{
          fracDigits = 2;
       }
 
-      return value.toLocaleString(undefined, {minimumFractionDigits: fracDigits});
+      let suffix = '';
+      if (dy > 10000){
+         suffix = 'k';
+         value /= 1000;
+      }
+      if (dy > 1e6){
+         suffix = 'M';
+         value /= 1e6;
+      }
+
+      return value.toLocaleString(undefined, {minimumFractionDigits: fracDigits})
+         + suffix;
    }
 
    // Return an axis line object
