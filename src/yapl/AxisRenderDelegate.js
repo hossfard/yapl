@@ -59,8 +59,8 @@ export class HAxisRenderDelegate{
       return text;
    }
 
-   labelToString(value, font, dx){
-      dx;
+   labelToString(value, font, dx, domain){
+      dx, domain;
       if (typeof(value.getHours) === 'function'){
          return value.toLocaleDateString('en-US');
       }

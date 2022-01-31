@@ -40,27 +40,23 @@ function bboxGridLength(bbox, orientation){
 }
 
 
+export const AxisDefaultOpts = {
+   gridlineStroke: '#c8c8c8',
+   gridlineStokeWidth: 1,
+   tickLength: 5,
+   tickCount: 10,
+   orientation: 'bottom'
+};
+
 export class AxisConfig{
    constructor(opts){
-      let defaults = {
-         gridlineStroke: '#c8c8c8',
-         gridlineStokeWidth: 1,
-         tickLength: 5,
-         tickCount: 10,
-         orientation: 'bottom'
-      };
+      let defaults = AxisDefaultOpts;
       opts = utils.setDefaults(opts, defaults);
       for (let key in opts){
          this[key] = opts[key];
       }
    }
 }
-
-
-export const AxisDefaultOpts = {
-   orientation: 'bottom',
-   tickCount: 5
-};
 
 
 export class Axis extends EventEmitter{
