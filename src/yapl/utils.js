@@ -134,13 +134,14 @@ export function timeAxisLabelFormat(value, font, dx, domain){
       return date.toLocaleDateString('en-US');
    }
    else if (dt_seconds > TimeToSecondsMap.month){
-      return date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+      return date.toLocaleDateString('en-US', {day: 'numeric', month: 'short'});
    }
    else if (dt_seconds > TimeToSecondsMap.week){
-      return date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+      return date.toLocaleDateString('en-US', {day: 'numeric', month: 'numeric'});
    }
    else if (dt_seconds > TimeToSecondsMap.day){
-      let datestr = date.toLocaleDateString('en-US', {day: 'digit', month: 'digit'});
+      let datestr = date.toLocaleDateString('en-US', {
+         day: 'numeric', month: 'numeric'});
       let timestr = date.toLocaleTimeString('en-US', {
          hour: 'digit', minute: 'digit'});
       return datestr + ' ' + timestr;
