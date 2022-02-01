@@ -254,8 +254,9 @@ export class Plot{
     * @param {array} points data points in format
     *    [[x0,y0],[...]]
     * @param {SeriesPlotOptions} opts series options
+    * @param {bool} autofit if true, fits plot to content
     */
-   plot(x, y, opts){
+   plot(x, y, opts, autofit=true){
       if (x.length < 0){
          return undefined;
       }
@@ -270,7 +271,9 @@ export class Plot{
       let pobj = new LineSeries(x, y, opts);
       pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
       this.series.push(pobj);
-      this.fitToContent();
+      if (autofit){
+         this.fitToContent();
+      }
 
       this._legend.setSeries(this.series);
       return pobj;
