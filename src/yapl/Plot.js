@@ -330,7 +330,7 @@ export class Plot{
             ret.y = ext.y;
             continue;
          }
-         if ((ext[0] === undefined) || (ext[1] === undefined)){
+         if ((ext.x[0] === undefined) || (ext.y[1] === undefined)){
             continue;
          }
 
@@ -435,24 +435,32 @@ export class Plot{
       point.x -= this.canvasBoundingBox.x;
       point.y -= this.canvasBoundingBox.y;
 
-      if (!this.opts.showTooltip){
-         this._eventEmitter.notify('mousemove', {x: point.x, y: point.y});
-         return;
-      }
-
       let px = this.bottomAxis.fromCanvas(point.x);
       let py = this.leftAxis.fromCanvas(point.y);
+
+      if (!this.opts.showTooltip){
+         return this._eventEmitter.notify('mousemove', {x: px, y: py});
+      }
+
       let csData = this.closestSeries([px, py]);
       if (csData === undefined){
-         return;
+         return this._eventEmitter.notify('mousemove', {x: px, y: py});
       }
-      this.tooltip.show(true);
 
       let series = csData.series;
       let seriesIndex = csData.index;
-      this.updateTooltip(series.points()[seriesIndex], series);
+      if (!series || (seriesIndex < 0)){
+         return this._eventEmitter.notify('mousemove', {x: px, y: py});
+      }
 
-      this._eventEmitter.notify('mousemove', {x: px, y: py});
+      let seriesPoints = series.points()[seriesIndex];
+      if (seriesPoints.length < 1){
+         return this._eventEmitter.notify('mousemove', {x: px, y: py});
+      }
+
+      this.tooltip.show(true);
+      this.updateTooltip(seriesPoints, series);
+      return this._eventEmitter.notify('mousemove', {x: px, y: py});
    }
 
    mouseout(){
