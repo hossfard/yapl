@@ -257,25 +257,26 @@ export class Plot{
     * @param {bool} autofit if true, fits plot to content
     */
    plot(x, y, opts, autofit=true){
-      if (x.length < 0){
-         return undefined;
+      opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
+      let pobj = new LineSeries(x, y, opts);
+      this.series.push(pobj);
+      pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
+      this._legend.setSeries(this.series);
+
+      if (x.length < 1){
+         return pobj;
       }
 
-      if (x.length > 0 && utils.isDateObject(x[0])){
+      if (utils.isDateObject(x[0])){
          this.axis('bottom')
             .renderDelegate
             .labelToString = utils.timeAxisLabelFormat;
       }
 
-      opts = utils.setDefaults(opts, DEFAULT_PLOT_OPTIONS);
-      let pobj = new LineSeries(x, y, opts);
-      pobj.attach(this.canvasGroup, this.bottomAxis, this.leftAxis);
-      this.series.push(pobj);
       if (autofit){
          this.fitToContent();
       }
 
-      this._legend.setSeries(this.series);
       return pobj;
    }
 
@@ -329,6 +330,10 @@ export class Plot{
             ret.y = ext.y;
             continue;
          }
+         if ((ext[0] === undefined) || (ext[1] === undefined)){
+            continue;
+         }
+
          ret.x[0] = Math.min(ret.x[0], ext.x[0]);
          ret.x[1] = Math.max(ret.x[1], ext.x[1]);
          ret.y[0] = Math.min(ret.y[0], ext.y[0]);
