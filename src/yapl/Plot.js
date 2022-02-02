@@ -261,7 +261,7 @@ export class Plot{
          return undefined;
       }
 
-      if (utils.isDateObject(x[0])){
+      if (x.length > 0 && utils.isDateObject(x[0])){
          this.axis('bottom')
             .renderDelegate
             .labelToString = utils.timeAxisLabelFormat;
