@@ -9,9 +9,13 @@
  * @param {float} val query value
  * @param {function} fn function to retrieve value from @data at a
  *    given index -- fn(seq, index)
- * @return {int} Index of closest point to data
+ * @return {int} Index of closest point to data, or -1 if empty series
  */
 export function closestPoint(data, val, fn){
+   if (data.length === 0){
+      return -1;
+   }
+
    let highIndex = data.length-1;
    let lowIndex = 0;
    while (highIndex > lowIndex){
