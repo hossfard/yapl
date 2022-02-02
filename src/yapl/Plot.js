@@ -41,8 +41,8 @@ var DEFAULT_PLOT_OPTIONS = {
 
 /**
  * @typedef {Object} ClosestSeriesType
- * @property {LineSeries} series X coordinate
- * @property {number} index series index
+ * @property {LineSeries} series Series object
+ * @property {number} index index of the point, or -1 if empty
  *
  */
 
@@ -391,11 +391,14 @@ export class Plot{
       };
 
       let closestSeriesIndex = 0;
-      let closestIndex = 0;
+      let closestIndex = -1;
       this.series.forEach((elem, index) => {
          let pIndex = utils.closestPoint(
             elem.points(), x, indexer
          );
+         if (pIndex < 0){
+            return;
+         }
 
          // Update closest series and index
          if (index === 0){
