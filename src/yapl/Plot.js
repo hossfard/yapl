@@ -411,12 +411,24 @@ export class Plot{
             closestIndex = pIndex;
          }
          else{
+            // Canvas coordinates of the cursor
+            let pX = this.bottomAxis.toCanvas(point[0]);
+            let pY = this.leftAxis.toCanvas(point[1]);
+
+            // Canvas coord of current series
             let p1 = elem.points()[pIndex];
+            let xCoord1 = this.bottomAxis.toCanvas(p1[0]);
+            let yCoord1 = this.leftAxis.toCanvas(p1[1]);
+
+            // Canvas coord of current cloest series
             let p2 = this.series[closestSeriesIndex]
                 .points()[closestIndex];
+            let xCoord2 = this.bottomAxis.toCanvas(p2[0]);
+            let yCoord2 = this.leftAxis.toCanvas(p2[1]);
 
-            let d1 = utils.l2(p1[0], p1[1], point[0], point[1]);
-            let d2 = utils.l2(p2[0], p2[1], point[0], point[1]);
+            let d1 = utils.l2(xCoord1, yCoord1, pX, pY);
+            let d2 = utils.l2(xCoord2, yCoord2, pX, pY);
+
             if (d1 < d2){
                closestSeriesIndex = index;
                closestIndex = pIndex;
