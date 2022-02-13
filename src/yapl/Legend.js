@@ -257,6 +257,7 @@ export class Legend{
          this.dashLines[i].destroy();
       }
 
+      this.bg.destroy();
       this.labelTexts = [];
       this.dashLines = [];
    }
