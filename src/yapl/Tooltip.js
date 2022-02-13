@@ -50,7 +50,6 @@ export class TooltipRectContentDraw{
             y: 0,
             text: '',
             fontSize: 14,
-            fontFamily: 'Calibri',
             fill: 'black',
             padding: 0,
             align: 'left'
@@ -61,7 +60,6 @@ export class TooltipRectContentDraw{
             y: 0,
             text: '',
             fontSize: 14,
-            fontFamily: 'Calibri',
             fontStyle: 'bold',
             fill: 'blue',
             padding: 0,
@@ -73,7 +71,6 @@ export class TooltipRectContentDraw{
             y: 0,
             text: '',
             fontSize: 14,
-            fontFamily: 'Calibri',
             fontStyle: 'bold',
             fill: 'black',
             padding: 0,

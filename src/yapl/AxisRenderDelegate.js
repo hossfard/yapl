@@ -35,7 +35,6 @@ export class HAxisRenderDelegate{
 
    _generateLabel(value, canvasValue, dx, domain){
       let dummyText = new Konva.Text({
-         fontFamily: 'Calibri',
          fontSize: 14,
          text: 'x',
          fill: 'black',
@@ -50,7 +49,6 @@ export class HAxisRenderDelegate{
       let text = new Konva.Text({
          x: canvasValue,
          y: this.pad,
-         fontFamily: 'Calibri',
          fontSize: 14,
          text: str,
          fill: 'black',
@@ -178,7 +176,6 @@ export class HAxisRenderDelegate{
 
    __createAxisLabel(str, scale){
       let ret = new Konva.Text({
-         fontFamily: 'Calibri',
          fontSize: 16,
          fontStyle: 'bold',
          text: str,
@@ -271,7 +268,6 @@ export class VAxisRenderDelegate{
 
    __createAxisLabel(str, scale){
       let ret = new Konva.Text({
-         fontFamily: 'Calibri',
          fontSize: 16,
          fontStyle: 'bold',
          text: str,
@@ -286,7 +282,6 @@ export class VAxisRenderDelegate{
    _generateLabel(value, canvasValue, dx, domain){
       domain;
       let dummyText = new Konva.Text({
-         fontFamily: 'Calibri',
          fontSize: 14,
          text: 'x'
       });
@@ -300,7 +295,6 @@ export class VAxisRenderDelegate{
       let text = new Konva.Text({
          x: 0,
          y: canvasValue,
-         fontFamily: 'Calibri',
          fontSize: 14,
          text: str,
          fill: 'black',
