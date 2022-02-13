@@ -18,7 +18,9 @@ export class Legend{
             y: 0,
             width: 0,
             height: 0
-         }
+         },
+         position: 'upper right',
+         enable: true
       });
 
       this.group = new Konva.Group({
@@ -47,6 +49,11 @@ export class Legend{
       this.__repositionBox();
    }
 
+   setPosition(pos){
+      this.opts.position = pos;
+      this.__repositionBox();
+   }
+
    /** Attach legend to a canvas or layer
     *
     * @param {CanvasLayer} layer parent canvas or layer
@@ -69,6 +76,9 @@ export class Legend{
       }
    }
 
+   show(tf){
+      this.hide(!tf);
+   }
 
    /** Return if the legend is visible or hidden
     *
@@ -88,12 +98,30 @@ export class Legend{
       this.draw();
    }
 
+   __addBox(){
+      this.bg = new Konva.Rect({
+         fill: 'white',
+         width: 100,
+         height: 100,
+         opacity: 0.7,
+         cornerRadius: 10,
+         strokeWidth: 0.4,
+         stroke: 'black'
+      });
+      this.group.add(this.bg);
+   }
 
    /** (Re)draw legends on canvas
     *
     */
    draw(){
       this._clear();
+      if (!this.opts.enable){
+         return;
+      }
+
+      this.__addBox();
+
       let pad0 = 10,
           pad = 10,
           textPad = 30,
@@ -144,11 +172,32 @@ export class Legend{
    }
 
    __repositionBox(){
-      let pad = {x: 40, y: 20};
+      let pad = {x: 20, y: 20};
       let boxDim = this.__computeBoxDimension(this.labelTexts);
-      this.bg.width(boxDim.x + 20);
-      this.group.x(this.opts.bbox.width - boxDim.x - pad.x);
-      this.bg.height(boxDim.y + pad.y);
+      this.bg.width(boxDim.x + 10);
+
+      let x = 0;
+      let y = 0;
+      if (this.opts.position == 'upper left'){
+         x = pad.x;
+         y = pad.y;
+      }
+      else if (this.opts.position == 'upper right'){
+         x = this.opts.bbox.width - boxDim.x - pad.x;
+         y = pad.y;
+      }
+      else if (this.opts.position == 'lower left'){
+         x = boxDim.x - pad.x;
+         y = this.opts.bbox.height - boxDim.y - pad.y * 2;
+      }
+      else if (this.opts.position == 'lower right'){
+         x = this.opts.bbox.width - boxDim.x - pad.x;
+         y = this.opts.bbox.height - boxDim.y - pad.y * 2;
+      }
+
+      this.group.x(x);
+      this.group.y(y);
+      this.bg.height(boxDim.y + 10);
    }
 
    __computeBoxDimension(labelTexts){
