@@ -31,7 +31,7 @@ function generateRandomPoints(count, x0=4, A=3){
 
 
 export default {
-   name: 'Examples',
+   name: 'yapl-examples',
    props: {
    },
    mounted: function(){

@@ -9,23 +9,25 @@
     "build:docs": "jsdoc ./src/yapl/*.js -t node_modules/docdash -d _docs"
   },
   "dependencies": {
+    "@vue/compat": "^3.1.0-0",
     "core-js": "^3.6.5",
     "konva": "^8.1.1",
-    "node-sass": "^6.0.0",
-    "sass-loader": "^10.1.0",
-    "vue": "^2.6.14",
-    "webpack": "^4.46.0"
+    "node-sass": "^7.0.1",
+    "sass-loader": "^11.1.0",
+    "vue": "^3.1.0",
+    "webpack": "^5.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "^4.5.15",
-    "babel-eslint": "^10.1.0",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "^5.0.4",
+    "@vue/cli-plugin-eslint": "^5.0.4",
+    "@vue/cli-service": "^5.0.4",
+    "@vue/compiler-sfc": "^3.1.0",
     "docdash": "^1.2.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
     "jsdoc": "^3.6.10",
-    "vue-template-compiler": "^2.6.11",
     "webpack-dev-server": "^4.7.4"
   },
   "eslintConfig": {
@@ -38,7 +40,7 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {}
   },
